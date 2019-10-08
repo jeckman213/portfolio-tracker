@@ -1,8 +1,22 @@
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px;
+  font-family: Arial Bold; 
 }
 
 a {
-  color: #00B7FF;
+  color: #3d85c6;
+}
+
+nav {
+  border-bottom: solid 1px black;
+}
+
+.nav-logo {
+  width: 70px;
+  height: auto;
+}
+
+.dollar-sign {
+  color: #83c6a7;
 }
