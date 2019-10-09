@@ -11,4 +11,8 @@ app.get('/api/hello', (req, res) => {
   res.send({ express: 'Sucessfully Connected to Express Server' });
 });
 
+app.get('/api/ping', (req, res) => {
+  res.send('pong');
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}`));
