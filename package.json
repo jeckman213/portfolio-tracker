@@ -1,7 +1,9 @@
 {
   "name": "portfolios",
   "version": "1.0.0",
-  "scripts": {},
+  "scripts": {
+    "start": "node server.js cd client npm start"
+  },
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4"
