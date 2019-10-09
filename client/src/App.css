@@ -1,0 +1,28 @@
+.App {
+  text-align: center;
+  font-family: Arial Bold;
+}
+
+.App-logo {
+  height: auto;
+  width: 100px;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  padding-bottom: 10px;
+}
+
+.Dollar-Sign {
+  color: #83c6a7;
+}
+
+.App-link {
+  color: #09d3ac;
+}
