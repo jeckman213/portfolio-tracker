@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 
+<<<<<<< HEAD
 import logo from '../../assets/logos/portfolios/logo.png';
 
+=======
+>>>>>>> master
 import './App.css';
 
 class App extends Component {
@@ -28,7 +31,7 @@ render() {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          <img src={process.env.PUBLIC_URL + '/logos/portfolios/logo.png'} className="App-logo" alt="logo" />
           <h2>
             Portfolio<span className="Dollar-Sign">$</span>
           </h2>
