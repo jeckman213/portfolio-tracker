@@ -3,12 +3,16 @@ require('dotenv').config();
 const express = require('express'),
       bodyParser = require('body-parser'),
       port = process.env.PORT || 5000,
-      db = require('./config/database');
+      db = require('./db/models');
 
 /* Confirm connection with Postgres */
-db.authenticate()
-  .then( () => console.log('Database connection has been established successfully.') )
-  .catch( err => console.error('Unable to connect to the database:', err) );
+db.sequelize.authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
 
 const app = express();
 
