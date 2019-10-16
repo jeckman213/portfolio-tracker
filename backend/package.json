@@ -1,0 +1,35 @@
+{
+  "name": "portfolios",
+  "version": "1.0.0",
+  "description": "Group Z's implementation of Prof Gallo's 418Y (Software Engineering) Course at UAlbany, Fall 2020",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeckman213/portfolio-tracker.git"
+  },
+  "author": "Group Z",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jeckman213/portfolio-tracker/issues"
+  },
+  "homepage": "https://github.com/aDevCalledAlex/YelpCamp#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "concurrently": "^5.0.0",
+    "dotenv": "^8.1.0",
+    "express": "^4.16.4",
+    "pg": "^7.12.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.19.6",
+    "sequelize-cli": "^5.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.2"
+  }
+}
