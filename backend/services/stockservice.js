@@ -2,8 +2,6 @@
 // Use (ref: https://www.npmjs.com/package/stock-data.js) wrapper for calling api
 const data = require('stock-data.js');
 
-require('../models/StockRealTimeModel.js')
-
 // exports variable for exporting functions from module
 var exports = module.exports = {};
 
