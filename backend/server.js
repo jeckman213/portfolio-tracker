@@ -8,6 +8,7 @@ const express = require('express'),
       db = require('./db/models'),
       passport = require('./config/authentication'),
 
+      stockRoutes = require('./routes/stock')
       devRoutes = require('./routes/dev'),
       indexRoutes = require('./routes/index');
 
@@ -31,6 +32,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use("/stock", stockRoutes);
 app.use("/testapi", devRoutes);
 app.use("/", indexRoutes);
 

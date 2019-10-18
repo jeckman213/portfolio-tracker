@@ -1,4 +1,4 @@
-![Portfolio$ Logo](client/public/logos/portfolios/logo.png)
+![Portfolio$ Logo](frontend/public/logos/portfolios/logo.png)
 ## Portfolio$ Tracking Web Application
 #### To Get Started Follow These Steps:
 1. Clone Repo onto local machine
