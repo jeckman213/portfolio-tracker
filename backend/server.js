@@ -13,19 +13,20 @@ const express = require('express'),
 
 /* Confirm connection with Postgres */
 db.sequelize.authenticate()
-  .then( () => console.log('Connection has been established successfully.') )
+  .then( () => {
+    console.log('Connection has been established successfully.');
+    app.use(sessions({
+      cookieName : 'session',
+      secret : process.env.SESSION_SECRET,
+      duration : 60 * 60 * 1000   /* miliseconds, so 1 hour */
+    }))
+  })
   .catch( err => console.error('Unable to connect to the database:', err) );
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use(sessions({
-  cookieName : 'session',
-  secret : process.env.SESSION_SECRET,
-  duration : 60 * 60 * 1000   /* miliseconds, so 1 hour */
-}))
 
 app.use(passport.initialize());
 app.use(passport.session());
