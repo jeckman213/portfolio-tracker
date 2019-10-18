@@ -2,29 +2,35 @@ require('dotenv').config();
 
 const express = require('express'),
       bodyParser = require('body-parser'),
+      sessions = require('client-sessions'),
+
       port = process.env.PORT || 5000,
-      db = require('./db/models');
+      db = require('./db/models'),
+      passport = require('./config/authentication'),
+
+      devRoutes = require('./routes/dev'),
+      indexRoutes = require('./routes/index');
 
 /* Confirm connection with Postgres */
 db.sequelize.authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
-  });
+  .then( () => console.log('Connection has been established successfully.') )
+  .catch( err => console.error('Unable to connect to the database:', err) );
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/api/hello', (req, res) => {
-  res.send({ express: 'Sucessfully Connected to Express Server' });
-});
+app.use(sessions({
+  cookieName : 'session',
+  secret : process.env.SESSION_SECRET,
+  duration : 60 * 60 * 1000   /* miliseconds, so 1 hour */
+}))
 
-app.get('/api/ping', (req, res) => {
-  res.send('pong');
-});
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use("/testapi", devRoutes);
+app.use("/", indexRoutes);
 
 app.listen(port, console.log(`Listening on port ${port}`));
