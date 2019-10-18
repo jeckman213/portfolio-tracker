@@ -8,7 +8,7 @@ const express = require('express'),
       db = require('./db/models'),
       passport = require('./config/authentication'),
 
-      stockRoutes = require("./routes/stock")
+      stockRoutes = require('./routes/stock')
       devRoutes = require('./routes/dev'),
       indexRoutes = require('./routes/index');
 

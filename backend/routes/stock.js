@@ -4,7 +4,7 @@ const express = require('express'),
 
   // Stock search call
   // NOTE: Search only gives you 5 results because of free account on api
-  router.post('/search/:searchTerm', (req, res) => {
+  router.get('/search/:searchTerm', (req, res) => {
     var searchTerm = req.params.searchTerm;
   
     stockdata.getStockBySearchTerm(searchTerm, (data) => {
@@ -28,7 +28,7 @@ const express = require('express'),
   }); 
   
   // Stock intraday call
-  router.post('/intraday/:symbol/:interval?/:range?', (req, res) => {
+  router.get('/intraday/:symbol/:interval?/:range?', (req, res) => {
     var symbol = req.params.symbol,
       interval = req.params.interval,
       range = req.params.range;
@@ -59,7 +59,7 @@ const express = require('express'),
   }); 
   
   // Stock realtime call
-  router.post('/realtime/:symbol', (req, res) => {
+  router.get('/realtime/:symbol', (req, res) => {
     var symbol = req.params.symbol;
   
     stockdata.getStockRealTime(symbol, (data) => {
@@ -79,7 +79,7 @@ const express = require('express'),
   }); 
   
   // Stock history call
-  router.post('/history/:symbol/:dateFrom?/:dateTo?', (req, res) => {
+  router.get('/history/:symbol/:dateFrom?/:dateTo?', (req, res) => {
     var symbol = req.params.symbol,
       dateFrom = req.params.dateFrom,
       dateTo = req.params.dateTo;
@@ -97,3 +97,5 @@ const express = require('express'),
       dateTo);
     }
   }); 
+
+  module.exports = router;
