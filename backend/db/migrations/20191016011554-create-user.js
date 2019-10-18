@@ -42,15 +42,18 @@ const migration = {
           type : Sequelize.DATE
         }
       }, { transaction });
+
       await queryInterface.addIndex('User', {
         fields : ['username'],
         unique : true,
         transaction
       });
+
       await queryInterface.addConstraint('User', ['email'], {
         type : 'unique',
         transaction
       });
+      
       await transaction.commit();
     }
     catch(err){

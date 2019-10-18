@@ -6,7 +6,8 @@ const seeds = {
       {
         username : 'coolguy1',
         email : 'kool@gmail.com',
-        hash : '$2b$14$GrkiRIcsTnqm5sHipL8Z/uJAfL5mg70LklkMLJE3zUScSsFNmfCTi',
+        /* password : password1 */
+        hash : '$2b$14$SDulZ7SNR9BFiv0cmHNjp.k6V3TSvLUwTFodwBt6tzMHjmfyzJPMe',
         firstname : 'Joe',
         lastname : 'Doobs',
         created_at : new Date(),
@@ -15,7 +16,8 @@ const seeds = {
       {
         username : 'lameguy2',
         email : 'swot@gmail.com',
-        hash : '$2b$14$82FeCb7JA.eST8mSHoiO9e6ATOEOD84zChaJiyDa49iLP6qNykcou',
+        /* password : password2 */
+        hash : '$2b$14$pFYhtJV3ohx2Wft/uw5JmObdorrbPM2WSjEL9rycS6IKLZaXDlq26',
         firstname : 'Look',
         lastname : 'Booms',
         created_at : new Date(),
@@ -24,7 +26,8 @@ const seeds = {
       {
         username : 'doodguy3',
         email : 'donny@gmail.com',
-        hash : '$2b$14$6u1oxj0BFAezSUnp9KSsC.z3qrp3kCBEjgK0VaTbhX2ETuGYZW.DW',
+        /* password : password3 */
+        hash : '$2b$14$BF2Zq35jCZOAVo7Mi9fuUOk/UzqzS7Fr44lB/SiVggQdhmN7bnxmC',
         firstname : 'Jim',
         lastname : 'Lobs',
         created_at : new Date(),
@@ -33,7 +36,8 @@ const seeds = {
       {
         username : 'freddo4',
         email : 'longo@gmail.com',
-        hash : '$2b$14$pEs1AADXSqonLbnk0/LLsue9OuKshdMUGXyQU8yihjKlZ3W4E7zYq',
+        /* password : password4 */
+        hash : '$2b$14$nJpKl3OjfQ3e1Qhd/CJjkejj9.rsw0s/LqjNyH9RKMaeTu5YaTQvO',
         created_at : new Date(),
         updated_at : new Date()
       },
