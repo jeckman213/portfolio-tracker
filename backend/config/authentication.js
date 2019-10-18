@@ -10,7 +10,7 @@ passport.use(new LocalStrategy( (username, password, done) => {
   }) 
     .then( user => {
       if(!user){
-        return done(null, false, { message: 'Incorrect username.' });
+        return done(null, false, { reason : 'Incorrect username.' });
       }
       
       bcrypt.compare(password, user.hash)
@@ -19,16 +19,16 @@ passport.use(new LocalStrategy( (username, password, done) => {
             return done(null, user);
           }
           else{
-            return done(null, false, { message: 'Incorrect password.' });
+            return done(null, false, { reason : 'Incorrect password.' });
           }
         })
         .catch( err => {
-          console.err(err.message);
+          console.error(err.message);
           return done(err);
         });
     })
     .catch( err => {
-      console.err(err.message);
+      console.error(err.message);
       return done(err);
     });
 }));

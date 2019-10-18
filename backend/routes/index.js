@@ -17,35 +17,59 @@ router.post('/register', async (req, res) => {
     firstname : req.body.firstname || null,
     lastname : req.body.lastname || null,
   })
-  .then( newUser => {
-    res.send({ registerSuccess : true })
+    .then( newUser => {
+      res.send({ 
+        registerSuccess : true,
+        id : newUser.id
+      });
 
-    console.log(`New User Registered: `)
-    console.log({
-      id : newUser.id,
-      username : newUser.username,
-      createdAt : newUser.createdAt
+      console.log(`New User Registered: `);
+      console.log({
+        id : newUser.id,
+        username : newUser.username,
+        createdAt : newUser.createdAt
+      });
+    })
+    .catch( err => {
+      res.send({ 
+        registerSuccess : false,
+        reason : err.message
+      });
+
+      console.error(err.message);
+      console.error(req.body);
     });
-  })
-  .catch( err => {
-    res.send({ registerSuccess : false })
-
-    console.error(err.message) 
-  });
 });
 
 // Login Logic
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', function(err, user, info) {
-    if(err){ return next(err); }
+
+    if(err){ 
+      return res.send({
+        loginSuccess : false,
+        serverError : true,
+        reason : err.message
+      }); 
+    }
+
     if(!user){ 
       return res.send({
         loginSuccess : false,
-        info
+        serverError : false,
+        reason : info.reason
       });
     }
-    req.logIn(user, function(err) {
-      if (err) { return next(err); }
+
+    req.logIn(user, function(err){
+      if(err){ 
+        return res.send({
+          loginSuccess : false,
+          serverError : true,
+          reason : err.message
+        }); 
+      }
+
       return res.send({
         loginSuccess : true,
         user : {
@@ -55,6 +79,7 @@ router.post('/login', (req, res, next) => {
           lastname : user.lastname
         }
       });
+
     });
   })(req, res, next);
 });
