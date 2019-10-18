@@ -16,22 +16,22 @@
  
   #### Search:
   ```javascript
-  fetch('/stock/search/microsoft')
+  const response = await fetch('/stock/search/microsoft');
   ```
   #### Intraday:
   ```javascript
-  fetch('/stock/intraday/AAPL/60/2')
+  const response = await fetch('/stock/intraday/AAPL/60/2');
   ```
   This will give you stock information for every 60 minutes for 2 days
   
   **NOTE: If you leave the minutes and days blank it will default to 60 minutes for 1 day**
   #### Real Time:
   ```javascript
-  fetch('/stock/realtime/GE')
+  const response = await fetch('/stock/realtime/GE');
   ```
   #### Historical
   ```javascript
-  fetch('/stock/history/GE/2018-01-01/2018-02-01')
+  const response = await fetch('/stock/history/GE/2018-01-01/2018-02-01');
   ```
   This will give you limited stock information from 2018-01-01 to 2018-01-01
   
