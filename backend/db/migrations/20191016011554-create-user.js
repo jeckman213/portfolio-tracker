@@ -23,10 +23,6 @@ const migration = {
           allowNull : false,
           type : Sequelize.TEXT
         },
-        salt : {
-          allowNull : false,
-          type : Sequelize.TEXT
-        },
         hash : {
           allowNull : false,
           type : Sequelize.TEXT
@@ -62,6 +58,7 @@ const migration = {
       throw err;
     }
   },
+  
   down(queryInterface, Sequelize){
     return queryInterface.dropTable('User');
   }
