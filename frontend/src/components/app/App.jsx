@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import Nav from "./components/nav";
-import Footer from "./components/footer";
+import Nav from "../partials/nav.jsx";
+import Footer from "../partials/footer.jsx";
 
-import Routes from "./routes";
+import Routes from "../../routes/index";
 
 class App extends Component {
   render() {
