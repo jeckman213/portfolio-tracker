@@ -7,14 +7,14 @@ class Packages extends Component {
       <section className="packagesContainer">
         <div>
           <i className="fas fa-chevron-circle-down"></i>
-          <h2>Educational Packages.</h2>
+          <h2>Educational Packages</h2>
           <div className="packages">
             <div>
               <h3>Free Tier</h3>
               <div>
                 <p className="price">&#36;0</p>
                 <p>Add Stocks to your portfolio and start learning for free! But we starve</p>
-                <p className="buy"><Link to="/booking/single">Sign up for this worse tier</Link></p> 
+                <p className="buy"><Link to="/signup/single">Sign up for this worse tier</Link></p> 
               </div>
             </div>
             <div className="preferred">
@@ -22,7 +22,7 @@ class Packages extends Component {
               <div>
                 <p className="price">&#36;449</p>
                 <p> Learn as a class and help us grow! Share your portfolios with each other! Watch top of the line charts and graphs go up and down. Recieve real time vaulation data &amp; immense amounts of fun.</p>
-                <p className="buy"><Link to="/booking/class">Sign up for our Class Tier</Link></p> 
+                <p className="buy"><Link to="/signup/class">Sign up for our Class Tier</Link></p> 
               </div>
             </div>
           </div>
