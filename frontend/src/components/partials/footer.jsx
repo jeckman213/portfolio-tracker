@@ -10,9 +10,9 @@ class Footer extends Component {
         <p>Follow Us !</p>
         <br />
         <ul>
-          <li><a href="#"><i className="fab fa-facebook-f"></i></a></li>
-          <li><a href="#"><i className="fab fa-twitter"></i></a></li>
-          <li><a href="#"><i className="far fa-envelope"></i></a></li>
+          <li><a href="https://facebook.com"><i className="fab fa-facebook-f"></i></a></li>
+          <li><a href="https://twitter.com"><i className="fab fa-twitter"></i></a></li>
+          <li><a href="https://google.com"><i className="far fa-envelope"></i></a></li>
         </ul>
         <br />
         <p>&copy; Group Z </p>

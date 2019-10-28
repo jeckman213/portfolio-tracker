@@ -8,8 +8,9 @@ const express    = require('express'),
 router.post('/register', async (req, res) => {
   const saltRounds = 14;
   const hash = await bcrypt.hash(req.body.password, saltRounds);
+  var response;
 
-  /* Need Route Auth */
+  /* Need route authentication so accounts cannot be created from postman */
   User.create({ 
     username : req.body.username,
     email : req.body.email,
@@ -17,37 +18,57 @@ router.post('/register', async (req, res) => {
     firstname : req.body.firstname || null,
     lastname : req.body.lastname || null,
   })
+    /* New user successfully registered */
     .then( newUser => {
-      res.send({ 
-        registerSuccess : true,
+      response = {
+        registrationSuccess : true,
         id : newUser.id
-      });
+      };
 
-      console.log(`New User Registered: `);
-      console.log({
-        id : newUser.id,
-        username : newUser.username,
-        createdAt : newUser.createdAt
-      });
+      console.log('New User Registered:', { id, username, createdAt });
     })
+    /* Unable to register user, most likely picked a username/email already used by someone else */
     .catch( err => {
-      res.send({ 
-        registerSuccess : false,
-        reason : err.message
-      });
+      const error = err.errors[0];
+      var registrationSuccess = false,
+          failExpected, failReason;
 
-      console.error(err.message);
-      console.error(req.body);
-    });
+      if(error.type === 'unique violation'){
+        switch(error.path){
+          case 'username':
+            failExpected = true;
+            failReason = 'That username has already been taken.';
+            break;
+          case 'email':
+            failExpected = true
+            failReason = 'That email has already been registered.';
+            break;
+          default:
+            failExpected = false;
+            failReason = err.message;
+            console.log('Unexpected Registrations Error:', failReason)
+            break;
+        }
+      }
+
+      response = {
+        registrationSuccess,
+        failExpected,
+        failReason
+      }
+    })
+    .finally( () => {
+      res.send(response);
+    })
 });
 
 // Login Logic
-router.post('/login', (req, res, next) => {
+router.post('/authenticate', (req, res, next) => {
   passport.authenticate('local', function(err, user, info) {
 
     if(err){ 
       return res.send({
-        loginSuccess : false,
+        authenticationSuccess : false,
         serverError : true,
         reason : err.message
       }); 
@@ -55,7 +76,7 @@ router.post('/login', (req, res, next) => {
 
     if(!user){ 
       return res.send({
-        loginSuccess : false,
+        authenticationSuccess : false,
         serverError : false,
         reason : info.reason
       });
@@ -64,14 +85,14 @@ router.post('/login', (req, res, next) => {
     req.logIn(user, function(err){
       if(err){ 
         return res.send({
-          loginSuccess : false,
+          authenticationSuccess : false,
           serverError : true,
           reason : err.message
         }); 
       }
 
       return res.send({
-        loginSuccess : true,
+        authenticationSuccess : true,
         user : {
           username : user.username,
           email : user.email,

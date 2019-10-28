@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import { Redirect } from 'react-router';
-import { signUp } from '../../actions/auth/signup/signupActions';
-import isEmail from 'validator/lib/isEmail';
+import { signUp } from '../../actions/auth/registrationActions';
 
 class SignUp extends Component {
   // So booking or signup im 
@@ -20,8 +19,7 @@ class SignUp extends Component {
       lastname : '',
       password : '',
       passwordVerified : '',
-      currency : 'USD',
-      registered : false
+      currency : 'USD'
     }
 
     this.onChange = this.onChange.bind(this);
@@ -35,21 +33,14 @@ class SignUp extends Component {
   onSubmit(e){
     e.preventDefault();
 
-    if(!isEmail(this.state.email)){
-      console.log('Invalid Email');
-      return;
-    }
-    else if(password !== passwordVerified){
-      console.log('Passwords do not match');
-      return;
-    }
-
     this.props.signUp(this.state);
   }
 
   render(){
-    if(this.state.registered){
-      return ( <Redirect to='/About'/> );
+    const { registered, registering, registrationFailed, registrationFailExpected, registrationFailReason } = this.props;
+
+    if(registered){
+      return ( <Redirect to='/about'/> );
     }
 
     return (
@@ -59,6 +50,11 @@ class SignUp extends Component {
           <h2>Sign up for { this.props.match.params.id } Tier and start learing! </h2>
           <p>Portfilios allows anyone with an internet access to enjoy most of our features for free and without being apart of a larger group or class. If you enjoy single tier please consider forming a group.</p>
           <br/>
+          { registrationFailed &&
+            <div>
+              <h3> { registrationFailExpected ? registrationFailReason : 'An unexpected error has occured, try again later' } </h3>
+            </div>
+          }
           <form onSubmit={ this.onSubmit }>
             <div className="form-control">
               <label>Username*</label>
@@ -78,11 +74,11 @@ class SignUp extends Component {
             </div>
             <div className="form-control">
               <label>First Name</label>
-              <input type="text" name="firstname" onChange={ this.onChange }  placeholder="First Name" required />
+              <input type="text" name="firstname" onChange={ this.onChange }  placeholder="First Name" />
             </div>   
             <div className="form-control">
               <label>Last Name</label>
-              <input type="text" name="lastname" onChange={ this.onChange }  placeholder="Last Name" required />
+              <input type="text" name="lastname" onChange={ this.onChange }  placeholder="Last Name" />
             </div>
             <div className="form-control">              
               <label>Currency*</label> 
@@ -100,6 +96,9 @@ class SignUp extends Component {
             </div>
             <div className="form-control">
               <input type="submit" value="Sign Up" />
+              { registering &&
+                <img src={ process.env.PUBLIC_URL + '/animations/loading-gear.svg' } alt="loading" ></img>
+              }
             </div>  
           </form>
         </div>
@@ -108,8 +107,22 @@ class SignUp extends Component {
   }
 }
 
+// Bring auth reducer state into this file. Accessed through this.props
+const mapStateToProps = (state) => {
+  const { registering, registered, 
+    registrationFailed, registrationFailExpected, registrationFailReason } = state.registration;
+  
+  return {
+    registering,
+    registrationFailExpected,
+    registrationFailed,
+    registrationFailExpected,
+    registrationFailReason
+  }
+};
+
 SignUp.propTypes = {
   signUp : PropTypes.func.isRequired
 }
 
-export default connect(null, { signUp })(SignUp);
+export default connect(mapStateToProps, { signUp })(SignUp);
