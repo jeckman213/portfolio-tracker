@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts/highstock';
 import { isNullOrUndefined } from 'util';
+import PropTypes from 'prop-types';
 
 // Line chart graphing for stocks
 // The component must be pasted a calltype, a symbol, and either a startDate/endDate, or minutes/days
@@ -33,7 +34,7 @@ class LineChart extends Component {
                     },
             
                     title: {
-                        text: `${this.props.symbol} Price`,
+                        text: `${this.props.symbol} Price ${this.props.calltype}`,
                     },
                     subtitle: {
                         text: 'Price based on closing price per timeframe'
@@ -92,6 +93,17 @@ class LineChart extends Component {
             </div>
         )
     }
+}
+
+LineChart.propTypes = {
+    calltype:PropTypes.oneOf([
+        'history', 'intraday'
+    ]).isRequired,
+    symbol:PropTypes.string.isRequired,
+    startDate:PropTypes.string,
+    endDate:PropTypes.string,
+    minutes:PropTypes.string,
+    days:PropTypes.string
 }
 
 export default LineChart;

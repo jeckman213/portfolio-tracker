@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts/highstock';
 import { isNullOrUndefined } from 'util';
+import PropTypes from 'prop-types';
 
 // High-Low Charts for displaying information about a stock
 // Gets passed 4 props:
@@ -35,7 +36,7 @@ class HighLowChart extends Component {
                     },
             
                     title: {
-                        text: `${this.props.symbol} High-Low`
+                        text: `${this.props.symbol} High-Low ${this.props.calltype}`
                     },
             
                     series: [{
@@ -104,6 +105,17 @@ class HighLowChart extends Component {
             </div>
         )
     }
+}
+
+HighLowChart.propTypes = {
+    calltype:PropTypes.oneOf([
+        'history', 'intraday'
+    ]).isRequired,
+    symbol:PropTypes.string.isRequired,
+    startDate:PropTypes.string,
+    endDate:PropTypes.string,
+    minutes:PropTypes.string,
+    days:PropTypes.string
 }
 
 export default HighLowChart;
