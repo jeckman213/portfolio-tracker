@@ -6,6 +6,7 @@ import Main from "./components/main";
 import About from "./components/about";
 import Packages from "./components/packages";
 import Booking from "./components/booking";
+import Graphs from "./components/Graphs";
 
 
 //Hey Alex/John I added some routes
@@ -15,6 +16,7 @@ const Routing = () => (
         <Switch>
             <Route exact path="/" component={Main} />
             <Route exact path="/about" component={About} />
+            <Route exact path="/graphs" component={Graphs} />
             <Route exact path="/packages" component={Packages} />
             <Route exact path="/booking/:id" component={Booking} />
         </Switch>
