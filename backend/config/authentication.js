@@ -9,8 +9,9 @@ passport.use(new LocalStrategy( (username, password, done) => {
     attributes : ['id', 'username', 'email', 'hash', 'firstname', 'lastname']
   }) 
     .then( user => {
+      /* No username match */
       if(!user){
-        return done(null, false, { reason : 'Incorrect username.' });
+        return done(null, false, { failReason : 'Incorrect username.' });
       }
       
       bcrypt.compare(password, user.hash)
@@ -18,17 +19,20 @@ passport.use(new LocalStrategy( (username, password, done) => {
           if(match){
             return done(null, user);
           }
+          /* Password hash does not match */
           else{
-            return done(null, false, { reason : 'Incorrect password.' });
+            return done(null, false, { failReason : 'Incorrect password.' });
           }
         })
+        /* Unexpected bcrypt error */
         .catch( err => {
-          console.error(err.message);
+          console.error('bcrypt compare error:', err.message);
           return done(err);
         });
     })
+    /* Unexpected Sequelize error */
     .catch( err => {
-      console.error(err.message);
+      console.error('Sequelize username query (auth) error:', err.message);
       return done(err);
     });
 }));

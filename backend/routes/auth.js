@@ -10,6 +10,8 @@ router.post('/register', async (req, res) => {
   const hash = await bcrypt.hash(req.body.password, saltRounds);
   var response;
 
+  console.log('New registration:', req.body);
+
   /* Need route authentication so accounts cannot be created from postman */
   User.create({ 
     username : req.body.username,
@@ -20,17 +22,20 @@ router.post('/register', async (req, res) => {
   })
     /* New user successfully registered */
     .then( newUser => {
-      response = {
-        registrationSuccess : true,
-        id : newUser.id
-      };
+      const { id, username, createdAt } = newUser;
 
       console.log('New User Registered:', { id, username, createdAt });
+
+      response = {
+        success : true,
+        id
+      };
     })
     /* Unable to register user, most likely picked a username/email already used by someone else */
     .catch( err => {
-      const error = err.errors[0];
-      var registrationSuccess = false,
+      console.log('Caught error on create:', err);
+      const error = err && err.errors[0]; // Report first error detected by Sequelize
+      var success = false,
           failExpected, failReason;
 
       if(error.type === 'unique violation'){
@@ -44,55 +49,61 @@ router.post('/register', async (req, res) => {
             failReason = 'That email has already been registered.';
             break;
           default:
+            console.error('Sequelize registration error:', err.message);
             failExpected = false;
             failReason = err.message;
-            console.log('Unexpected Registrations Error:', failReason)
             break;
         }
       }
 
       response = {
-        registrationSuccess,
+        success,
         failExpected,
         failReason
       }
     })
     .finally( () => {
       res.send(response);
-    })
+    });
 });
 
 // Login Logic
 router.post('/authenticate', (req, res, next) => {
   passport.authenticate('local', function(err, user, info) {
 
+    /* Unexpected, but either Sequelize or bcrypt threw an error (already logged) */
     if(err){ 
       return res.send({
-        authenticationSuccess : false,
-        serverError : true,
-        reason : err.message
+        success : false,
+        failExpected : false,
+        failReason : err.message
       }); 
     }
 
+    /* Expected, either username DNE or passwords do not match */
     if(!user){ 
       return res.send({
-        authenticationSuccess : false,
-        serverError : false,
-        reason : info.reason
+        success : false,
+        failExpected : true,
+        failReason : info.failReason
       });
     }
 
-    req.logIn(user, function(err){
-      if(err){ 
+    /* A user was matched, now attempt to login... */
+    req.logIn(user, (err) => {
+      /* Unexpected Passport error on login attempt */
+      if(err){
+        console.error('Passport login error:', err);
         return res.send({
-          authenticationSuccess : false,
-          serverError : true,
-          reason : err.message
+          success : false,
+          failExpected : false,
+          failReason : err.message
         }); 
       }
 
+      /* Matched user logged in successfully, return user details to front end */
       return res.send({
-        authenticationSuccess : true,
+        success : true,
         user : {
           username : user.username,
           email : user.email,

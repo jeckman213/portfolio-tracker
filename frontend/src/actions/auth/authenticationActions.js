@@ -9,25 +9,27 @@ export const login = (returningUserData) => dispatch => {
   
   axios.post('/api/authenticate', returningUserData)
     .then( res => {
-      const { registerSuccess, id, failExpected, failReason } = res.data;
+      const { success, user, failExpected, failReason } = res.data;
 
-        if(registerSuccess){
-          /* Valid reigstration */
-          dispatch({
-            type : REGISTERED,
-            userId : id
-          });
-        } else {
-          /* Either username or email is already taken */
-          dispatch({
-            type : REGISTRATION_FAILED,
-            failExpected,
-            failReason
-          });
-        }
+      /* Successfully authenticated returning user */
+      if(success){
+        dispatch({
+          type : AUTHENTICATED,
+          user
+        });
+      } 
+      /* Most likely either username/password is incorrect. Possibly Sequelize, bcrypt, or Passport error (already logged) */
+      else {
+        dispatch({
+          type : AUTHENTICATION_FAILED,
+          failExpected,
+          failReason
+        });
+      }
     })
+    /* Unexpected axios error requesting authentication endpoint */
     .catch( err => {
-      /* Unexpected error */
+      console.error('axios /api/authenticate error:', err.message);
       dispatch({
         type : AUTHENTICATION_FAILED,
         failExpected : false,
