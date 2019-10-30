@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import { Redirect } from 'react-router';
-import { signUp } from '../../actions/auth/registrationActions';
+import { signUp, login } from '../../actions/auth/authenticationActions';
 
 class SignUp extends Component {
   // So booking or signup im 
@@ -37,22 +37,30 @@ class SignUp extends Component {
   }
 
   render(){
-    const { registered, registering, registrationFailed, registrationFailExpected, registrationFailReason } = this.props;
+    const { registering, registered, loggingIn, authenticated,
+            registrationFailed, loginFailed, failExpected, failReason, } = this.props;
 
     if(registered){
+      this.props.login(this.state);
+    }
+
+    if(authenticated){
       return ( <Redirect to='/about'/> );
+    }
+    else if(loginFailed){
+      return ( <Redirect to='/login'/> );
     }
 
     return (
       <section>
         <div>
         <i className="fas fa-book"></i>
-          <h2>Sign up for { this.props.match.params.id } Tier and start learing! </h2>
+          <h2>Sign up for { this.props.match.params.type } Tier and start learing! </h2>
           <p>Portfilios allows anyone with an internet access to enjoy most of our features for free and without being apart of a larger group or class. If you enjoy single tier please consider forming a group.</p>
           <br/>
           { registrationFailed &&
             <div>
-              <h3> { registrationFailExpected ? registrationFailReason : 'An unexpected error has occured, try again later' } </h3>
+              <h3> { failExpected ? failReason : 'An unexpected error has occured, try again later' } </h3>
             </div>
           }
           <form onSubmit={ this.onSubmit }>
@@ -96,7 +104,7 @@ class SignUp extends Component {
             </div>
             <div className="form-control">
               <input type="submit" value="Sign Up" />
-              { registering &&
+              { (registering || loggingIn) &&
                 <img src={ process.env.PUBLIC_URL + '/animations/loading-gear.svg' } alt="loading" ></img>
               }
             </div>  
@@ -109,20 +117,24 @@ class SignUp extends Component {
 
 // Bring auth reducer state into this file. Accessed through this.props
 const mapStateToProps = (state) => {
-  const { registering, registered, 
-    registrationFailed, registrationFailExpected, registrationFailReason } = state.registration;
+  const { registering, registered, loggingIn, authenticated, 
+          registrationFailed, loginFailed, failExpected, failReason, } = state.authentication;
   
   return {
     registering,
-    registrationFailExpected,
+    registered,
     registrationFailed,
-    registrationFailExpected,
-    registrationFailReason
+    failExpected,
+    failReason,
+    loggingIn,
+    loginFailed,
+    authenticated
   }
 };
 
 SignUp.propTypes = {
-  signUp : PropTypes.func.isRequired
-}
+  signUp : PropTypes.func.isRequired,
+  login : PropTypes.func.isRequired
+};
 
-export default connect(mapStateToProps, { signUp })(SignUp);
+export default connect(mapStateToProps, { signUp, login })(SignUp);

@@ -1,17 +1,19 @@
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import thunk from 'redux-thunk';
 import rootReducer from '../reducers';
+
+import * as actionCreators from '../actions/auth/authenticationActions';
 
 const initialState = {};
 
 const middleware = [thunk];
-
+const composeEnhancer = composeWithDevTools({ actionCreators, trace: true, traceLimit: 25 });
 const store = createStore(
   rootReducer, 
   initialState,
-  compose(
-    applyMiddleware(...middleware),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  composeEnhancer(
+    applyMiddleware(...middleware)
   )
 );
 

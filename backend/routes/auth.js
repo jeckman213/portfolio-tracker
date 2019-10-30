@@ -27,8 +27,7 @@ router.post('/register', async (req, res) => {
       console.log('New User Registered:', { id, username, createdAt });
 
       response = {
-        success : true,
-        id
+        success : true
       };
     })
     /* Unable to register user, most likely picked a username/email already used by someone else */
@@ -68,9 +67,9 @@ router.post('/register', async (req, res) => {
 });
 
 // Login Logic
-router.post('/authenticate', (req, res, next) => {
+router.post('/login', (req, res, next) => {
   passport.authenticate('local', function(err, user, info) {
-
+    console.log('req.user:', !!req.user);
     /* Unexpected, but either Sequelize or bcrypt threw an error (already logged) */
     if(err){ 
       return res.send({
@@ -79,7 +78,7 @@ router.post('/authenticate', (req, res, next) => {
         failReason : err.message
       }); 
     }
-
+    console.log('req.user:', !!req.user);
     /* Expected, either username DNE or passwords do not match */
     if(!user){ 
       return res.send({
@@ -88,9 +87,11 @@ router.post('/authenticate', (req, res, next) => {
         failReason : info.failReason
       });
     }
-
+    
+    console.log('req.user:', !!req.user);
     /* A user was matched, now attempt to login... */
     req.logIn(user, (err) => {
+      console.log('req.user:', !!req.user);
       /* Unexpected Passport error on login attempt */
       if(err){
         console.error('Passport login error:', err);
@@ -101,19 +102,35 @@ router.post('/authenticate', (req, res, next) => {
         }); 
       }
 
-      /* Matched user logged in successfully, return user details to front end */
+      /* User logged in successfully, req.user now has user details */
       return res.send({
         success : true,
-        user : {
-          username : user.username,
-          email : user.email,
-          firstname : user.firstname,
-          lastname : user.lastname
-        }
+        username : user.username
       });
 
     });
   })(req, res, next);
+});
+
+router.get('/authenticate', (req, res) => {
+  const success = req.isAuthenticated(),
+        username = req.user ? req.user.username : null;
+
+  res.send({ success, username });
+});
+
+router.get('/logout', (req, res) => {
+  try {
+    req.logout();
+    res.send({ success : true });
+  }
+  catch(err){
+    res.send({ 
+      success : false, 
+      failExpected : false,
+      failReason : err.message 
+    });
+  }
 });
 
 module.exports = router;

@@ -16,6 +16,7 @@ passport.use(new LocalStrategy( (username, password, done) => {
       
       bcrypt.compare(password, user.hash)
         .then( match => {
+          /* User successfully authenticated */
           if(match){
             return done(null, user);
           }

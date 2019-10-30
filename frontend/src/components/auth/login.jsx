@@ -27,9 +27,9 @@ class Login extends Component {
   }
 
   render() {
-    const { authenticating, authenticated, 
-      authenticationFailed, authenticationFailExpected, authenticationFailReason } = this.props;
-
+    const { loggingIn, authenticated, 
+            loginFailed, failExpected, failReason } = this.props;
+    
     if(authenticated){
       return ( <Redirect to='/about'/> );
     }
@@ -40,9 +40,9 @@ class Login extends Component {
           <i className="fas fa sign"></i>
           <h2>Welcome Back.</h2>
           <br/>
-          { authenticationFailed &&
+          { loginFailed &&
             <div>
-              <h3> { authenticationFailExpected ? authenticationFailReason : 'An unexpected error has occured, try again later' } </h3>
+              <h3> { failExpected ? failReason : 'An unexpected error has occured, try again later' } </h3>
             </div>
           }
           <form onSubmit={ this.onSubmit }>
@@ -56,7 +56,7 @@ class Login extends Component {
             </div> 
             <div className="form-control">
               <input type="submit" value="Login" />
-              { authenticating &&
+              { loggingIn &&
                 <img src={ process.env.PUBLIC_URL + '/animations/loading-gear.svg' } alt="loading" ></img>
               }
             </div>  
@@ -69,20 +69,20 @@ class Login extends Component {
 
 // Bring auth reducer state into this file. Accessed through this.props
 const mapStateToProps = (state) => {
-  const { authenticating, authenticated, 
-    authenticationFailed, authenticationFailExpected, authenticationFailReason } = state.authentication;
+  const { loggingIn, authenticated, 
+    loginFailed, failExpected, failReason } = state.authentication;
   
     return {
-      authenticating,
+      loggingIn,
       authenticated,
-      authenticationFailed,
-      authenticationFailExpected,
-      authenticationFailReason
+      loginFailed,
+      failExpected,
+      failReason
     }
 };
 
 Login.propTypes = {
   login : PropTypes.func.isRequired
-}
+};
 
 export default connect(mapStateToProps, { login })(Login);
