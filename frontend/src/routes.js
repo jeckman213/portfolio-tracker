@@ -6,7 +6,7 @@ import Main from "./components/main";
 import About from "./components/about";
 import Packages from "./components/packages";
 import Booking from "./components/booking";
-import Graphs from "./components/Graphs";
+import Graphs from "./components/Charts/ExampleCharts";
 
 
 //Hey Alex/John I added some routes

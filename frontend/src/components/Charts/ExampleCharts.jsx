@@ -7,9 +7,9 @@ class Graphs extends Component {
     render() {
         return(
             <div>
-                <LineChart calltype={"history"} symbol={"GE"} startDate={"2018-10-19"} endDate={"2019-10-21"} />
+                <LineChart calltype={"history"} symbol={"GE"} startDate={"1980-10-19"} endDate={"2019-10-29"} />
                 <LineChart calltype={"intraday"} symbol={"MSFT"} minutes={"60"} days={"30"} />
-                <HighLowChart calltype={"history"} symbol={"AAPL"} startDate={"2018-10-19"} endDate={"2019-10-21"} />
+                <HighLowChart calltype={"history"} symbol={"AAPL"} startDate={"2000-10-19"} endDate={"2019-10-21"} />
                 <HighLowChart calltype={"intraday"} symbol={"INTC"} minutes={"60"} days={"7"} />
                 <PieChart slices={[{
                         name: 'GE',

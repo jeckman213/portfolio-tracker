@@ -3,6 +3,7 @@ import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts/highstock';
 import { isNullOrUndefined } from 'util';
 import PropTypes from 'prop-types';
+import {getStockInfo} from "../../actions/stock/stockAction";
 
 // High-Low Charts for displaying information about a stock
 // Gets passed 4 props:
@@ -27,7 +28,6 @@ class HighLowChart extends Component {
 
     componentDidMount() {
         this.getData( (data) => {
-            console.log(data);
             this.setState({
                 chartOptions: {
                     
@@ -64,32 +64,34 @@ class HighLowChart extends Component {
     }
 
     getData = async (callback) => {
+         // Highcharts/Highstocks needs data in an array format instead of an object
+        // So, data is converted to array here
         var chartData = [];
-        this.callApi()
-            .then(data => {
-                var callData = (this.props.calltype === "history" ? data.history : data.intraday);
-                Object.keys(callData).forEach((key, index) => {
-                    chartData.push([ Date.parse(key), parseFloat(callData[key].open), parseFloat(callData[key].high), 
-                                        parseFloat(callData[key].low), parseFloat(callData[key].close) ]);
+
+        // Checks whether to use minutes/days or startDate/endDate
+        var start, end;
+        if (this.props.calltype === 'history') {
+            start = this.props.startDate;
+            end = this.props.endDate
+        } else {
+            start = this.props.minutes;
+            end = this.props.days;
+        }
+
+        getStockInfo(data => {
+                Object.keys(data).forEach(key => {
+                    chartData.push([ Date.parse(key), parseFloat(data[key].open), parseFloat(data[key].high), 
+                                        parseFloat(data[key].low), parseFloat(data[key].close) ]);
                 });
-                callback(chartData.reverse());
-            })
-            .catch(err => {
-                chartData = { Message: "An Error has occurred." };
-                console.log(err);
-            });
-    }
 
-    callApi = async () => {
-        var endpoint = `/stock/${this.props.calltype}/${this.props.symbol}`;
-        this.props.calltype === "history" ? endpoint += `/${this.props.startDate}/${this.props.endDate}` :
-            this.props.calltype === "intraday" ? endpoint += `/${this.props.minutes}/${this.props.days}` : endpoint += "";
+                chartData.reverse();
 
-        const response = await fetch(endpoint);
-
-        const body = await response.json();
-
-        return body;
+                callback(chartData);
+            },
+            this.props.calltype,
+            this.props.symbol,
+            start,
+            end);
     }
 
     render() {
