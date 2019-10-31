@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/aDevCalledAlex/YelpCamp#readme",
   "dependencies": {
+    "alphavantage": "^2.0.0",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
     "client-sessions": "^0.8.0",
