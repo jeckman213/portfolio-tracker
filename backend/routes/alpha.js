@@ -16,10 +16,10 @@ router.get('/intraday/:symbol/:interval?', (req, res) => {
             model.push({
                 date: key,
                 unixTime: Date.parse(key),
-                open: timeSeries[key]["1. open"],
-                high: timeSeries[key]["2. high"],
-                low: timeSeries[key]['3. low'],
-                close: timeSeries[key]['4. close']
+                open: parseFloat( timeSeries[key]["1. open"] ),
+                high: parseFloat( timeSeries[key]["2. high"] ),
+                low: parseFloat( timeSeries[key]['3. low'] ),
+                adjustedClose: parseFloat( timeSeries[key]['5. adjusted close'] )
             });
         });
         res.send(model);
@@ -32,16 +32,19 @@ router.get('/daily/:symbol/:interval?', (req, res) => {
 
     alpha.getDailyAdjusted(symbol, interval, data => {
         var model = [];
+
+        res.send(data);
         
         var timeSeries = data['Time Series (Daily)'];
         Object.keys(timeSeries).forEach(key => {
             model.push({
                 date: key,
                 unixTime: Date.parse(key),
-                open: timeSeries[key]["1. open"],
-                high: timeSeries[key]["2. high"],
-                low: timeSeries[key]['3. low'],
-                adjustedClose: timeSeries[key]['5. adjusted close']
+                open: parseFloat( timeSeries[key]["1. open"] ),
+                high: parseFloat( timeSeries[key]["2. high"] ),
+                low: parseFloat( timeSeries[key]['3. low'] ),
+                close: parseFloat( timeSeries[key]['4. close'] ),
+                adjustedClose: parseFloat( timeSeries[key]['5. adjusted close'] )
             });
         });
 
@@ -63,10 +66,11 @@ router.get('/weekly/:symbol/:interval?', (req, res) => {
             model.push({
                 date: key,
                 unixTime: Date.parse(key),
-                open: timeSeries[key]["1. open"],
-                high: timeSeries[key]["2. high"],
-                low: timeSeries[key]['3. low'],
-                adjustedClose: timeSeries[key]['5. adjusted close']
+                open: parseFloat( timeSeries[key]["1. open"] ),
+                high: parseFloat( timeSeries[key]["2. high"] ),
+                low: parseFloat( timeSeries[key]['3. low'] ),
+                close: parseFloat( timeSeries[key]['4. close'] ),
+                adjustedClose: parseFloat( timeSeries[key]['5. adjusted close'] )
             });
         });
         
@@ -88,10 +92,11 @@ router.get('/monthly/:symbol/:interval?', (req, res) => {
             model.push({
                 date: key,
                 unixTime: Date.parse(key),
-                open: timeSeries[key]["1. open"],
-                high: timeSeries[key]["2. high"],
-                low: timeSeries[key]['3. low'],
-                adjustedClose: timeSeries[key]['5. adjusted close']
+                open: parseFloat( timeSeries[key]["1. open"] ),
+                high: parseFloat( timeSeries[key]["2. high"] ),
+                low: parseFloat( timeSeries[key]['3. low'] ),
+                close: parseFloat( timeSeries[key]['4. close'] ),
+                adjustedClose: parseFloat( timeSeries[key]['5. adjusted close'] )
             });
         });
         res.send(model);

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts/highstock';
 import PropTypes from 'prop-types';
-import {getStockInfo} from "../../actions/stock/stockAction";
+import Axios from 'axios';
 
 // High-Low Charts for displaying information about a stock
 // Gets passed 1 prop:
@@ -13,60 +13,67 @@ class HighLowChart extends Component {
         super(props);
 
         this.state = {
-            chartOptions: {}
+            chartOptions: {},
+            isLoading: true
         };
     }
 
     componentDidMount() {
-        this.getStockData(data =>{ 
-            this.setState({
-                chartOptions: {
-                    
-                    rangeSelector: {
-                        selected: 1
-                    },
-            
-                    title: {
-                        text: `${this.props.symbol} High-Low`
-                    },
-            
-                    series: [{
-                        type: 'candlestick',
-                        name: `${this.props.symbol}`,
-                        data: data,
-                        dataGrouping: {
-                            units: [
-                                [
-                                    'week', // unit name
-                                    [1] // allowed multiples
-                                ], [
-                                    'month',
-                                    [1, 2, 3, 4, 6]
-                                ], [
-                                    'year',
-                                    [1]
-                                ]
-                            ]
-                        }
-                    }]
-                }
-            });
-        })
+        this.getStockData();
     }
 
-    getStockData = async (callback) => {
+    getStockData = async () => {
          // Highcharts/Highstocks needs data in an array format instead of an object
         // So, data is converted to array here
         var chartData = [];
 
-        getStockInfo(data => {
+        Axios.get(`/alpha/daily/${this.props.symbol}`)
+        .then(res => {
+            const data = res.data;
+
             Object.keys(data).forEach(count => {
-                chartData.push([data[count].unixTime, data[count].open, data[count].high, data[count].low, data[count].adjustedClose]);
+                chartData.push( [data[count].unixTime, data[count].open, data[count].high, data[count].low, data[count].close] );
             });
 
-            callback(data);
-            },
-            this.props.symbol);
+                this.setState({
+                    chartOptions: {
+                        
+                        rangeSelector: {
+                            selected: 1
+                        },
+                
+                        title: {
+                            text: `${this.props.symbol} High-Low`
+                        },
+                
+                        series: [{
+                            type: 'candlestick',
+                            name: `${this.props.symbol}`,
+                            data: chartData,
+                            dataGrouping: {
+                                units: [
+                                    [
+                                        'week', // unit name
+                                        [1] // allowed multiples
+                                    ], [
+                                        'month',
+                                        [1, 2, 3, 4, 6]
+                                    ], [
+                                        'year',
+                                        [1]
+                                    ]
+                                ]
+                            }
+                        }]
+                    },
+                    isLoading: false
+                });
+
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
     }
 
     render() {
