@@ -16,21 +16,8 @@ const app = express();
 
 /* Confirm connection with Postgres */
 db.sequelize.authenticate()
-  .then( () => {
-    console.log('Connection has been established successfully.');
-    })
-
-    // app.use( (req, res, next) => {
-    //   if (req.session.seenyou) {
-    //     res.setHeader('X-Seen-You', 'true');
-    //   } else {
-    //     // setting a property will automatically cause a Set-Cookie response
-    //     // to be sent
-    //     req.session.seenyou = true;
-    //     res.setHeader('X-Seen-You', 'false');
-    //   }
-    // });
-  .catch( err => console.error('Unable to connect to the database:', err) );
+  .then( () => console.log('Database connection successful.') )
+  .catch( err => console.error('Unable to connect to database:', err) );
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
