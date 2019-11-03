@@ -33,6 +33,10 @@ const migration = {
         lastname : {
           type : Sequelize.TEXT
         },
+        currency : {
+          allowNull : false,
+          type : Sequelize.TEXT
+        },
         created_at : {
           allowNull : false,
           type : Sequelize.DATE
