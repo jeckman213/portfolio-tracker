@@ -10,8 +10,6 @@ router.post('/register', async (req, res) => {
   const hash = await bcrypt.hash(req.body.password, saltRounds);
   var response;
 
-  console.log('New registration:', req.body);
-
   /* Need route authentication so accounts cannot be created from postman */
   User.create({ 
     username : req.body.username,
@@ -69,7 +67,6 @@ router.post('/register', async (req, res) => {
 // Login Logic
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', function(err, user, info) {
-    console.log('req.user:', !!req.user);
     /* Unexpected, but either Sequelize or bcrypt threw an error (already logged) */
     if(err){ 
       return res.send({
@@ -78,7 +75,7 @@ router.post('/login', (req, res, next) => {
         failReason : err.message
       }); 
     }
-    console.log('req.user:', !!req.user);
+    
     /* Expected, either username DNE or passwords do not match */
     if(!user){ 
       return res.send({
@@ -88,10 +85,8 @@ router.post('/login', (req, res, next) => {
       });
     }
     
-    console.log('req.user:', !!req.user);
     /* A user was matched, now attempt to login... */
     req.logIn(user, (err) => {
-      console.log('req.user:', !!req.user);
       /* Unexpected Passport error on login attempt */
       if(err){
         console.error('Passport login error:', err);
