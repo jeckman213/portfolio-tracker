@@ -15,7 +15,7 @@ exports.getBatch = (symbols, callback) => {
 }
 
 exports.getDailyAdjusted = (symbol, interval = "60min", callback) => {
-    alpha.data.daily_adjusted(symbol).then(data => {
+    alpha.data.daily_adjusted(symbol, "full", "json", interval).then(data => {
         callback(data);
     });
 }

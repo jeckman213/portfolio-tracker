@@ -16,7 +16,7 @@ class About extends Component {
             
                 </div>
           </div>
-          <img src={hills} alt="Hills image" />
+          <img src={hills} alt="Hills" />
         </section>
     );
   }
