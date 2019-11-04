@@ -27,11 +27,13 @@ class Login extends Component {
   }
 
   render() {
-    const { loggingIn, authenticated, 
-            loginFailed, failExpected, failReason } = this.props;
-    
+    const 
+      { loggingIn, authenticated, 
+        loginFailed, failExpected, failReason } = this.props,
+      { from } = this.props.location.state || { from : { pathname : '/about' } };
+
     if(authenticated){
-      return ( <Redirect to='/about'/> );
+      return ( <Redirect to={ from } /> );
     }
 
     return (
@@ -55,7 +57,7 @@ class Login extends Component {
               <input type="password" onChange={ this.onChange } name="password" placeholder="Password" required />
             </div> 
             <div className="form-control">
-              <input type="submit" value="Login" />
+              <input type="submit" value="Login" disabled={ loggingIn } />
               { loggingIn &&
                 <img src={ process.env.PUBLIC_URL + '/animations/loading-gear.svg' } alt="loading" ></img>
               }
