@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 import { PropTypes } from 'prop-types';
@@ -6,24 +6,19 @@ import { authenticate } from '../actions/auth/authActions';
 
 // Destructure component object passed (extract component property, rest are bundled together)
 const ProtectedRoute = ({ authenticate, authenticating, authenticated, component : Component, ...rest }) => {
-  authenticate()
-
   return (
     <Route 
       { ...rest } // Pass the rest of the properties into Route
-      render={ 
+      render={
         (props) => { // Pass functional component into render
-          if(authenticated){
-            return <Component {...props} />
-          }
-          else {
-            return <Redirect to={{
-              pathname : '/login',
-              state : {
-                from : props.location
-              }
-            }} />
-          }
+          return authenticated 
+            ? <Component {...props} />
+            : <Redirect to={{
+                pathname : '/login',
+                state : {
+                  from : props.location
+                }
+              }} />;
         }
       }
     />
