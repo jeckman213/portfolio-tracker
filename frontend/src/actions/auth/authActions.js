@@ -22,7 +22,6 @@ export const signUp = (newUserData) => dispatch => {
 
 export const login = (returningUserData) => dispatch => {
   dispatch({ type : LOGGING_IN });
-  
 
   attemptLogin(returningUserData)
     .then(result => dispatch(result)); // Either user authenticated, invalid credentials, or network error
