@@ -101,7 +101,7 @@ class SignUp extends Component {
               </select>   
             </div>
             <div className="form-control">
-              <input type="submit" value="Sign Up" />
+              <input type="submit" value="Sign Up" disabled={ registering } />
               { (registering || loggingIn) &&
                 <img src={ process.env.PUBLIC_URL + '/animations/loading-gear.svg' } alt="loading" ></img>
               }
