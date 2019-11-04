@@ -36,11 +36,16 @@ class HighLowChart extends Component {
 
         Axios.get(`/alpha/daily/${this.state.symbol}`)
         .then(res => {
-            const data = res.data;
+            const { data } = res;
 
-            Object.keys(data).forEach(count => {
-                chartData.push( [data[count].unixTime, data[count].open, data[count].high, data[count].low, data[count].close] );
-            });
+            // If the request limit was reached 
+            if (isNullOrUndefined(data.Note)) {
+                Object.keys(data).forEach(count => {
+                    chartData.push([data[count].unixTime, data[count].adjustedClose]);
+                });
+            } else {
+                console.error(data.Note);
+            }
 
                 this.setState({
                     chartOptions: {
@@ -78,7 +83,7 @@ class HighLowChart extends Component {
 
         })
         .catch(error => {
-            console.log(error);
+            console.error(error);
         });
 
     }

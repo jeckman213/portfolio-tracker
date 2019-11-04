@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Axios from 'axios';
 
 import loading from '../../assets/loading.svg';
+import { isNullOrUndefined } from 'util';
 
 // Line chart graphing for stocks
 // The component must be pasted a calltype, a symbol, and either a startDate/endDate, or minutes/days
@@ -35,11 +36,16 @@ class LineChart extends Component {
         var chartData = [];
         Axios.get(`/alpha/daily/${this.state.symbol}`)
         .then(res => {
-            const data = res.data;
+            const { data } = res;
 
-            Object.keys(data).forEach(count => {
-                chartData.push([data[count].unixTime, data[count].adjustedClose]);
-            });
+            // If the request limit was reached 
+            if (isNullOrUndefined(data.Note)) {
+                Object.keys(data).forEach(count => {
+                    chartData.push([data[count].unixTime, data[count].adjustedClose]);
+                });
+            } else {
+                console.error(data.Note);
+            }
 
             this.setState({
                 chartOptions: {
@@ -105,7 +111,7 @@ class LineChart extends Component {
             });
         })
         .catch(error => {
-            console.log(error);
+            console.error(error);
         })
     }
 
