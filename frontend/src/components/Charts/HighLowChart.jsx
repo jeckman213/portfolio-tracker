@@ -3,6 +3,7 @@ import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts/highstock';
 import PropTypes from 'prop-types';
 import Axios from 'axios';
+import loading from '../../assets/loading.svg';
 
 // High-Low Charts for displaying information about a stock
 // Gets passed 1 prop:
@@ -14,11 +15,17 @@ class HighLowChart extends Component {
 
         this.state = {
             chartOptions: {},
-            isLoading: true
+            isLoading: true,
+            symbol: this.props.symbol,
         };
     }
 
     componentDidMount() {
+        this.getStockData();
+    }
+
+    componentWillReceiveProps(newProps) {
+        this.setState( { symbol: newProps.symbol, isLoading: true } );
         this.getStockData();
     }
 
@@ -27,7 +34,7 @@ class HighLowChart extends Component {
         // So, data is converted to array here
         var chartData = [];
 
-        Axios.get(`/alpha/daily/${this.props.symbol}`)
+        Axios.get(`/alpha/daily/${this.state.symbol}`)
         .then(res => {
             const data = res.data;
 
@@ -43,12 +50,12 @@ class HighLowChart extends Component {
                         },
                 
                         title: {
-                            text: `${this.props.symbol} High-Low`
+                            text: `${this.state.symbol} High-Low`
                         },
                 
                         series: [{
                             type: 'candlestick',
-                            name: `${this.props.symbol}`,
+                            name: `${this.state.symbol}`,
                             data: chartData,
                             dataGrouping: {
                                 units: [
@@ -77,15 +84,20 @@ class HighLowChart extends Component {
     }
 
     render() {
-        const { chartOptions } = this.state;
+        const { chartOptions, isLoading } = this.state;
 
         return (
-            <div>
+            <div className='chart'>
+                {!isLoading &&
                 <HighchartsReact 
                     highcharts = {Highcharts}
                     constructorType = {'stockChart'}
                     options = {chartOptions}
                 />
+                }
+                {isLoading &&
+                    <img className='isLoading' src={loading} alt="Loading..." />
+                }
             </div>
         )
     }

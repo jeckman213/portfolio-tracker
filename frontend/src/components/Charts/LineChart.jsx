@@ -4,6 +4,8 @@ import Highcharts from 'highcharts/highstock';
 import PropTypes from 'prop-types';
 import Axios from 'axios';
 
+import loading from '../../assets/loading.svg';
+
 // Line chart graphing for stocks
 // The component must be pasted a calltype, a symbol, and either a startDate/endDate, or minutes/days
 // Line chart component currently only supports intraday and history api calls to stocks
@@ -13,6 +15,7 @@ class LineChart extends Component {
 
         this.state = {
             chartOptions: {},
+            symbol: this.props.symbol,
             isLoading: true
         };
     }
@@ -21,11 +24,16 @@ class LineChart extends Component {
         this.getStockData();
     }
 
+    componentWillReceiveProps(newProps) {
+        this.setState( { symbol: newProps.symbol, isLoading: true } );
+        this.getStockData();
+    }
+
     getStockData = async () => {
         // Highcharts/Highstocks needs data in an array format instead of an object
         // So, data is converted to array here
         var chartData = [];
-        Axios.get(`/alpha/daily/${this.props.symbol}`)
+        Axios.get(`/alpha/daily/${this.state.symbol}`)
         .then(res => {
             const data = res.data;
 
@@ -60,14 +68,14 @@ class LineChart extends Component {
                     },
 
                     title: {
-                        text: `${this.props.symbol} Price`,
+                        text: `${this.state.symbol} Price`,
                     },
                     subtitle: {
                         text: 'Price based on closing price per timeframe'
                     },
             
                     series: [{
-                        name: `${this.props.symbol}`,
+                        name: `${this.state.symbol}`,
                         data: chartData,
                         tooltip: {
                             valueDecimals: 2
@@ -102,15 +110,20 @@ class LineChart extends Component {
     }
 
     render() {
-        const { chartOptions} = this.state;
+        const { chartOptions, isLoading} = this.state;
 
         return(
-                    <div>
+                    <div className='chart'>
+                        {!isLoading &&
                         <HighchartsReact 
                             highcharts = {Highcharts}
                             constructorType = {'stockChart'}
                             options = {chartOptions}
                         />
+                        }
+                        {isLoading &&
+                            <img className='isLoading' src={loading} alt="Loading..." />
+                        }
                     </div>
         )
     }
