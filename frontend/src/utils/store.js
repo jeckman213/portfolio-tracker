@@ -3,7 +3,7 @@ import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import thunk from 'redux-thunk';
 import rootReducer from '../reducers';
 
-import * as actionCreators from '../actions/auth/authenticationActions';
+import * as actionCreators from '../actions/auth/authActions';
 
 const initialState = {};
 

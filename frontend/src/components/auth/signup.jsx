@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import { Redirect } from 'react-router';
-import { signUp, login } from '../../actions/auth/authenticationActions';
+import { signUp, login } from '../../actions/auth/authActions';
+import currencies from '../../utils/currencies'
 
 class SignUp extends Component {
   // So booking or signup im 
@@ -38,7 +39,8 @@ class SignUp extends Component {
 
   render(){
     const { registering, registered, loggingIn, authenticated,
-            registrationFailed, loginFailed, failExpected, failReason, } = this.props;
+            registrationFailed, loginFailed, failExpected, failReason, } = this.props,
+          currencyOptions = [];
 
     if(registered){
       this.props.login(this.state);
@@ -49,6 +51,10 @@ class SignUp extends Component {
     }
     else if(loginFailed){
       return ( <Redirect to='/login'/> );
+    }
+
+    for(const currency of currencies){
+      currencyOptions.push(<option key={ currency } value={ currency }>{ currency }</option>)
     }
 
     return (
@@ -91,15 +97,7 @@ class SignUp extends Component {
             <div className="form-control">              
               <label>Currency*</label> 
               <select name="currency" onChange={ this.onChange } >
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-                <option value="JPY">JPY</option>
-                <option value="GBP">GBP</option>
-                <option value="CHF">CHF</option>
-                <option value="CAD">CAD</option>
-                <option value="AUD">AUD</option>
-                <option value="HKD">HKD</option>
-                <option value="CNY">CNY</option>
+                { currencyOptions }
               </select>   
             </div>
             <div className="form-control">

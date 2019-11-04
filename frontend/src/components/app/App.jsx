@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import { authenticate } from '../../actions/auth/authenticationActions';
+import { authenticate } from '../../actions/auth/authActions';
 
 import Nav from "../partials/nav.jsx";
 import Footer from "../partials/footer.jsx";
