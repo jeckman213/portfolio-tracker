@@ -10,32 +10,31 @@ router.post('/register', async (req, res) => {
   const hash = await bcrypt.hash(req.body.password, saltRounds);
   var response;
 
-  /* Need route authentication so accounts cannot be created from postman */
+  /* Need route authentication so accounts cannot be created from Postman */
   User.create({ 
     username : req.body.username,
     email : req.body.email,
     hash,
     firstname : req.body.firstname || null,
     lastname : req.body.lastname || null,
+    currency : req.body.currency
   })
     /* New user successfully registered */
     .then( newUser => {
       const { id, username, createdAt } = newUser;
-
       console.log('New User Registered:', { id, username, createdAt });
-
-      response = {
-        success : true
-      };
+      
+      response = { success : true };
     })
     /* Unable to register user, most likely picked a username/email already used by someone else */
     .catch( err => {
       console.log('Caught error on create:', err);
-      const error = err && err.errors[0]; // Report first error detected by Sequelize
+      const error = err.errors ? err.errors[0] : null; // Report first error detected by Sequelize
       var success = false,
-          failExpected, failReason;
+          failExpected = false, 
+          failReason = err.message;
 
-      if(error.type === 'unique violation'){
+      if(error && error.type === 'unique violation'){
         switch(error.path){
           case 'username':
             failExpected = true;
@@ -45,13 +44,8 @@ router.post('/register', async (req, res) => {
             failExpected = true
             failReason = 'That email has already been registered.';
             break;
-          default:
-            console.error('Sequelize registration error:', err.message);
-            failExpected = false;
-            failReason = err.message;
-            break;
         }
-      }
+      } else { console.error('Sequelize registration error:', err.message); }
 
       response = {
         success,
