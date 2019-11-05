@@ -30,7 +30,7 @@ class LineChart extends Component {
             const data = res.data;
 
             Object.keys(data).forEach(count => {
-                chartData.push([data[count].unixTime, data[count].adjustedClose]);
+                chartData.push([data[count].UTC, data[count].adjustedClose]);
             });
 
             this.setState({

@@ -15,7 +15,7 @@ router.get('/intraday/:symbol/:interval?', (req, res) => {
         Object.keys(timeSeries).forEach(key => {
             model.push({
                 date: key,
-                unixTime: Date.parse(key),
+                UTC: Date.parse(key),
                 open: parseFloat( timeSeries[key]["1. open"] ),
                 high: parseFloat( timeSeries[key]["2. high"] ),
                 low: parseFloat( timeSeries[key]['3. low'] ),
@@ -39,7 +39,7 @@ router.get('/daily/:symbol/:interval?', (req, res) => {
         Object.keys(timeSeries).forEach(key => {
             model.push({
                 date: key,
-                unixTime: Date.parse(key),
+                UTC: Date.parse(key),
                 open: parseFloat( timeSeries[key]["1. open"] ),
                 high: parseFloat( timeSeries[key]["2. high"] ),
                 low: parseFloat( timeSeries[key]['3. low'] ),
@@ -65,7 +65,7 @@ router.get('/weekly/:symbol/:interval?', (req, res) => {
         Object.keys(timeSeries).forEach(key => {
             model.push({
                 date: key,
-                unixTime: Date.parse(key),
+                UTC: Date.parse(key),
                 open: parseFloat( timeSeries[key]["1. open"] ),
                 high: parseFloat( timeSeries[key]["2. high"] ),
                 low: parseFloat( timeSeries[key]['3. low'] ),
@@ -91,7 +91,7 @@ router.get('/monthly/:symbol/:interval?', (req, res) => {
         Object.keys(timeSeries).forEach(key => {
             model.push({
                 date: key,
-                unixTime: Date.parse(key),
+                UTC: Date.parse(key),
                 open: parseFloat( timeSeries[key]["1. open"] ),
                 high: parseFloat( timeSeries[key]["2. high"] ),
                 low: parseFloat( timeSeries[key]['3. low'] ),

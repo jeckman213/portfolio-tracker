@@ -32,7 +32,7 @@ class HighLowChart extends Component {
             const data = res.data;
 
             Object.keys(data).forEach(count => {
-                chartData.push( [data[count].unixTime, data[count].open, data[count].high, data[count].low, data[count].close] );
+                chartData.push( [data[count].UTC, data[count].open, data[count].high, data[count].low, data[count].close] );
             });
 
                 this.setState({
