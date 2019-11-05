@@ -9,4 +9,11 @@ router.get('/ping', (req, res) => {
   res.send('pong');
 });
 
+router.get('/auth', (req, res) => {
+  res.send({
+    user : req.user.username,
+    authenticated : req.isAuthenticated()
+  })
+});
+
 module.exports = router;

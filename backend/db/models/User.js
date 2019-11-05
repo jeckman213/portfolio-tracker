@@ -6,7 +6,8 @@ const createUser = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     hash: DataTypes.STRING,
     firstname: DataTypes.STRING,
-    lastname: DataTypes.STRING
+    lastname: DataTypes.STRING,
+    currency: DataTypes.STRING
   }, {
     freezeTableName: true,
     underscored: true

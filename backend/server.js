@@ -10,30 +10,34 @@ const express = require('express'),
 
       stockRoutes = require('./routes/stock')
       devRoutes = require('./routes/dev'),
-      indexRoutes = require('./routes/index');
+      authRoutes = require('./routes/auth');
+
+const app = express();
 
 /* Confirm connection with Postgres */
 db.sequelize.authenticate()
-  .then( () => {
-    console.log('Connection has been established successfully.');
-    app.use(sessions({
-      cookieName : 'session',
-      secret : process.env.SESSION_SECRET,
-      duration : 60 * 60 * 1000   /* miliseconds, so 1 hour */
-    }))
-  })
-  .catch( err => console.error('Unable to connect to the database:', err) );
-
-const app = express();
+  .then( () => console.log('Database connection successful.') )
+  .catch( err => console.error('Unable to connect to database:', err) );
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(sessions({
+  cookieName : 'session',
+  secret : process.env.SESSION_SECRET,
+  duration : 1000 * 60 * 60 * 24,   /* miliseconds, so 1 day */
+  // cookie : {
+  //   path : '/app', // cookie only sent to reqests under '/app'
+  //   httpOnly : true, // cookie not accessible from javascript
+  //   secure : true
+  // }
+}));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/stock", stockRoutes);
-app.use("/testapi", devRoutes);
-app.use("/", indexRoutes);
+app.use("/api/stock", stockRoutes);
+app.use("/api/test", devRoutes);
+app.use("/api", authRoutes);
 
 app.listen(port, console.log(`Listening on port ${port}`));

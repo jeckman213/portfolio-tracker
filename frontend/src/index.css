@@ -1,21 +1,20 @@
-*{
-  margin: 0;
-  padding: 0;
-}
 body {
-  background: #111;
+  background: #1A202C;
   color: #fff;
-  font-family: Poppins;
+  font-family: 'Comfortaa', cursive;
 }
+
 .container {
   width: 100%;
   max-width: 1800px;
   margin: 0 auto;
- background: #222;
- 
 }
 
-nav{
+label {
+  margin-bottom: 10px;
+}
+
+nav {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   padding: 20px 0;
@@ -23,7 +22,6 @@ nav{
   width: 100%;
   margin:0 auto;
   border-bottom: 1px solid #111;
-
 }
 
 nav ul {
@@ -35,13 +33,14 @@ nav ul {
 nav ul li a {
   color: #fff;
 }
+
 nav ul:last-of-type li a {
   text-decoration: none;
   font-size: 1rem;
 }
+
 nav ul:first-of-type li{
   padding-left: 20px;
-
 }
 
 nav ul:last-of-type {
@@ -55,7 +54,6 @@ nav ul:last-of-type li {
 
 nav ul:first-of-type li a {
   font-size: 1.3rem;
-  
   text-decoration: none;
 }
 
@@ -67,18 +65,14 @@ header form {
   grid-gap: 10px;
 }
 
-
-
 header {
   height: 600px;
-  background: url("./assets/images/Back2.jpg");
+  background: url("./assets/images/Back2.jpg"); 
   background-size: 100%;
   padding-top: 150px;
   position: relative;
   color: #000000;
 }
-
-
 
 header div:first-of-type{
   position: relative;
@@ -87,13 +81,12 @@ header div:first-of-type{
   margin: 0 auto;
 }
 
-
 header div h1 {
   font-size: 5.2rem;
   line-height: 5.2rem;
-  text-transform: uppercase;
-
+  text-transform: capitalize;
 }
+
 header div p, header div a {
   width: 40%;
 }
@@ -107,19 +100,16 @@ header div a {
   text-align: center;
   color: #111111;
   text-decoration: none;
-font-weight: bold;
+  font-weight: bold;
   -webkit-box-shadow: 0px 10px 20px -6px rgba(0,0,0,0.9);
   -moz-box-shadow: 0px 10px 20px -6px rgba(0,0,0,0.9);
   box-shadow: 0px 10px 20px -6px rgba(0,0,0,0.9);
-  
 }
-
-
 
 main section {
   padding-top: 20px;
   width: 70%;
-  margin: 120px auto;
+  margin: 20px auto;
 }
 
 section h2 {
@@ -132,9 +122,10 @@ section div i, section i {
   font-size: 4rem;
   width: 100%;
   color: #92FE9D;
-  margin: 50px 0;
+  margin: 10px 0;
   text-align: center;
 }
+
 section.intro {
   padding: 0px;
   display: grid;
@@ -145,7 +136,6 @@ section.intro {
   border-radius: 10px;
   
 }
-
 
 .intro div {
   text-align: center;
@@ -160,6 +150,7 @@ section.intro {
   -moz-box-shadow: 0px 10px 20px -6px rgba(0,0,0,0.9);
   box-shadow: 0px 10px 20px -6px rgba(0,0,0,0.9);
 }
+
 .intro .cards h2 {
   font-size: 1.4rem;
 }
@@ -178,7 +169,6 @@ section.intro {
   width: 100%;
 }
 
-
 .image {
   background: url("./assets/images/fountain.jpg");
   width: 100%;
@@ -188,7 +178,6 @@ section.intro {
   background-size: 110%;
   
 }
-
 
 .image2 {
   background: url("./assets/images/Albany.jpg");
@@ -209,9 +198,10 @@ section.intro {
 
 .description > div{
   border-right: 1px solid #92FE9D;
-  padding-left: 20px;
+  padding: 20px;
   padding-bottom: 10px;
 }
+
 .description img {
   width: 100%;
   
@@ -220,7 +210,6 @@ section.intro {
   box-shadow: 0px 10px 20px -6px rgba(0,0,0,0.9);
 }
 
-
 .packages {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -228,32 +217,37 @@ section.intro {
   text-align: center;
   
 }
+
 .packages h3 {
   font-size: 3rem;
   border-bottom:1px solid #fff;
   padding-bottom: 20px;
 }
+
 .packages > div {
   padding: 120px 60px;
   border-radius: 10px;
 }
+
 .price {
   font-size: 6.4rem;
   font-weight: bold;
 }
+
 .preferred {
-  
   -webkit-box-shadow: 0px 10px 20px -6px rgba(0,0,0,0.9);
- -moz-box-shadow: 0px 10px 20px -6px rgba(0,0,0,0.9);
- box-shadow: 0px 10px 20px -6px rgba(0,0,0,0.9);
+  -moz-box-shadow: 0px 10px 20px -6px rgba(0,0,0,0.9);
+  box-shadow: 0px 10px 20px -6px rgba(0,0,0,0.9);
 }
+
 .buy {
   margin-top: 20px;
-  
 }
+
 .buy a {
   color: #fff;
 }
+
 .preferred .buy a {
   background: #92FE9D;
   color: #111;
@@ -262,28 +256,26 @@ section.intro {
   border-radius: 5px;
   font-weight: bold;
   display: block;
-  
 }
 
 footer {
-
   padding: 120px 0;
   text-align: center;
 }
 
 footer *{
   width: 60%;
-margin: 0 auto;
+  margin: 0 auto;
 }
+
 footer ul {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   width: 20%;
 }
-footer ul li {
-  
-  list-style: none;
 
+footer ul li {
+  list-style: none;
 }
 
 footer ul li a {
@@ -313,9 +305,9 @@ section div form {
   color: #eee;
   font-weight: bold;
 }
+
 .form-control label, .form-control input {
   font-size: 1rem;
- 
 }
 
 .form-control input {
@@ -323,11 +315,12 @@ section div form {
   border:none;
   border-radius:5px;
   color: #111;
-  
 }
+
 .form-control input[type="date"]{
   font-family: poppins;
 }
+
 .form-control input[type="submit"]{
   background: #92FE9D;
   width: 40%;
@@ -336,7 +329,6 @@ section div form {
   
   font-weight: bold;
 }
-
 
 #nav-icon{
   width: 30px;
@@ -356,7 +348,6 @@ section div form {
   transition: .5s ease-in-out;
   cursor: pointer;
 }
-
 
 #nav-icon span{
   display: block;
@@ -389,7 +380,6 @@ section div form {
   top: 18px;
 }
 
-
 #nav-icon.open span:nth-child(1) {
   top: 9px;
   -webkit-transform: rotate(135deg);
@@ -415,8 +405,8 @@ section div form {
   
   header {
     height: 500px;
-   background-size:120%;
-   padding-top: 50px;
+    background-size:120%;
+    padding-top: 50px;
   }
 
   header div:first-of-type{
@@ -426,12 +416,9 @@ section div form {
     padding-left: 0px;
     margin: 0 auto;
   }
-
-  
   
   header form label, header form input {
     font-size: 1.1rem;
-
   }
   
   header form label {
@@ -446,6 +433,7 @@ section div form {
     grid-template-columns: 1fr;
         
   }
+
   .intro div {
     text-align: center;
     position: relative;
@@ -456,39 +444,27 @@ section div form {
     border-radius: 0px;
     box-shadow: none;
   }
- 
   
-  .description > div{
+  .description > div {
     border-right: none;
   }
 
-.image {
-  
-  height: 400px;
-  
-}
+  .image { 
+    height: 400px;
+  }
 
 
-.image2 {
- 
-  height: 400px;
+  .image2 {
+    height: 400px;
+  }
 
-}
+  .description {
+    grid-template-columns: 1fr;
+  }
 
-.description {
-  
-  grid-template-columns: 1fr;
- 
- 
-}
-
-.packages {
- 
-  grid-template-columns: 1fr;
-
-  
-}
-
+  .packages {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 900px ) and (min-width: 0px ){
@@ -500,23 +476,24 @@ section div form {
    background-position: center;
   }
 
-  header div:first-of-type{
+  header div:first-of-type {
     position: relative;
     z-index: 2;
     width: 90%;
     padding-left: 0px;
     margin: 0 auto;
   }
+
   header div:first-of-type h1 {
     font-size: 2.6rem;
     line-height: 2.6rem;
   }
 
-  header div:first-of-type p{
+  header div:first-of-type p {
     display: none;
   }
 
-  nav{
+  nav {
     display: grid;
     grid-template-columns: 1fr;
     padding: 10px 0;
@@ -526,23 +503,28 @@ section div form {
     border-bottom: 1px solid #111;
   
   }
-  #nav-icon{
+
+  #nav-icon {
     display: block;
   }
+
   nav ul:last-of-type {
     height: 0;
     overflow: hidden;
   
   }
+
   nav ul:first-of-type {
     padding-bottom: 5px;
   }
+
   nav ul:last-of-type li {
     display: block;
     text-align: center;
    
     margin: 0;
   }
+
   nav ul:last-of-type li a {
     display: block;
     padding: 10px;
@@ -553,20 +535,18 @@ section div form {
     color:#111;
 
   }
+
   nav ul:last-of-type.show {
     height: auto;
-   
   }
-  
+
   main section {
-  
     width: 90%;
-  
   }
+
   section.intro {
     width: 100%;
     grid-template-columns: 1fr;
-        
   }
 
   .intro div {
@@ -580,57 +560,48 @@ section div form {
     box-shadow: none;
   }
 
-
-  .description > div{
+  .description > div { 
     border-right: none;
   }
-.image {
-  
-  height: 400px;
-  background-size: cover;
-}
 
+  .image {
+    height: 400px;
+    background-size: cover;
+  }
 
-.image2 {
- 
-  height: 400px;
-  background-size: cover;
-
-}
+  .image2 {
+    height: 400px;
+    background-size: cover;
+  }
 
   .description {
-  
     grid-template-columns: 1fr;
-   
-   
   }
   
   .packages {
-   
     grid-template-columns: 1fr;
-  
-    
   }
   .packages div {
     width: 90%;
     margin: 0;
-    padding:70px 10px;
+    padding: 70px 10px;
   }
   .packages h3 {
     font-size: 2rem;
-    
   }
   
   .price {
     font-size: 4.4rem;
     font-weight: bold;
   }
+
   section div form {
     width: 100%;
     padding: 10px 0;
     box-shadow:none;
     
   }
+
   .form-control input {
     width: 90%;
     margin: 0 auto;
@@ -641,5 +612,4 @@ section div form {
     grid-template-columns: 1fr;
     width: 50%;
   }
-  
 }
