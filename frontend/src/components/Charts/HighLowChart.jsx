@@ -3,6 +3,8 @@ import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts/highstock';
 import PropTypes from 'prop-types';
 import Axios from 'axios';
+
+import { isNullOrUndefined } from 'util';
 import loading from '../../assets/loading.svg';
 
 // High-Low Charts for displaying information about a stock
@@ -24,11 +26,6 @@ class HighLowChart extends Component {
         this.getStockData();
     }
 
-    componentWillReceiveProps(newProps) {
-        this.setState( { symbol: newProps.symbol, isLoading: true } );
-        this.getStockData();
-    }
-
     getStockData = async () => {
          // Highcharts/Highstocks needs data in an array format instead of an object
         // So, data is converted to array here
@@ -41,11 +38,13 @@ class HighLowChart extends Component {
             // If the request limit was reached 
             if (isNullOrUndefined(data.Note)) {
                 Object.keys(data).forEach(count => {
-                    chartData.push([data[count].UTC, data[count].adjustedClose]);
+                    chartData.push( [data[count].UTC, data[count].open, data[count].high, data[count].low, data[count].close] );
                 });
             } else {
                 console.error(data.Note);
             }
+
+            console.log(chartData);
 
                 this.setState({
                     chartOptions: {

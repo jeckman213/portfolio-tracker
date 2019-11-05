@@ -25,11 +25,6 @@ class LineChart extends Component {
         this.getStockData();
     }
 
-    componentWillReceiveProps(newProps) {
-        this.setState( { symbol: newProps.symbol, isLoading: true } );
-        this.getStockData();
-    }
-
     getStockData = async () => {
         // Highcharts/Highstocks needs data in an array format instead of an object
         // So, data is converted to array here
@@ -41,7 +36,7 @@ class LineChart extends Component {
             // If the request limit was reached 
             if (isNullOrUndefined(data.Note)) {
                 Object.keys(data).forEach(count => {
-                    chartData.push([data[count].UTC, data[count].adjustedClose]);
+                    chartData.push( [data[count].UTC, data[count].adjustedClose] );
                 });
             } else {
                 console.error(data.Note);

@@ -9,21 +9,8 @@ class Graphs extends Component {
 
         this.state = {
             symbol: "AAPL",
-            temp: "AAPL",
         }
 
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(event) {
-        this.setState( { temp: event.target.value } );
-    }
-
-    handleSubmit(event) {
-        this.setState( { symbol: this.state.temp } );
-        this.getStockData();
-        event.preventDefault();
     }
 
     render() {
@@ -32,14 +19,6 @@ class Graphs extends Component {
                 <HighLowChart symbol={this.state.symbol} />
 
                 <LineChart symbol={this.state.symbol} />
-
-                <form onSubmit={this.handleSubmit}>
-                    <label>
-                        Symbol:
-                        <input id='symbol' type='text' value={this.state.temp} onChange={this.handleChange} />
-                    </label>
-                    <input type="submit" value="Submit" />
-                </form>
 
                 <PieChart slices={[{
                         name: 'GE',
