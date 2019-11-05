@@ -32,8 +32,6 @@ router.get('/daily/:symbol/:interval?', (req, res) => {
 
     alpha.getDailyAdjusted(symbol, interval, data => {
         var model = [];
-
-        res.send(data);
         
         var timeSeries = data['Time Series (Daily)'];
         Object.keys(timeSeries).forEach(key => {

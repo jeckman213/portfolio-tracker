@@ -643,3 +643,12 @@ section div form {
   }
   
 }
+
+.chart {
+  text-align: center;
+}
+
+.isLoading {
+  height: 400px;
+  width: auto;
+}
