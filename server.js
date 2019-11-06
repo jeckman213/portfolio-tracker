@@ -5,7 +5,6 @@ const express = require('express'),
       sessions = require('client-sessions'),
       path = require('path');
 
-      port = process.env.PORT || 5000,
       db = require('./db/models'),
       passport = require('./config/authentication'),
 
@@ -32,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(sessions({
   cookieName : 'session',
-  secret : process.env.SESSION_SECRET,
+  secret : "ladkfjdsa;lfj",
   duration : 1000 * 60 * 60 * 24,   /* miliseconds, so 1 day */
   // cookie : {
   //   path : '/app', // cookie only sent to reqests under '/app'
@@ -48,4 +47,6 @@ app.use("/api/stock", stockRoutes);
 app.use("/api/test", devRoutes);
 app.use("/api", authRoutes);
 
-app.listen(port, console.log(`Listening on port ${port}`));
+app.listen(process.env.PORT || 5000, function(){
+  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+});
