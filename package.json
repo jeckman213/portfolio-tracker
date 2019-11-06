@@ -6,8 +6,9 @@
   "scripts": {
     "start": "node server.js",
     "server": "nodemon server.js",
-    "client": "npm start --prefix ../frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "cd frontend && npm install && npm run build"
   },
   "repository": {
     "type": "git",
@@ -18,7 +19,7 @@
   "bugs": {
     "url": "https://github.com/jeckman213/portfolio-tracker/issues"
   },
-  "homepage": "https://github.com/aDevCalledAlex/YelpCamp#readme",
+  "homepage": "https://github.com/jeckman213/portfolio-tracker/issues",
   "dependencies": {
     "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
@@ -27,6 +28,7 @@
     "dotenv": "^8.1.0",
     "esm": "^3.2.25",
     "express": "^4.16.4",
+    "heroku": "^7.34.2",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "pg": "^7.12.1",
