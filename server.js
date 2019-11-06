@@ -14,6 +14,13 @@ const express = require('express'),
 
 const app = express();
 
+// Serves the static files from the React App
+app.use(express.static('../frontend/build'));
+
+app.get('*', (req, res) => {
+  res.sendFile('../frontend/build/index.html');
+});
+
 /* Confirm connection with Postgres */
 db.sequelize.authenticate()
   .then( () => console.log('Database connection successful.') )
