@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express'),
       bodyParser = require('body-parser'),
       sessions = require('client-sessions'),
+      path = require('path');
 
       port = process.env.PORT || 5000,
       db = require('./db/models'),
@@ -15,10 +16,10 @@ const express = require('express'),
 const app = express();
 
 // Serves the static files from the React App
-app.use(express.static('frontend/build'));
+app.use(express.static(path.join(__dirname, 'frontend/build')));
 
 app.get('*', (req, res) => {
-  res.sendFile('frontend/build/index.html');
+  res.sendFile(path.join(__dirname, 'frontend/build/index.html'));
 });
 
 /* Confirm connection with Postgres */
@@ -39,17 +40,6 @@ app.use(sessions({
   //   secure : true
   // }
 }));
-
-app.use(function(req, res, next) {
-  if (req.mySession.seenyou) {
-    res.setHeader('X-Seen-You', 'true');
-  } else {
-    // setting a property will automatically cause a Set-Cookie response
-    // to be sent
-    req.mySession.seenyou = true;
-    res.setHeader('X-Seen-You', 'false');
-  }
-});
 
 app.use(passport.initialize());
 app.use(passport.session());
