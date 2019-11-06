@@ -40,6 +40,17 @@ app.use(sessions({
   // }
 }));
 
+app.use(function(req, res, next) {
+  if (req.mySession.seenyou) {
+    res.setHeader('X-Seen-You', 'true');
+  } else {
+    // setting a property will automatically cause a Set-Cookie response
+    // to be sent
+    req.mySession.seenyou = true;
+    res.setHeader('X-Seen-You', 'false');
+  }
+});
+
 app.use(passport.initialize());
 app.use(passport.session());
 
