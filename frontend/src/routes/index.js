@@ -19,8 +19,9 @@ const Routing = () => (
       <Route exact path='/packages' component={ Packages } />
       <Route exact path='/signup/:type' component={ SignUp } />
       <Route exact path="/login" component={ Login }/>
+      <Route exact path="/help" component={ About }/>
       <ProtectedRoute exact path="/protected" component={ About }/>
-      <Route path="*" component={ () => '404 Not Found' } /> 
+      <Route path="*" component={ () => '404 Not Found' } />
     </Switch>
   </div>    
 ) 
