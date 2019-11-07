@@ -15,13 +15,6 @@ const express = require('express'),
 
 const app = express();
 
-// Serves the static files from the React App
-app.use(express.static(path.join(__dirname, 'frontend/build')));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend/build/index.html'));
-});
-
 /* Confirm connection with Postgres */
 db.sequelize.authenticate()
   .then( () => console.log('Database connection successful.') )
@@ -47,7 +40,13 @@ app.use(passport.session());
 app.use("/api/stock", stockRoutes);
 app.use("/api/test", devRoutes);
 app.use("/api", authRoutes);
-app.use("/alpha", alphaRoutes);
+app.use("/api/alpha", alphaRoutes);
+
+// Serves the static files from the React App
+app.use(express.static(path.join(__dirname, 'frontend/build')));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend/build/index.html'));
+});
 
 app.listen(process.env.PORT || 5000, function(){
   console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
