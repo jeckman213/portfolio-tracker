@@ -11,6 +11,7 @@ const express = require('express'),
       stockRoutes = require('./routes/stock')
       devRoutes = require('./routes/dev'),
       authRoutes = require('./routes/auth');
+      alphaRoutes = require('./routes/alpha');
 
 const app = express();
 
@@ -46,6 +47,7 @@ app.use(passport.session());
 app.use("/api/stock", stockRoutes);
 app.use("/api/test", devRoutes);
 app.use("/api", authRoutes);
+app.use("/alpha", alphaRoutes);
 
 app.listen(process.env.PORT || 5000, function(){
   console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);

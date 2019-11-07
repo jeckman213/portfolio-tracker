@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "server": "nodemon server.js",
+    "server": "nodemon -r esm server.js",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "cd frontend && npm install && npm run-script build"
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/jeckman213/portfolio-tracker/issues",
   "dependencies": {
+    "alphavantage": "^2.0.0",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
     "client-sessions": "^0.8.0",
@@ -38,6 +39,10 @@
     "stock-data.js": "^1.2.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
+    "@babel/node": "^7.6.3",
+    "@babel/preset-env": "^7.6.3",
     "nodemon": "^1.19.2"
   }
 }

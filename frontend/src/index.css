@@ -613,3 +613,12 @@ section div form {
     width: 50%;
   }
 }
+
+.chart {
+  text-align: center;
+}
+
+.isLoading {
+  height: 400px;
+  width: auto;
+}
