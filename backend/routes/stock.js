@@ -1,31 +1,57 @@
-const express = require('express'),
-      router = express.Router(),
-      stockdata = require('../services/stockservice');
+const 
+  express   = require('express'),
+  router    = express.Router(),
+  stockdata = require('../services/stockservice'),
+  Stock     = require('../db/models').Stock,
+  Op        = require('../db/models').Sequelize.Op;
 
   // Stock search call
   // NOTE: Search only gives you 5 results because of free account on api
-  router.get('/search/:searchTerm', (req, res) => {
-    var searchTerm = req.params.searchTerm;
+  // router.get('/search/:searchTerm', (req, res) => {
+  //   var searchTerm = req.params.searchTerm;
   
-    stockdata.getStockBySearchTerm(searchTerm, (data) => {
-      var models = [];
+  //   stockdata.getStockBySearchTerm(searchTerm, (data) => {
+  //     var models = [];
   
-      console.log(data.length)
+  //     console.log(data.length)
   
-      for (var i = 0; i < data.length; i++) {
-        var stock = data[i];
-        models[i] = {
-          symbol: stock.symbol,
-          name: stock.name,
-          currency: stock.currency,
-          price: stock.price,
-          exchangeShort: stock.stock_exchange_short
+  //     for (var i = 0; i < data.length; i++) {
+  //       var stock = data[i];
+  //       models[i] = {
+  //         symbol: stock.symbol,
+  //         name: stock.name,
+  //         currency: stock.currency,
+  //         price: stock.price,
+  //         exchangeShort: stock.stock_exchange_short
+  //       }
+  //     }
+  
+  //     res.send(models);
+  //   });
+  // }); 
+
+  /* Expects query param 'q' */
+  router.get('/search/', (req, res) => {
+    const query = req.query.q;
+    Stock.findAll({
+      order : [['symbol']],
+      where : { 
+        [Op.or] : {
+          symbol : {
+            [Op.iRegexp] : `.*${query}.*` 
+          },
+          name : { 
+            [Op.iRegexp] : `.*${query}.*`
+          }
         }
       }
-  
-      res.send(models);
-    });
-  }); 
+    })
+      .then( stocks => {
+        const matches = stocks ? stocks.slice(0, 5) : [];
+        res.send(matches);
+      })
+      .catch( err => res.send(err));
+  })
   
   // Stock intraday call
   router.get('/intraday/:symbol/:interval?/:range?', (req, res) => {
