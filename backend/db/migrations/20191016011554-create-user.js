@@ -1,7 +1,7 @@
 'use strict';
 
 /************************************************
- * Creates Basic Users Table with unique index  *
+ * Creates Basic User Table with unique index   *
  * on username and unique constraint on email   *
  ************************************************/
 const migration = {

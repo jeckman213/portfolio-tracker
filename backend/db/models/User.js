@@ -1,6 +1,6 @@
 'use strict';
 
-const createUser = (sequelize, DataTypes) => {
+const createTableUser = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     username: DataTypes.STRING,
     email: DataTypes.STRING,
@@ -12,11 +12,12 @@ const createUser = (sequelize, DataTypes) => {
     freezeTableName: true,
     underscored: true
   });
+
   User.associate = function(models) {
-    // associations can be defined here
+    User.hasMany(models.Portfolio);
   };
 
   return User;
 };
 
-module.exports = createUser;
+module.exports = createTableUser;
