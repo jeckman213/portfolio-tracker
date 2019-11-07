@@ -11,8 +11,12 @@ const express = require('express'),
       stockRoutes = require('./routes/stock')
       devRoutes = require('./routes/dev'),
       authRoutes = require('./routes/auth');
+      indexRoutes = require('./routes/index');
+      alphaRoutes = require('./routes/alpha');
 
 const app = express();
+
+      
 
 /* Confirm connection with Postgres */
 db.sequelize.authenticate()
@@ -39,5 +43,6 @@ app.use(passport.session());
 app.use("/api/stock", stockRoutes);
 app.use("/api/test", devRoutes);
 app.use("/api", authRoutes);
+app.use("/api/alpha", alphaRoutes);
 
 app.listen(port, console.log(`Listening on port ${port}`));
