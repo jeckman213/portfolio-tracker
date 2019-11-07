@@ -1,16 +1,23 @@
 require('dotenv').config();
 
-const express = require('express'),
-      bodyParser = require('body-parser'),
-      sessions = require('client-sessions'),
+const 
+  /* Import node modules */
+  express    = require('express'),
+  bodyParser = require('body-parser'),
+  sessions   = require('client-sessions'),
 
-      port = process.env.PORT || 5000,
-      db = require('./db/models'),
-      passport = require('./config/authentication'),
+  /* Import configurations */
+  port     = process.env.PORT || 5000,
+  db       = require('./db/models'),
+  passport = require('./config/authentication'),
 
-      stockRoutes = require('./routes/stock')
-      devRoutes = require('./routes/dev'),
-      authRoutes = require('./routes/auth');
+  /* Import routes */
+  routes = {};
+
+routes.portfolio = require('./routes/portfolio');
+routes.stock     = require('./routes/stock');
+routes.auth      = require('./routes/auth');
+routes.dev       = require('./routes/dev');
 
 const app = express();
 
@@ -36,8 +43,10 @@ app.use(sessions({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/api/stock", stockRoutes);
-app.use("/api/test", devRoutes);
-app.use("/api", authRoutes);
+app.use("/api/portfolio/:portfolio_id/asset", routes.portfolio);
+app.use("/api/portfolio", routes.portfolio);
+app.use("/api/stock", routes.stock);
+app.use("/api/test", routes.dev);
+app.use("/api", routes.auth);
 
 app.listen(port, console.log(`Listening on port ${port}`));
