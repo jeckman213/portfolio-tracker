@@ -8,6 +8,7 @@
     "server": "nodemon -r esm server.js",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "prod": "node -r esm server.js",
     "heroku-postbuild": "cd frontend && npm install && npm run-script build"
   },
   "repository": {
