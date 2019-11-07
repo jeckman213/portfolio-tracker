@@ -2,15 +2,15 @@
 
 const createTablePortfolio = (sequelize, DataTypes) => {
   const Portfolio = sequelize.define('Portfolio', {
-    name: DataTypes.STRING
+    name : DataTypes.STRING,
   }, {
-    freezeTableName: true,
-    underscored: true
+    freezeTableName : true,
+    underscored : true
   });
   
   Portfolio.associate = function(models) {
-    Portfolio.belongsTo(models.User);
-    Portfolio.hasMany(models.Asset);
+    Portfolio.belongsTo(models.User, { foreignKey : 'userId' });
+    Portfolio.hasMany(models.Asset, { foreignKey : 'portfolioId' });
   };
 
   return Portfolio;
