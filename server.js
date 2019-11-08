@@ -11,7 +11,6 @@ const express = require('express'),
       stockRoutes = require('./routes/stock')
       devRoutes = require('./routes/dev'),
       authRoutes = require('./routes/auth');
-      indexRoutes = require('./routes/index');
       alphaRoutes = require('./routes/alpha');
 
 const app = express();
