@@ -2,37 +2,33 @@ const
   express                            = require('express'),
   router                             = express.Router({ mergeParams : true }),
   { Portfolio, Asset, Stock }        = require('../db/models'),
-  { expectedError, unexpectedError } = require('../services/errorhandling');
+  { expectedError, unexpectedError } = require('../services/errorhandling'),
+  { portfolioMatchesAsset, isAuthorized, userMatchesPortfolio } = require('../middleware');
 
 // Asset: CREATE - Create a new asset for a portfolio
-router.post('/', async (req, res) => {
+router.post('/', userMatchesPortfolio, isAuthorized, async (req, res) => {
   try {
     const
       { portfolioId } = req.params,
       { symbol, shares, purchasedAt, soldAt } = req.body,
-      portfolioFound = await Portfolio.findByPk(portfolioId);
 
-    if(portfolioFound){
-      stock = await Stock.findOne({ where : { symbol } });
+    stock = await Stock.findOne({ where : { symbol } });
 
-      if(stock){
-        const 
-          { id : stockId } = stock,
-          newAsset = { portfolioId, shares, stockId, purchasedAt, soldAt };
-          createdAsset = await Asset.create(newAsset),
-          success = (createdAsset !== null);
+    if(stock){
+      const 
+        { id : stockId } = stock,
+        newAsset = { portfolioId, shares, stockId, purchasedAt, soldAt };
+        createdAsset = await Asset.create(newAsset);
 
-        res.send(success ? { success } : expectedError(`Asset with id ${assetId} DNE`));
-      }
-      else { res.send(expectedError(`Stock '${symbol}' DNE`)); }
+      res.send({success : true, id : createdAsset.id });
     }
-    else { res.send(expectedError(`Portfolio with id ${portfolioId} DNE`)); }
+    else { res.send(expectedError(`Stock '${symbol}' DNE`)); }
   }
   catch(err){ res.send(unexpectedError(err)); } 
 });
 
 // Asset: UPDATE - Update an existing asset
-router.put('/:assetId', async (req, res) => {
+router.put('/:assetId', portfolioMatchesAsset, isAuthorized, async (req, res) => {
   try {
     const
       { assetId } = req.params,
@@ -42,11 +38,10 @@ router.put('/:assetId', async (req, res) => {
     if(stockFound){
       const 
         { id : stockId } = stockFound,
-        updatedAsset = { shares, stockId, portfolioId, purchasedAt, soldAt },
-        affectedRows = await Asset.update(updatedAsset, { where : { id : assetId } }),
-        success = (affectedRows[0] === 1); // One row should be affected 
-
-      res.send(success ? { success } : expectedError(`Asset with id ${assetId} DNE`));
+        updatedAsset = { shares, stockId, portfolioId, purchasedAt, soldAt };
+      
+      await Asset.update(updatedAsset, { where : { id : assetId } });
+      res.send({ success : true });
     }
     else { res.send(expectedError(`Stock '${symbol}' DNE`)); }
   }
@@ -54,14 +49,12 @@ router.put('/:assetId', async (req, res) => {
 });
 
 // Asset: DESTROY - Remove an asset from a portfolio
-router.delete('/:assetId', async (req, res) => {
+router.delete('/:assetId', portfolioMatchesAsset, isAuthorized, async (req, res) => {
   try {
-    const 
-      { id : portfolioId } = req.params
-      affectedRows = await Portfolio.destroy({ where : { id : portfolioId } }),
-      success = (affectedRows === 1);  // One row should be affected
-
-    res.send(success ? { success } : expectedError(`Portfolio with id ${portfolioId} DNE`));
+    const { id : portfolioId } = req.params
+    
+    await Portfolio.destroy({ where : { id : portfolioId } }),
+    res.send({ success : true });
   }
   catch(err){ res.send(unexpectedError(err)); }
 });

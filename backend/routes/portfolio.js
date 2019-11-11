@@ -32,7 +32,7 @@ router.post('/', isAuthorized, async (req, res) => {
 router.get('/:portfolioId', userMatchesPortfolio, isAccessible, async (req, res) => {
   try {
     const 
-      { name } = req.portfolio,
+      { name } = res.locals.portfolio,
       assetsFound = await Asset.findAll({ where : { portfolioId } }),
       numStocks = await Asset.findAll({ attributes : [[sequelize.fn('COUNT', sequelize.col('stock_id')), 'numStocks']] }),
       numShares = await Asset.findAll({ attributes : [[sequelize.fn('SUM', sequelize.col('shares')), 'numShares']] })
