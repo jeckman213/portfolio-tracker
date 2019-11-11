@@ -1,9 +1,10 @@
 const 
   express   = require('express'),
   router    = express.Router(),
-  stockdata = require('../services/stockservice'),
+  Op        = require('../db/models').Sequelize.Op,
   Stock     = require('../db/models').Stock,
-  Op        = require('../db/models').Sequelize.Op;
+  { expectedError, unexpectedError } = require('../services/errorhandling');
+  stockdata = require('../services/stockservice'),
 
   // Stock search call
   // NOTE: Search only gives you 5 results because of free account on api
@@ -31,8 +32,8 @@ const
   // }); 
 
   /* Expects query param 'q' */
-  router.get('/search/', (req, res) => {
-    const query = req.query.q;
+  router.get('/search', (req, res) => {
+    const { q : query } = req.query;
     Stock.findAll({
       order : [['symbol']],
       where : { 
@@ -50,8 +51,16 @@ const
         const matches = stocks ? stocks.slice(0, 5) : [];
         res.send(matches);
       })
-      .catch( err => res.send(err));
-  })
+      .catch( err => res.send(unexpectedError(err)));
+  });
+
+  router.get('/:id', async (req, res) => {
+    const 
+      { id } = req.params,
+      stock = await Stock.findByPk(id);
+
+      res.send(stock ? stock : expectedError(`Stock with id ${id} DNE`));
+  });
   
   // Stock intraday call
   router.get('/intraday/:symbol/:interval?/:range?', (req, res) => {
