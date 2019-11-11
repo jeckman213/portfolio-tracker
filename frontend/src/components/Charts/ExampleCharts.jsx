@@ -19,9 +19,7 @@ class Graphs extends Component {
         return(
             <div>
 
-                <SMAChart symbol={this.state.symbol} />
-
-                <MACDChart symbol={this.state.symbol} />
+                <HighLowChart symbol={this.state.symbol} />
 
                 <PieChart slices={[{
                         name: 'GE',
