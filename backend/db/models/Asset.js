@@ -2,6 +2,7 @@
 
 const createTableAsset = (sequelize, DataTypes) => {
   const Asset = sequelize.define('Asset', {
+    shares : DataTypes.INTEGER,
     purchasedAt : DataTypes.STRING,
     soldAt : DataTypes.STRING,
   }, {
