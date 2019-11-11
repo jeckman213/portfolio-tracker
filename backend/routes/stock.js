@@ -3,8 +3,8 @@ const
   router    = express.Router(),
   Op        = require('../db/models').Sequelize.Op,
   Stock     = require('../db/models').Stock,
-  { expectedError, unexpectedError } = require('../services/errorhandling');
-  stockdata = require('../services/stockservice'),
+  { expectedError, unexpectedError } = require('../services/errorhandling'),
+  stockdata = require('../services/stockservice');
 
   // Stock search call
   // NOTE: Search only gives you 5 results because of free account on api
