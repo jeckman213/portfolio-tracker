@@ -3,6 +3,7 @@
 const createTablePortfolio = (sequelize, DataTypes) => {
   const Portfolio = sequelize.define('Portfolio', {
     name : DataTypes.STRING,
+    public : DataTypes.BOOLEAN
   }, {
     freezeTableName : true,
     underscored : true
