@@ -13,7 +13,7 @@ middleware.userMatchesPortfolio = async (req, res, next) => {
       portfolioFound = await Portfolio.findOne({ where : { id : portfolioId, userId } });
         
     if(portfolioFound){ 
-      req.portfolio = portfolioFound;
+      res.locals.portfolio = portfolioFound;
       next(); 
     }
     else { res.send(expectedError(`User with id ${userId} does not own a portfolio with id ${portfolioId}`, res, 404)); }
