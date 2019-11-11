@@ -23,6 +23,10 @@ const migration = {
           allowNull : false,
           type : Sequelize.INTEGER
         },
+        public : {
+          allowNull : false,
+          type : Sequelize.BOOLEAN
+        },
         created_at : {
           allowNull : false,
           type : Sequelize.DATE
@@ -48,12 +52,15 @@ const migration = {
           allowNull : false,
           type : Sequelize.INTEGER
         },
+        shares : {
+          allowNull : false,
+          type : Sequelize.INTEGER
+        },
         purchased_at : {
           allowNull : false,
           type : Sequelize.TEXT
         },
         sold_at : {
-          allowNull : false,
           type : Sequelize.TEXT
         }
       }, { transaction });
@@ -78,6 +85,12 @@ const migration = {
           type : Sequelize.TEXT
         },
       }, { transaction });
+
+      await queryInterface.addConstraint('Portfolio', {
+        fields : ['user_id', 'name'],
+        type : 'unique',
+        transaction
+      });
 
       await queryInterface.addConstraint('Portfolio', {
         fields : ['user_id'],
@@ -110,7 +123,7 @@ const migration = {
           table: 'Stock',
           field: 'id'
         },
-        onDelete: 'set null',
+        onDelete: 'cascade', // Should never happen
         onUpdate: 'cascade',
         transaction
       });
