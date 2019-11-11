@@ -15,7 +15,9 @@ const
   routes = {};
 
 routes.portfolio = require('./routes/portfolio');
+routes.asset     = require('./routes/asset');
 routes.stock     = require('./routes/stock');
+routes.user      = require('./routes/user');
 routes.auth      = require('./routes/auth');
 routes.dev       = require('./routes/dev');
 
@@ -43,10 +45,11 @@ app.use(sessions({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/api/portfolio/:portfolio_id/asset", routes.portfolio);
-app.use("/api/portfolio", routes.portfolio);
-app.use("/api/stock", routes.stock);
-app.use("/api/test", routes.dev);
-app.use("/api", routes.auth);
+app.use('/api', routes.auth);
+app.use('/api/stock', routes.stock);
+app.use('/api/user', routes.user);
+app.use('/api/user/:userId/portfolio', routes.portfolio);
+app.use('/api/user/:userId/portfolio/:portfolioId/asset', routes.asset);
+app.use('/api/test', routes.dev);
 
 app.listen(port, console.log(`Listening on port ${port}`));
