@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import HighLowChart from "./HighLowChart";
 import LineChart from "./LineChart";
 import PieChart from "./PieChart";
-import SMAChart from "./SMAChart";
-import MACDChart from "./MACDChart";
 
 class Graphs extends Component {
     constructor(props) {
@@ -20,6 +18,8 @@ class Graphs extends Component {
             <div>
 
                 <HighLowChart symbol={this.state.symbol} />
+                
+                <LineChart symbol={this.state.symbol} />
 
                 <PieChart slices={[{
                         name: 'GE',
