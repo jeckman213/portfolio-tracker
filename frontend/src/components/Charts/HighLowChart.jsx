@@ -50,7 +50,7 @@ class HighLowChart extends Component {
                     chartOptions: {
                         
                         rangeSelector: {
-                            selected: 1
+                            selected: 0
                         },
                 
                         title: {

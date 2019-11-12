@@ -149,9 +149,9 @@ router.get('/macd/:symbol', (req, res) => {
             model.push({
                 date: key,
                 UTC: Date.parse(key),
-                signal: technical[key]['MACD_Signal'],
-                hist: technical[key]['MACD_Hist'],
-                MACD: technical[key]['MACD']
+                signal: parseFloat( technical[key]['MACD_Signal'] ),
+                hist: parseFloat( technical[key]['MACD_Hist'] ),
+                MACD: parseFloat( technical[key]['MACD'] )
             });
         });
 

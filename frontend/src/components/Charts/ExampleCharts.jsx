@@ -8,7 +8,7 @@ class Graphs extends Component {
         super(props);
 
         this.state = {
-            symbol: "GE",
+            symbol: "AAPL",
         }
 
     }
