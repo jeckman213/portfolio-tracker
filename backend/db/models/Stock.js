@@ -1,7 +1,7 @@
 'use strict';
 
 const createTableStock = (sequelize, DataTypes) => {
-  const Stock = sequelize.define('Stock', {
+  const Stock = sequelize.define('stock', {
     symbol : DataTypes.STRING,
     name : DataTypes.STRING,
     exchange : DataTypes.STRING

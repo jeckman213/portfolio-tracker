@@ -1,10 +1,10 @@
 'use strict';
 
 const createTableAsset = (sequelize, DataTypes) => {
-  const Asset = sequelize.define('Asset', {
+  const Asset = sequelize.define('asset', {
+    symbol : DataTypes.INTEGER,
     shares : DataTypes.INTEGER,
     purchasedAt : DataTypes.STRING,
-    soldAt : DataTypes.STRING,
   }, {
     freezeTableName : true,
     underscored : true,
@@ -13,7 +13,6 @@ const createTableAsset = (sequelize, DataTypes) => {
   
   Asset.associate = function(models) {
     Asset.belongsTo(models.Portfolio, { foreignKey : 'portfolioId' });
-    Asset.belongsTo(models.Stock, { foreignKey : 'stockId' });
   };
 
   return Asset;

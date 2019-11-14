@@ -1,7 +1,7 @@
 'use strict';
 
 const createTablePortfolio = (sequelize, DataTypes) => {
-  const Portfolio = sequelize.define('Portfolio', {
+  const Portfolio = sequelize.define('portfolio', {
     name : DataTypes.STRING,
     public : DataTypes.BOOLEAN
   }, {

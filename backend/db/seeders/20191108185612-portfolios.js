@@ -2,7 +2,7 @@
 
 const seeds = {
   up : (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('Portfolio', 
+    return queryInterface.bulkInsert('portfolio', 
     [
       {
         name : 'First Portfolio',
@@ -57,7 +57,7 @@ const seeds = {
   },
 
   down : (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('Portfolio', null, {});
+    return queryInterface.bulkDelete('portfolio', null, {});
   }
 };
 

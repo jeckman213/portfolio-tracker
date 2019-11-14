@@ -2,7 +2,7 @@
 
 const seeds = {
   up : (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('Stock', 
+    return queryInterface.bulkInsert('stock', 
     [
       /* NASDAQ Stocks */
       {
@@ -31336,7 +31336,7 @@ const seeds = {
   },
 
   down : (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('Stock', null, {});
+    return queryInterface.bulkDelete('stock', null, {});
   }
 };
 

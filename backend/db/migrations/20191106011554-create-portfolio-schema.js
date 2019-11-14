@@ -8,7 +8,7 @@ const migration = {
   async up(queryInterface, Sequelize){
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      await queryInterface.createTable('Portfolio', {
+      await queryInterface.createTable('portfolio', {
         id : {
           allowNull : false,
           autoIncrement : true,
@@ -37,16 +37,16 @@ const migration = {
         }
       }, { transaction });
     
-      await queryInterface.createTable('Asset', {
+      await queryInterface.createTable('asset', {
         id : {
           allowNull : false,
           autoIncrement : true,
           primaryKey : true,
           type : Sequelize.INTEGER
         },
-        stock_id : {
+        symbol : {
           allowNull : false,
-          type : Sequelize.INTEGER
+          type : Sequelize.TEXT
         },
         portfolio_id : {
           allowNull : false,
@@ -59,13 +59,10 @@ const migration = {
         purchased_at : {
           allowNull : false,
           type : Sequelize.TEXT
-        },
-        sold_at : {
-          type : Sequelize.TEXT
         }
       }, { transaction });
 
-      await queryInterface.createTable('Stock', {
+      await queryInterface.createTable('stock', {
         id : {
           allowNull : false,
           autoIncrement : true,
@@ -86,17 +83,17 @@ const migration = {
         },
       }, { transaction });
 
-      await queryInterface.addConstraint('Portfolio', {
+      await queryInterface.addConstraint('portfolio', {
         fields : ['user_id', 'name'],
         type : 'unique',
         transaction
       });
 
-      await queryInterface.addConstraint('Portfolio', {
+      await queryInterface.addConstraint('portfolio', {
         fields : ['user_id'],
         type: 'foreign key',
         references: {
-          table: 'User',
+          table: 'user',
           field: 'id'
         },
         onDelete: 'cascade',
@@ -104,11 +101,11 @@ const migration = {
         transaction
       });
       
-      await queryInterface.addConstraint('Asset', {
+      await queryInterface.addConstraint('asset', {
         fields : ['portfolio_id'],
         type: 'foreign key',
         references: {
-          table: 'Portfolio',
+          table: 'portfolio',
           field: 'id'
         },
         onDelete: 'cascade',
@@ -116,29 +113,17 @@ const migration = {
         transaction
       });
 
-      await queryInterface.addConstraint('Asset', {
-        fields : ['stock_id'],
-        type: 'foreign key',
-        references: {
-          table: 'Stock',
-          field: 'id'
-        },
-        onDelete: 'cascade', // Should never happen
-        onUpdate: 'cascade',
-        transaction
-      });
-
-      await queryInterface.addIndex('Portfolio', {
+      await queryInterface.addIndex('portfolio', {
         fields : ['user_id'],
         transaction
       });
       
-      await queryInterface.addIndex('Asset', {
+      await queryInterface.addIndex('asset', {
         fields : ['portfolio_id'],
         transaction
       });
 
-      await queryInterface.addIndex('Stock', {
+      await queryInterface.addIndex('stock', {
         fields : ['symbol', 'name'],
         transaction
       });
@@ -155,9 +140,9 @@ const migration = {
     const transaction = await queryInterface.sequelize.transaction();
 
     try {
-      await queryInterface.dropTable('Asset', { transaction });
-      await queryInterface.dropTable('Stock', { transaction });
-      await queryInterface.dropTable('Portfolio', { transaction });
+      await queryInterface.dropTable('asset', { transaction });
+      await queryInterface.dropTable('stock', { transaction });
+      await queryInterface.dropTable('portfolio', { transaction });
       await transaction.commit();
     }
     catch(err){
