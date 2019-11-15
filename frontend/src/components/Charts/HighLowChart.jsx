@@ -31,11 +31,7 @@ class HighLowChart extends Component {
         // So, data is converted to array here
         var chartData = [];
 
-<<<<<<< HEAD
-        Axios.get(`api/alpha/daily/${this.state.symbol}`)
-=======
         Axios.get(`/api/alpha/daily/${this.state.symbol}`)
->>>>>>> d54bab32f68410f186557ecb2c122e4b63092b4c
         .then(res => {
             const { data } = res;
 

@@ -8,7 +8,7 @@ import About from '../components/resources/about';
 import Packages from '../components/landing/packages';
 import SignUp from '../components/auth/signup';
 import Login from '../components/auth/login';
-import GraphExample from "../components/Charts/ExampleCharts";
+import GraphExample from "../components/charts/ExampleCharts";
 
 // Hey Alex/John I added some routes
 // hope you like it
