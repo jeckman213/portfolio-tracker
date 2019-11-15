@@ -1,8 +1,8 @@
 const 
   express   = require('express'),
   router    = express.Router(),
-  Op        = require('../db/models').Sequelize.Op,
   Stock     = require('../db/models').Stock,
+  sequelize     = require('../db/models').sequelize,
   { expectedError, unexpectedError } = require('../services/errorhandling'),
   stockdata = require('../services/stockservice');
 
@@ -32,26 +32,28 @@ const
   // }); 
 
   /* Expects query param 'q' */
-  router.get('/search', (req, res) => {
-    const { q : query } = req.query;
-    Stock.findAll({
-      order : [['symbol']],
-      where : { 
-        [Op.or] : {
-          symbol : {
-            [Op.iRegexp] : `.*${query}.*` 
-          },
-          name : { 
-            [Op.iRegexp] : `.*${query}.*`
-          }
-        }
-      }
-    })
-      .then( stocks => {
-        const matches = stocks ? stocks.slice(0, 5) : [];
-        res.send(matches);
-      })
-      .catch( err => res.send(unexpectedError(err)));
+  router.get('/search', async (req, res) => {
+    try {
+      let { q : query } = req.query;
+      query = query.replace(' ', ' & '); // Format tokens for tsquery
+      query = (query.slice(-1) === ' ') ? query.slice(0, -3) : query; // Remove trailing space
+      const
+        results = query
+          ? await sequelize.query(`
+              SELECT id, symbol, name, exchange
+              FROM ${Stock.tableName}
+              WHERE _search @@ to_tsquery(:query)
+              ORDER BY ts_rank_cd(_search, to_tsquery(:query), 4);
+            `, {
+              model: Stock,
+              replacements: { query : `${query}:*` },
+            })
+          : [],
+        matches = results ? results.slice(0, 10) : [];
+
+      res.send(matches);
+    }
+    catch(err){ res.send(unexpectedError(err, res)); }
   });
 
   router.get('/:id', async (req, res) => {
@@ -59,7 +61,7 @@ const
       { id } = req.params,
       stock = await Stock.findByPk(id);
 
-      res.send(stock ? stock : expectedError(`Stock with id ${id} DNE`));
+      res.send(stock ? stock : expectedError(`Stock with id ${id} DNE`, res, 404));
   });
   
   // Stock intraday call
