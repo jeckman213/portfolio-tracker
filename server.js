@@ -1,19 +1,29 @@
-require('dotenv').config();
+const 
+  /* Import node modules */
+  express    = require('express'),
+  bodyParser = require('body-parser'),
+  sessions   = require('client-sessions'),
+  path       = require('path');
 
-const express = require('express'),
-      bodyParser = require('body-parser'),
-      sessions = require('client-sessions'),
-      path = require('path');
+  /* Import local configurations */
+  port     = process.env.PORT || 5000,
+  db       = require('./db/models'),
+  passport = require('./config/authentication'),
 
-      db = require('./db/models'),
-      passport = require('./config/authentication'),
+  /* Import routes */
+  routes = {};
 
-      stockRoutes = require('./routes/stock')
-      devRoutes = require('./routes/dev'),
-      authRoutes = require('./routes/auth');
-      alphaRoutes = require('./routes/alpha');
+routes.portfolio = require('./routes/portfolio');
+routes.asset     = require('./routes/asset');
+routes.stock     = require('./routes/stock');
+routes.alpha     = require('./routes/alpha');
+routes.user      = require('./routes/user');
+routes.auth      = require('./routes/auth');
+routes.dev       = require('./routes/dev');
 
 const app = express();
+
+require('dotenv').config();
 
       
 
@@ -22,9 +32,11 @@ db.sequelize.authenticate()
   .then( () => console.log('Database connection successful.') )
   .catch( err => console.error('Unable to connect to database:', err) );
 
+/* Configure HTTP body parsing */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+/* Configure session cookies */
 app.use(sessions({
   cookieName : 'session',
   secret : "ladkfjdsa;lfj",
@@ -36,13 +48,18 @@ app.use(sessions({
   // }
 }));
 
+/* Configure passport authentication */
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/api/stock", stockRoutes);
-app.use("/api/test", devRoutes);
-app.use("/api", authRoutes);
-app.use("/api/alpha", alphaRoutes);
+/* Configure routes */
+app.use('/api', routes.auth);
+app.use('/api/stock', routes.stock);
+app.use("/api/alpha", routes.alpha);
+app.use('/api/user', routes.user);
+app.use('/api/user/:userId/portfolio', routes.portfolio);
+app.use('/api/user/:userId/portfolio/:portfolioId/asset', routes.asset);
+app.use('/api/dev', routes.dev);
 
 // Serves the static files from the React App
 app.use(express.static(path.join(__dirname, 'frontend/build')));
@@ -50,6 +67,4 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend/build/index.html'));
 });
 
-app.listen(process.env.PORT || 5000, function(){
-  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
-});
+app.listen(port, console.log(`Listening on port ${port}`));

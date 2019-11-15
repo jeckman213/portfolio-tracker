@@ -1,14 +1,14 @@
 'use strict';
 
 /************************************************
- * Creates Basic Users Table with unique index  *
+ * Creates Basic User Table with unique index   *
  * on username and unique constraint on email   *
  ************************************************/
 const migration = {
   async up(queryInterface, Sequelize){
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      await queryInterface.createTable('User', {
+      await queryInterface.createTable('user', {
         id : {
           allowNull : false,
           autoIncrement : true,
@@ -47,13 +47,13 @@ const migration = {
         }
       }, { transaction });
 
-      await queryInterface.addIndex('User', {
+      await queryInterface.addIndex('user', {
         fields : ['username'],
         unique : true,
         transaction
       });
 
-      await queryInterface.addConstraint('User', ['email'], {
+      await queryInterface.addConstraint('user', ['email'], {
         type : 'unique',
         transaction
       });
@@ -67,7 +67,7 @@ const migration = {
   },
   
   down(queryInterface, Sequelize){
-    return queryInterface.dropTable('User');
+    return queryInterface.dropTable('user');
   }
 };
 
