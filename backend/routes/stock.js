@@ -76,8 +76,9 @@ const
         var model = {
           symbol: data.symbol,
           exchangeShort: data.stock_exchange_short,
-          intraday: Object.values(data.intraday)
+          intraday: data.intraday
         }
+
         res.send(model);
       });
     }

@@ -6,7 +6,7 @@ const
   bodyParser = require('body-parser'),
   sessions   = require('client-sessions'),
 
-  /* Import configurations */
+  /* Import local configurations */
   port     = process.env.PORT || 5000,
   db       = require('./db/models'),
   passport = require('./config/authentication'),
@@ -17,20 +17,25 @@ const
 routes.portfolio = require('./routes/portfolio');
 routes.asset     = require('./routes/asset');
 routes.stock     = require('./routes/stock');
+routes.alpha     = require('./routes/alpha');
 routes.user      = require('./routes/user');
 routes.auth      = require('./routes/auth');
 routes.dev       = require('./routes/dev');
 
 const app = express();
 
+      
+
 /* Confirm connection with Postgres */
 db.sequelize.authenticate()
   .then( () => console.log('Database connection successful.') )
   .catch( err => console.error('Unable to connect to database:', err) );
 
+/* Configure HTTP body parsing */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+/* Configure session cookies */
 app.use(sessions({
   cookieName : 'session',
   secret : process.env.SESSION_SECRET,
@@ -42,11 +47,14 @@ app.use(sessions({
   // }
 }));
 
+/* Configure passport authentication */
 app.use(passport.initialize());
 app.use(passport.session());
 
+/* Configure routes */
 app.use('/api', routes.auth);
 app.use('/api/stock', routes.stock);
+app.use("/api/alpha", routes.alpha);
 app.use('/api/user', routes.user);
 app.use('/api/user/:userId/portfolio', routes.portfolio);
 app.use('/api/user/:userId/portfolio/:portfolioId/asset', routes.asset);
