@@ -3,7 +3,9 @@ const
   router                             = express.Router({ mergeParams : true }),
   { Portfolio, Asset, Stock, sequelize }  = require('../db/models'),
   { expectedError, unexpectedError } = require('../services/errorhandling'),
-  { userMatchesPortfolio, isAuthorized, isAccessible } = require('../middleware');
+  { userMatchesPortfolio, isAuthorized, isAccessible } = require('../middleware'),
+  { getStockValue, getStockValues } = require('../services/stockservice'),
+  { round2Dec } = require('../services/math');
 
 // Portfolio: CREATE - Create a new portfolio
 router.post('/', isAuthorized, async (req, res) => {
@@ -32,28 +34,52 @@ router.post('/', isAuthorized, async (req, res) => {
 router.get('/:portfolioId', userMatchesPortfolio, isAccessible, async (req, res) => {
   try {
     const 
-      { name } = res.locals.portfolio,
+      { name, id : portfolioId } = res.locals.portfolio,
       assetsFound = await Asset.findAll({ where : { portfolioId } }),
-      numStocks = await Asset.findAll({ attributes : [[sequelize.fn('COUNT', sequelize.col('stock_id')), 'numStocks']] }),
-      numShares = await Asset.findAll({ attributes : [[sequelize.fn('SUM', sequelize.col('shares')), 'numShares']] })
-      assets = [];
+      assets = [],
+      portfolioHistorical = {},
+      stocks = {},
+      pieChartData = {};
 
-    // let shares = Portfolio.findAll({
-    //   attributes: [[sequelize.fn('COUNT', sequelize.col('hats')), 'no_hats']]
-    // });       
+    let portfolioValue = 0, portfolioShares = 0;
+    pieChartData.values = [];
+    pieChartData.shares = [];
 
+    // Can probably drastically improve performance with Promise.all()
     for(let assetFound of assetsFound){
       let 
-        { id, shares, purchasedAt, soldAt, stockId } = assetFound,
-        { symbol } = await Stock.findByPk(stockId),
-        asset = { id, shares, purchasedAt, soldAt, symbol };
+        { id, symbol, shares, purchasedAt } = assetFound,
+        value = round2Dec(await getStockValue(symbol) * shares),
+        historical = await getStockValues(symbol, purchasedAt);
 
-        assets.push(asset);
+      if(!stocks[symbol]){ stocks[symbol] = {}; }
+      stocks[symbol].value = stocks[symbol].value ? (stocks[symbol].value + value) : value;
+      stocks[symbol].shares = stocks[symbol].shares ? (stocks[symbol].shares + shares) : shares;
+
+      for(let date in historical){
+        let ph = portfolioHistorical, h = historical;
+        if(!ph[date]){ ph[date] = {}; }
+
+        ph[date].value = ph[date].value ? ((parseFloat(h[date].close) * shares) + parseFloat(ph[date].value)) : (parseFloat(h[date].open) * shares);
+        ph[date].value = round2Dec(ph[date].value)
+      }
+
+      let asset = { id, shares, purchasedAt, symbol, value, historical };
+
+      portfolioValue += asset.value;
+      portfolioShares += asset.shares;
+      assets.push(asset);
     }
 
-    res.send({ name, assets });
+    for(let symbol in stocks){
+      pieChartData.values.push({ name : symbol, y : round2Dec(stocks[symbol].value / portfolioValue) });
+      pieChartData.shares.push({ name : symbol, y : round2Dec(stocks[symbol].shares / portfolioShares) });
+    }
+
+    portfolioValue = round2Dec(portfolioValue);
+    res.send({ name, value : portfolioValue, shares : portfolioShares, assets, historical : portfolioHistorical, pieChartData });
   }
-  catch(err){ res.send(unexpectedError(err)) }
+  catch(err){ res.send(unexpectedError(err, res)) }
 });
 
 // Portfolio: UPDATE - Update an existing portfolio
