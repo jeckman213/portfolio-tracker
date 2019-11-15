@@ -1,10 +1,5 @@
 {
   "name": "portfolios",
-  "description": "Group Z's implementation of Prof Gallo's 418Y (Software Engineering) Course at UAlbany, Fall 2019",
-  "version": "1.0.0",
-  "engines": {
-    "node": "10.16.0"
-  },
   "main": "server.js",
   "scripts": {
     "start": "node -r esm server.js",
@@ -12,16 +7,6 @@
     "client": "npm start --prefix ../frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jeckman213/portfolio-tracker.git"
-  },
-  "author": "Group Z",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/jeckman213/portfolio-tracker/issues"
-  },
-  "homepage": "https://github.com/jeckman213/portfolio-tracker/issues",
   "dependencies": {
     "alphavantage": "^2.0.0",
     "bcrypt": "^3.0.6",
