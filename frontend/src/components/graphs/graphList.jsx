@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import HighLowChart from "./HighLowChart";
-import LineChart from "./LineChart";
-import PieChart from "./PieChart";
+import HighLowChart from "./highLowChart";
+import LineChart from "./lineGraph";
+import PieChart from "./pieGraph";
 
 class Graphs extends Component {
     constructor(props) {
