@@ -9,9 +9,9 @@ functions.expectedError = (failReason, res, status) => {
   }
 };
 
-functions.unexpectedError = (err, res) => {
+functions.unexpectedError = (err, res, status = 500) => {
   console.error(err);
-  res.status(500);
+  res.status(status);
   return {
     success : false,
     failExpected : false,
