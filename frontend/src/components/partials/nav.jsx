@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/auth/authActions';
-import { title, dollar } from "../../assets/styles"
+import { title, dollar } from "../../assets/styles";
+import SearchDropdown from "./dropdownSearch";
 
 const Nav = ({ authenticated, username, logout }) => {
   return (
@@ -17,6 +18,7 @@ const Nav = ({ authenticated, username, logout }) => {
         </div>
       </ul>
       <ul>
+        <li><SearchDropdown /></li>
         <li><Link to="/protected">Protected</Link></li>
         <li><Link to="/">Home</Link></li>
         <li><Link to="/about">About</Link></li>
