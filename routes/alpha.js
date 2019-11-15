@@ -97,6 +97,9 @@ router.get('/monthly/:symbol/:interval?', (req, res) => {
                 adjustedClose: parseFloat( timeSeries[key]['5. adjusted close'] )
             });
         });
+
+        model = model.reverse();
+
         res.send(model);
     });
 });
@@ -106,6 +109,54 @@ router.get('/search/:keyword', (req, res) => {
 
     alpha.stockSearch(keyword, data => {
         var model = data['bestMatches'];
+        res.send(model);
+    });
+});
+
+router.get('/sma/:symbol', (req, res) => {
+    const symbol = req.params.symbol;
+
+    var model = [];
+
+    // NOTE: There are more options you can specify they are just defaulted for now
+    //       See: https://www.npmjs.com/package/alphavantage for more options
+    alpha.getSimpleMovingAverage(symbol, data => {
+        var technical = data['Technical Analysis: SMA'];
+        Object.keys(technical).forEach(key => {
+            model.push({
+                date: key,
+                UTC: Date.parse(key),
+                SMA: parseFloat( technical[key]['SMA'] )
+            });
+        });
+
+        model = model.reverse();
+
+        res.send(model);
+    });
+});
+
+router.get('/macd/:symbol', (req, res) => {
+    const symbol = req.params.symbol;
+
+    var model = [];
+
+    // NOTE: There are more options you can specify they are just defaulted for now
+    //       See: https://www.npmjs.com/package/alphavantage for more options
+    alpha.getMACD(symbol, data => {
+        const technical = data['Technical Analysis: MACD'];
+        Object.keys(technical).forEach(key => {
+            model.push({
+                date: key,
+                UTC: Date.parse(key),
+                signal: parseFloat( technical[key]['MACD_Signal'] ),
+                hist: parseFloat( technical[key]['MACD_Hist'] ),
+                MACD: parseFloat( technical[key]['MACD'] )
+            });
+        });
+
+        model = model.reverse();
+        
         res.send(model);
     });
 });

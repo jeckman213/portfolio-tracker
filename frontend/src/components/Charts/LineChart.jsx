@@ -45,6 +45,8 @@ class LineChart extends Component {
             this.setState({
                 chartOptions: {
                     rangeSelector: {
+                        selected: 0,
+
                         buttons: [{
                             type: 'month',
                             count: 1,
@@ -65,7 +67,6 @@ class LineChart extends Component {
                             type: 'all',
                             text: 'All'
                         }],
-                        selected: 4
                     },
 
                     title: {
