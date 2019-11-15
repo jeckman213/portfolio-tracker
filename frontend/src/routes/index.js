@@ -19,14 +19,9 @@ const Routing = () => (
       <Route exact path='/about' component={ About } />
       <Route exact path='/graphs' component={ GraphExample } />
       <Route exact path='/packages' component={ Packages } />
-<<<<<<< HEAD
       <Route exact path='/signup/:type' component={ SignUp } />
       <Route exact path='/login' component={ Login }/>
       <Route exact path='/app/stock/:symbol' /> 
-=======
-      <Route exact path='/signup' component={ SignUp } />
-      <Route exact path="/login" component={ Login }/>
->>>>>>> d54bab32f68410f186557ecb2c122e4b63092b4c
       <ProtectedRoute exact path="/protected" component={ About }/>
       <Route path='*' component={ () => '404 Not Found' } /> 
     </Switch>
