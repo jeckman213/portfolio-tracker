@@ -50,6 +50,6 @@ app.use('/api/stock', routes.stock);
 app.use('/api/user', routes.user);
 app.use('/api/user/:userId/portfolio', routes.portfolio);
 app.use('/api/user/:userId/portfolio/:portfolioId/asset', routes.asset);
-app.use('/api/test', routes.dev);
+app.use('/api/dev', routes.dev);
 
 app.listen(port, console.log(`Listening on port ${port}`));
