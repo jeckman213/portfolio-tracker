@@ -1,10 +1,10 @@
 {
   "name": "portfolios",
+  "description": "Group Z's implementation of Prof Gallo's 418Y (Software Engineering) Course at UAlbany, Fall 2019",
   "version": "1.0.0",
   "engines": {
     "node": "10.16.0"
   },
-  "description": "Group Z's implementation of Prof Gallo's 418Y (Software Engineering) Course at UAlbany, Fall 2019",
   "main": "server.js",
   "scripts": {
     "start": "node -r esm server.js",
