@@ -108,7 +108,7 @@ router.get('/search/:keyword', (req, res) => {
         var model = data['bestMatches'];
         res.send(model);
     });
-})
+});
 
 module.exports = router;
 
