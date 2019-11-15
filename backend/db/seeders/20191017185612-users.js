@@ -2,7 +2,8 @@
 
 const seeds = {
   up : (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('User', [
+    return queryInterface.bulkInsert('user', 
+    [
       {
         username : 'dev',
         email : 'dev@gmail.com',
@@ -60,7 +61,7 @@ const seeds = {
   },
 
   down : (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('User', null, {});
+    return queryInterface.bulkDelete('user', null, {});
   }
 };
 

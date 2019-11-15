@@ -1,5 +1,6 @@
-const express = require('express'),
-      router = express.Router();
+const
+  express = require('express'),
+  router = express.Router();
 
 router.get('/hello', (req, res) => {
   res.send({ express: 'Sucessfully Connected to Express Server' });

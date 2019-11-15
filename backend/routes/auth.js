@@ -1,8 +1,9 @@
-const express    = require('express'),
-      router     = express.Router(),
-      bcrypt     = require('bcrypt'),
-      passport   = require('passport'),
-      User       = require('../db/models').User;
+const
+  express    = require('express'),
+  router     = express.Router(),
+  bcrypt     = require('bcrypt'),
+  passport   = require('passport'),
+  User       = require('../db/models').User;
 
 // Register Logic
 router.post('/register', async (req, res) => {
