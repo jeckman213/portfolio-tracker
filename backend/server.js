@@ -6,6 +6,7 @@ const
   cors       = require('cors'),
   bodyParser = require('body-parser'),
   sessions   = require('client-sessions'),
+  path       = require('path'),
 
   /* Import local configurations */
   port     = process.env.PORT || 5000,
