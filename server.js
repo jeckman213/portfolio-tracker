@@ -15,6 +15,15 @@ const express = require('express'),
 
 const app = express();
 
+const { Client } = require('pg');
+
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+});
+
+client.connect();
+
 /* Confirm connection with Postgres */
 db.sequelize.authenticate()
   .then( () => console.log('Database connection successful.') )
