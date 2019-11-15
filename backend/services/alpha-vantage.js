@@ -37,3 +37,17 @@ exports.stockSearch = (keywords, callback) => {
         callback(data);
     });
 }
+
+exports.getSimpleMovingAverage = (symbol, callback, interval = "daily", timePeriod = 10, seriesType = "close") => {
+    alpha.technical.sma( symbol, interval, timePeriod, seriesType )
+        .then(data => {
+            callback(data);
+        })
+}
+
+exports.getMACD = (symbol, callback, interval = "daily", seriesType = "close", fastperiod = 12, slowperiod = 26, signalperiod = 9) => {
+    alpha.technical.macd( symbol, interval, seriesType, fastperiod, slowperiod, signalperiod )
+        .then(data => {
+            callback(data);
+        })
+}

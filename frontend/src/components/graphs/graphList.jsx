@@ -16,8 +16,9 @@ class Graphs extends Component {
     render() {
         return(
             <div>
-                <HighLowChart symbol={this.state.symbol} />
 
+                <HighLowChart symbol={this.state.symbol} />
+                
                 <LineChart symbol={this.state.symbol} />
 
                 <PieChart slices={[{

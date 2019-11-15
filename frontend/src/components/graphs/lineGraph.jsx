@@ -29,7 +29,11 @@ class LineChart extends Component {
         // Highcharts/Highstocks needs data in an array format instead of an object
         // So, data is converted to array here
         var chartData = [];
+<<<<<<< HEAD:frontend/src/components/graphs/lineGraph.jsx
         axios.get(`/api/alpha/daily/${this.state.symbol}`)
+=======
+        Axios.get(`/api/alpha/daily/${this.state.symbol}`)
+>>>>>>> master:frontend/src/components/Charts/LineChart.jsx
         .then(res => {
             const { data } = res;
 
@@ -45,6 +49,8 @@ class LineChart extends Component {
             this.setState({
                 chartOptions: {
                     rangeSelector: {
+                        selected: 0,
+
                         buttons: [{
                             type: 'month',
                             count: 1,
@@ -65,7 +71,6 @@ class LineChart extends Component {
                             type: 'all',
                             text: 'All'
                         }],
-                        selected: 4
                     },
 
                     title: {
