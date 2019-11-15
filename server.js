@@ -1,10 +1,9 @@
-require('dotenv').config();
-
 const 
   /* Import node modules */
   express    = require('express'),
   bodyParser = require('body-parser'),
   sessions   = require('client-sessions'),
+  path       = require('path');
 
   /* Import local configurations */
   port     = process.env.PORT || 5000,
@@ -23,6 +22,8 @@ routes.auth      = require('./routes/auth');
 routes.dev       = require('./routes/dev');
 
 const app = express();
+
+require('dotenv').config();
 
       
 
