@@ -1,4 +1,3 @@
-<<<<<<< HEAD:backend/middleware/index.js
 const
   { expectedError, unexpectedError } = require('../services/errorhandling'),
   portfolioMiddleware = require('./portfolio'),
@@ -31,26 +30,3 @@ middleware.isAuthorized = (req, res, next) => {
 }
 
 module.exports = middleware;
-=======
-const middleware = {};
-
-middleware.isAuthenticated = (req, res, next) => {
-  if(req.isAuthenticated()){ return next(); }
-  else {
-    res.status(401);
-    res.send({ 
-      success : false, 
-      failExpected : false,
-      failReason : 'Unauthorized access'
-    });
-  }
-};
-
-// middleware.isNotAuthenticated = (req, res, next) => {
-
-// };
-
-// middleware.ownsPortfolio = (req, res, next) => {
-
-// }
->>>>>>> d54bab32f68410f186557ecb2c122e4b63092b4c:middleware/index.js

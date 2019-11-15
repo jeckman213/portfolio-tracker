@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const 
   /* Import node modules */
-  express    = require('./routes/node_modules/express'),
+  express    = require('express'),
   cors       = require('cors'),
   bodyParser = require('body-parser'),
   sessions   = require('client-sessions'),
@@ -74,4 +74,4 @@ if(process.env.NODE_ENV == 'production'){
   app.get('*', (req, res) => { res.sendFile(path.join(__dirname, '../frontend/build/index.html')); });
 }
 
-app.listen(port, console.log(`Listening on port ${port}`));
+app.listen(port, console.log(`Listening on port ${port} on ${process.env.NODE_ENV || 'devlopment'} mode`));

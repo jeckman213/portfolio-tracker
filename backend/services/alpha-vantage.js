@@ -1,4 +1,4 @@
-const alpha = require('alphavantage').default();
+const alpha = require('alphavantage');
 
 var exports = module.exports = {};
 

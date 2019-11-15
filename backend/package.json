@@ -4,12 +4,10 @@
   "description": "Group Z's implementation of Prof Gallo's 418Y (Software Engineering) Course at UAlbany, Fall 2019",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node -r esm server.js",
     "server": "nodemon -r esm server.js",
-    "client": "npm start --prefix frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "prod": "node -r esm server.js",
-    "heroku-postbuild": "cd frontend && npm install && npm run-script build"
+    "client": "npm start --prefix ../frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
