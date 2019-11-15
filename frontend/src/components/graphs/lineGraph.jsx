@@ -29,11 +29,7 @@ class LineChart extends Component {
         // Highcharts/Highstocks needs data in an array format instead of an object
         // So, data is converted to array here
         var chartData = [];
-<<<<<<< HEAD:frontend/src/components/graphs/lineGraph.jsx
         axios.get(`/api/alpha/daily/${this.state.symbol}`)
-=======
-        Axios.get(`/api/alpha/daily/${this.state.symbol}`)
->>>>>>> master:frontend/src/components/Charts/LineChart.jsx
         .then(res => {
             const { data } = res;
 

@@ -20,11 +20,7 @@ const Routing = () => (
       <Route exact path='/signup/:type' component={ SignUp } />
       <Route exact path='/login' component={ Login }/>
       <Route exact path='/app/stock/:symbol' /> 
-<<<<<<< HEAD
       <ProtectedRoute exact path='/protected' component={ About }/>
-=======
-      <ProtectedRoute exact path="/protected" component={ About }/>
->>>>>>> master
       <Route path='*' component={ () => '404 Not Found' } /> 
     </Switch>
   </div>    
