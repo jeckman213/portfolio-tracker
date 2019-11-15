@@ -26,7 +26,7 @@ middleware.userMatchesPortfolio = async (req, res, next) => {
 middleware.isAccessible = async (req, res, next) => {
   try {
     const 
-      { public, userId : ownerId } = req.portfolio,
+      { public, userId : ownerId } = res.locals.portfolio,
       currentUserId = req.isAuthenticated() ? req.user.id : null;
     
     public || currentUserId === ownerId
