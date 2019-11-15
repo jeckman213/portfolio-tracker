@@ -1,13 +1,15 @@
 {
   "name": "portfolios",
   "version": "1.0.0",
-  "description": "Group Z's implementation of Prof Gallo's 418Y (Software Engineering) Course at UAlbany, Fall 2020",
+  "description": "Group Z's implementation of Prof Gallo's 418Y (Software Engineering) Course at UAlbany, Fall 2019",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "server": "nodemon -r esm server.js",
-    "client": "npm start --prefix ../frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "prod": "node -r esm server.js",
+    "heroku-postbuild": "cd frontend && npm install && npm run-script build"
   },
   "repository": {
     "type": "git",
@@ -18,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/jeckman213/portfolio-tracker/issues"
   },
-  "homepage": "https://github.com/aDevCalledAlex/YelpCamp#readme",
+  "homepage": "https://github.com/jeckman213/portfolio-tracker/issues",
   "dependencies": {
     "alphavantage": "^2.0.0",
     "bcrypt": "^3.0.6",
@@ -28,6 +30,7 @@
     "dotenv": "^8.1.0",
     "esm": "^3.2.25",
     "express": "^4.16.4",
+    "heroku": "^7.34.2",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "pg": "^7.12.1",

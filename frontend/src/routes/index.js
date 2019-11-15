@@ -7,7 +7,8 @@ import Main from '../components/landing/main';
 import About from '../components/resources/about';
 import Packages from '../components/landing/packages';
 import SignUp from '../components/auth/signup';
-import Login from '../components/auth/login'
+import Login from '../components/auth/login';
+import GraphExample from "../components/Charts/ExampleCharts";
 
 // Hey Alex/John I added some routes
 // hope you like it
@@ -16,10 +17,16 @@ const Routing = () => (
     <Switch>
       <Route exact path='/' component={ Main } />
       <Route exact path='/about' component={ About } />
+      <Route exact path='/graphs' component={ GraphExample } />
       <Route exact path='/packages' component={ Packages } />
+<<<<<<< HEAD
       <Route exact path='/signup/:type' component={ SignUp } />
       <Route exact path='/login' component={ Login }/>
       <Route exact path='/app/stock/:symbol' /> 
+=======
+      <Route exact path='/signup' component={ SignUp } />
+      <Route exact path="/login" component={ Login }/>
+>>>>>>> d54bab32f68410f186557ecb2c122e4b63092b4c
       <ProtectedRoute exact path="/protected" component={ About }/>
       <Route path='*' component={ () => '404 Not Found' } /> 
     </Switch>
