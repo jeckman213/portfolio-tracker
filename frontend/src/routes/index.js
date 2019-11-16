@@ -9,6 +9,7 @@ import Packages from '../components/landing/packages';
 import SignUp from '../components/auth/signup';
 import Login from '../components/auth/login';
 import Graphs from '../components/graphs/graphList';
+import PortfolioPage from '../components/portfolio/PortfolioPage';
 
 const Routing = () => (
   <div>
@@ -17,9 +18,10 @@ const Routing = () => (
       <Route exact path='/about' component={ About } />
       <Route exact path='/graphs' component={ Graphs } />
       <Route exact path='/packages' component={ Packages } />
-      <Route exact path='/signup/:type' component={ SignUp } />
+      <Route exact path='/signup' component={ SignUp } />
       <Route exact path='/login' component={ Login }/>
       <Route exact path='/app/stock/:symbol' /> 
+      <Route exact path='/portfolio' component= { PortfolioPage } />
       <ProtectedRoute exact path='/protected' component={ About }/>
       <Route path='*' component={ () => '404 Not Found' } /> 
     </Switch>
