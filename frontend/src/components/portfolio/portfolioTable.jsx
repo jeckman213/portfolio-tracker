@@ -21,6 +21,8 @@ class PortfolioTable extends Component {
                     <td>{ this.state.stocks[i]["shares"] }</td>
                     <td>{ this.state.stocks[i]["purchasedAt"] }</td>
                     <td>{ this.state.stocks[i]["value"].toFixed(2) }</td>
+                    <td><button>Edit</button></td>
+                    <td><button>Delete</button></td>
                 </tr>
             )
         }
@@ -31,13 +33,17 @@ class PortfolioTable extends Component {
     render() {
         return(
             <table className="portfolio-table">
-                <tr>
-                    <th>Symbol</th>
-                    <th>Shares</th>
-                    <th>Purchase Date</th>
-                    <th>Total Value</th>
-                </tr>
-                { this.printStocks() }
+                <tbody>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Shares</th>
+                        <th>Purchase Date</th>
+                        <th>Total Value</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    { this.printStocks() }
+                </tbody>
             </table>
         )
     }

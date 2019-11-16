@@ -623,6 +623,14 @@ section div form {
   width: auto !important;
 }
 
+.portfolio-page {
+  text-align: center;
+}
+
+.portfolio-head-text {
+  text-align: start;
+}
+
 .portfolio-table {
   width: 100%;
 }
