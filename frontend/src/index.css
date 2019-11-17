@@ -10,6 +10,11 @@ body {
   margin: 0 auto !important;
 }
 
+a {
+  color: inherit;
+  text-decoration: inherit; /* no underline */
+}
+
 label {
   margin-bottom: 10px !important;
 }

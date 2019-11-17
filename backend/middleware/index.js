@@ -22,7 +22,7 @@ middleware.isAuthorized = (req, res, next) => {
   if(req.isAuthenticated()){
     const { userId } = req.params;
 
-    req.user.id === userId 
+    req.user.id == userId 
       ? next()
       : res.send(expectedError('Unauthorized access', res, 403));
   }

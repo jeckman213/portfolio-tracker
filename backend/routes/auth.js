@@ -95,7 +95,8 @@ router.post('/login', (req, res, next) => {
       /* User logged in successfully, req.user now has user details */
       return res.send({
         success : true,
-        username : user.username
+        username : user.username,
+        id : user.id
       });
 
     });
