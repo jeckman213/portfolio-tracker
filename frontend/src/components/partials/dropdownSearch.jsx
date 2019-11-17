@@ -34,7 +34,7 @@ class DropdownSearch extends Component {
       res = await axios.get(`/api/stock/search?${queryString}`),
       results = res.data;
 
-    console.log(query, ' : ', results);
+    // console.log(query, ' : ', results);
     this.setState({ results })
   }
 
@@ -72,7 +72,7 @@ class DropdownSearch extends Component {
           </ul>
         }
         { redirect &&
-          <Redirect to={ `/app/stock/${symbol}` } ></Redirect>
+          <Redirect to={ `/stock/${symbol}` } ></Redirect>
         }
       </div>
     )
