@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { isNullOrUndefined } from 'util';
 
 import PieGraph from '../graphs/pieGraph';
 import PortfolioTable from "./portfolioTable";
@@ -16,16 +15,16 @@ class PortfolioPage extends Component {
     constructor(props) {
         super(props);
 
-        var userID, portfolioID;
+        const { match: { params } } = this.props;
 
-        if (isNullOrUndefined(this.props.userID)) userID = 1;
-        if (isNullOrUndefined(this.props.portfolioID)) portfolioID = 1;
+        const { userid, portid } = params;
+
 
         this.state = {
             currentGraph: 0,
             isLoading: true,
-            userID: userID,
-            portfolioID: portfolioID
+            userID: userid,
+            portfolioID: portid
         }
 
         this.changeGraph = this.changeGraph.bind(this);

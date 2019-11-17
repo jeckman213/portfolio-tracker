@@ -21,7 +21,7 @@ const Routing = () => (
       <Route exact path='/signup' component={ SignUp } />
       <Route exact path='/login' component={ Login }/>
       <Route exact path='/app/stock/:symbol' /> 
-      <Route exact path='/portfolio' component= { PortfolioPage } />
+      <Route exact path='/user/:userid/portfolio/:portid' component= { PortfolioPage }/>
       <ProtectedRoute exact path='/protected' component={ About }/>
       <Route path='*' component={ () => '404 Not Found' } /> 
     </Switch>
