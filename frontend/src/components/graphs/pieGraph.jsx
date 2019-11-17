@@ -43,7 +43,25 @@ class PieChart extends Component {
                 series: [{
                     colorByPoint: true,
                     data: this.props.slices
-                }]
+                }],
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 500
+                        },
+                        chartOptions: {
+                            chart: {
+                                height: 300
+                            },
+                            subtitle: {
+                                text: null
+                            },
+                            navigator: {
+                                enabled: false
+                            }
+                        }
+                    }]
+                }
             },
         });
     }
