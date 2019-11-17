@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { dollar } from "../../assets/styles";
+
 class PortfolioTable extends Component {
     constructor(props) {
         super(props);
@@ -16,14 +18,14 @@ class PortfolioTable extends Component {
 
         for(let i = 0; i < this.state.stocks.length; i++) {
             tableData.push(
-                <tr>
-                    <td>{ this.state.stocks[i]["symbol"] }</td>
-                    <td>{ this.state.stocks[i]["shares"] }</td>
-                    <td>{ this.state.stocks[i]["purchasedAt"] }</td>
-                    <td>{ this.state.stocks[i]["value"].toFixed(2) }</td>
-                    <td><button>Edit</button></td>
-                    <td><button>Delete</button></td>
-                </tr>
+                    <tr>
+                        <td>{ this.state.stocks[i]["symbol"] }</td>
+                        <td><input type="text" value={ this.state.stocks[i]["shares"] } className="portfolio-table-input" readOnly={true}/></td>
+                        <td><input type="text" value={ this.state.stocks[i]["purchasedAt"] } className="portfolio-table-input" readOnly={true}/></td>
+                        <td><span style={ dollar }>$</span>{ this.state.stocks[i]["value"].toFixed(2) }</td>
+                        <td><button className="button-link blue"><i className="fas fa-edit"></i></button></td>
+                        <td><button className="button-link red"><i className="fas fa-trash"></i></button></td>
+                    </tr>
             )
         }
 

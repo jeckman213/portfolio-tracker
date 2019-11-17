@@ -18,8 +18,8 @@ class PortfolioPage extends Component {
 
         var userID, portfolioID;
 
-        if (isNullOrUndefined(this.props.userID)) userID = 1;
-        if (isNullOrUndefined(this.props.portfolioID)) portfolioID = 1;
+        if (isNullOrUndefined(this.props.userID)) userID = 4;
+        if (isNullOrUndefined(this.props.portfolioID)) portfolioID = 7;
 
         this.state = {
             currentGraph: 0,
@@ -60,7 +60,7 @@ class PortfolioPage extends Component {
         if (!isLoading) {
             var graph = <h1>There was a problem</h1>;
             if (currentGraph === 0) {
-                graph = <PieGraph slices={getPercentages(assets)} />
+                graph = <PieGraph slices={getPercentages(assets)} chartTitle={`${name} Assets`} />
             }
             else {
                 graph = <PortfolioValueGraph data={historical} name={name} />
