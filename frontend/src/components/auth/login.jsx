@@ -28,9 +28,9 @@ class Login extends Component {
 
   render() {
     const 
-      { loggingIn, authenticated, 
+      { loggingIn, authenticated, username,
         loginFailed, failExpected, failReason } = this.props,
-      { from } = this.props.location.state || { from : { pathname : '/about' } };
+      { from } = this.props.location.state || { from : { pathname : `/user/${username}` } };
 
     if(authenticated){
       return ( <Redirect to={ from } /> );
@@ -71,12 +71,14 @@ class Login extends Component {
 
 // Bring auth reducer state into this file. Accessed through this.props
 const mapStateToProps = (state) => {
-  const { loggingIn, authenticated, 
-    loginFailed, failExpected, failReason } = state.authentication;
+  const 
+    { loggingIn, authenticated, username,
+      loginFailed, failExpected, failReason } = state.authentication;
   
     return {
       loggingIn,
       authenticated,
+      username,
       loginFailed,
       failExpected,
       failReason
