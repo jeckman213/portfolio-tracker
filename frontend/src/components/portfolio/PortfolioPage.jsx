@@ -18,8 +18,8 @@ class PortfolioPage extends Component {
 
         var userID, portfolioID;
 
-        if (isNullOrUndefined(this.props.userID)) userID = 4;
-        if (isNullOrUndefined(this.props.portfolioID)) portfolioID = 7;
+        if (isNullOrUndefined(this.props.userID)) userID = 1;
+        if (isNullOrUndefined(this.props.portfolioID)) portfolioID = 1;
 
         this.state = {
             currentGraph: 0,

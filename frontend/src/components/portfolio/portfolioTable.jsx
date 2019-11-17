@@ -11,6 +11,16 @@ class PortfolioTable extends Component {
         }
 
         this.printStocks = this.printStocks.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
+    }
+
+    handleEdit = (event) => {
+        var id = event.target.id;
+        const shareId = id.replace('edit', 'shares');
+        const dateId = id.replace('edit', 'date');
+
+        document.getElementById(shareId).readOnly = false;
+        document.getElementById(dateId).readOnly = false;
     }
 
     printStocks = () => {
@@ -18,12 +28,12 @@ class PortfolioTable extends Component {
 
         for(let i = 0; i < this.state.stocks.length; i++) {
             tableData.push(
-                    <tr>
+                    <tr id={'row' + i}>
                         <td>{ this.state.stocks[i]["symbol"] }</td>
-                        <td><input type="text" value={ this.state.stocks[i]["shares"] } className="portfolio-table-input" readOnly={true}/></td>
-                        <td><input type="text" value={ this.state.stocks[i]["purchasedAt"] } className="portfolio-table-input" readOnly={true}/></td>
+                        <td><input id={'shares' + i} type="text"  defaultValue={ this.state.stocks[i]["shares"] } className="portfolio-table-input" readOnly={true}/></td>
+                        <td><input id={'date' + i} type="date" defaultValue={ this.state.stocks[i]["purchasedAt"] } className="portfolio-table-input" readOnly={true}/></td>
                         <td><span style={ dollar }>$</span>{ this.state.stocks[i]["value"].toFixed(2) }</td>
-                        <td><button className="button-link blue"><i className="fas fa-edit"></i></button></td>
+                        <td><button className="button-link blue" onClick={this.handleEdit}><i id={'edit' + i} className="fas fa-edit"></i></button></td>
                         <td><button className="button-link red"><i className="fas fa-trash"></i></button></td>
                     </tr>
             )
