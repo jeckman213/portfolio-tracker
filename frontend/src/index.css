@@ -271,7 +271,7 @@ footer *{
 footer ul {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  width: 20%;
+  width: 40%;
 }
 
 footer ul li {

@@ -21,6 +21,7 @@ const Nav = ({ authenticated, username, logout }) => {
         <li><SearchDropdown /></li>
         <li><Link to="/protected">Protected</Link></li>
         <li><Link to="/">Home</Link></li>
+        <li><Link to="/dashboard">Dashboard</Link></li>
         <li><Link to="/about">About</Link></li>
         <li><Link to="/graphs">Examples</Link></li>
         { authenticated 

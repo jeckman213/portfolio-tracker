@@ -1,4 +1,4 @@
-{ 
+{
   "name": "portfolios",
   "description": "Group Z's implementation of Prof Gallo's 418Y (Software Engineering) Course at UAlbany, Fall 2019",
   "version": "0.1.0",
@@ -19,5 +19,8 @@
   "scripts": {
     "start": "cd backend && npm install && node -r esm server.js",
     "heroku-postbuild": "cd frontend && npm install && npm run build"
+  },
+  "dependencies": {
+    "react-transition-group": "^4.3.0"
   }
 }

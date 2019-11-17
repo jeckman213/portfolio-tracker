@@ -9,6 +9,7 @@ import Packages from '../components/landing/packages';
 import SignUp from '../components/auth/signup';
 import Login from '../components/auth/login';
 import Graphs from '../components/graphs/graphList';
+import dash from '../components/landing/dash';
 
 const Routing = () => (
   <div>
@@ -17,6 +18,7 @@ const Routing = () => (
       <Route exact path='/about' component={ About } />
       <Route exact path='/graphs' component={ Graphs } />
       <Route exact path='/packages' component={ Packages } />
+      <Route exact path='/dashboard' component={ dash}/>
       <Route exact path='/signup/:type' component={ SignUp } />
       <Route exact path='/login' component={ Login }/>
       <Route exact path='/app/stock/:symbol' /> 

@@ -1,0 +1,26 @@
+// Colors
+$black: #222222;
+$blue-gray: #282c34;
+$light-gray: #eeeeee;
+$med-gray: #cccccc;
+$text-gray: #888888;
+$react-blue: #61dafb;
+$yellow: #ffc600;
+$green: #4caf50;
+$invalid: #cccccc;
+
+// Default Width
+$container-width: 1000px;
+
+// Media Queries
+@mixin bp($point) {
+  @if $point == med {
+    @media (min-width: 768px) {
+      @content;
+    }
+  } @else if $point == small {
+    @media (min-width: 360px) {
+      @content;
+    }
+  }
+}
