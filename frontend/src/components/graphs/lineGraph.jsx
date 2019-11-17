@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts/highstock';
 import PropTypes from 'prop-types';
-import Axios from 'axios';
+import axios from 'axios';
 
 import loading from '../../assets/loading.svg';
 import { isNullOrUndefined } from 'util';
@@ -29,7 +29,7 @@ class LineChart extends Component {
         // Highcharts/Highstocks needs data in an array format instead of an object
         // So, data is converted to array here
         var chartData = [];
-        Axios.get(`/api/alpha/daily/${this.state.symbol}`)
+        axios.get(`api/alpha/daily/${this.state.symbol}`)
         .then(res => {
             const { data } = res;
 
@@ -45,6 +45,8 @@ class LineChart extends Component {
             this.setState({
                 chartOptions: {
                     rangeSelector: {
+                        selected: 0,
+
                         buttons: [{
                             type: 'month',
                             count: 1,
@@ -65,7 +67,6 @@ class LineChart extends Component {
                             type: 'all',
                             text: 'All'
                         }],
-                        selected: 4
                     },
 
                     title: {

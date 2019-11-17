@@ -7,6 +7,8 @@ import Axios from 'axios';
 import { isNullOrUndefined } from 'util';
 import loading from '../../assets/loading.svg';
 
+require('highcharts/indicators/indicators-all')(Highcharts);
+
 // High-Low Charts for displaying information about a stock
 // Gets passed 1 prop:
 // symbol - the stock symbol for the desired stock
@@ -31,7 +33,7 @@ class HighLowChart extends Component {
         // So, data is converted to array here
         var chartData = [];
 
-        Axios.get(`/api/alpha/daily/${this.state.symbol}`)
+        Axios.get(`api/alpha/daily/${this.state.symbol}`)
         .then(res => {
             const { data } = res;
 
@@ -48,15 +50,51 @@ class HighLowChart extends Component {
                     chartOptions: {
                         
                         rangeSelector: {
-                            selected: 1
+                            selected: 0
                         },
                 
                         title: {
                             text: `${this.state.symbol} High-Low`
                         },
+
+                        legend: {
+                            enabled: true
+                        },
+                
+                        plotOptions: {
+                            series: {
+                                showInLegend: true
+                            }
+                        },
+
+                        yAxis: [{
+                            height: '75%',
+                            resize: {
+                                enabled: true
+                            },
+                            labels: {
+                                align: 'right',
+                                x: -3
+                            },
+                            title: {
+                                text: `${this.state.symbol}`
+                            }
+                        }, {
+                            top: '75%',
+                            height: '25%',
+                            labels: {
+                                align: 'right',
+                                x: -3
+                            },
+                            offset: 0,
+                            title: {
+                                text: 'MACD'
+                            }
+                        }],
                 
                         series: [{
                             type: 'candlestick',
+                            id: 'stock',
                             name: `${this.state.symbol}`,
                             data: chartData,
                             dataGrouping: {
@@ -73,11 +111,19 @@ class HighLowChart extends Component {
                                     ]
                                 ]
                             }
+                        }, {
+                            linkedTo: 'stock',
+                            type: 'sma',
+                            visible: false
+                        }, {
+                            linkedTo: 'stock',
+                            type: 'macd',
+                            yAxis: 1,
+                            visible: false
                         }]
                     },
                     isLoading: false
                 });
-
         })
         .catch(error => {
             console.error(error);
