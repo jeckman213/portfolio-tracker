@@ -16,6 +16,11 @@ class StockPage extends Component {
     this.changeGraph = this.changeGraph.bind(this);
   }
 
+  componentDidMount(){
+    const { symbol } = this.props.match.params;
+    this.setState({ symbol })
+  }
+
   changeGraph = (value) => {
     this.setState({ graphOption : value });
   }
