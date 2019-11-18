@@ -1,23 +1,41 @@
 import React, { Component } from 'react'
 import LineGraph from '../graphs/lineGraph'
 import HighLowChart from '../graphs/highLowChart'
+import Header from './stockPageHeader';
 
 class StockPage extends Component {
   constructor(props){
     super(props);
     const { symbol } = this.props.match.params;
     this.state = {
-      symbol
+      symbol,
+      // 0 => Line; 1 => High-Low
+      graphOption: 0,
     }
+    
+    this.changeGraph = this.changeGraph.bind(this);
+  }
+
+  changeGraph = (value) => {
+    this.setState({ graphOption : value });
   }
   
   render() {
-    const { symbol } = this.state;
+    const { symbol, graphOption, price } = this.state;
     return (
       <div>
-        <h1>{ symbol }</h1>
-        <HighLowChart symbol={ symbol }/>
-        <LineGraph symbol={ symbol }/>
+        {graphOption === 1 
+        ?
+        <div>
+          <HighLowChart symbol={ symbol }/>
+          <Header name={ symbol } view={ this.changeGraph }/>
+          </div>
+        :
+        <div>
+          <LineGraph symbol={ symbol }/>
+          <Header name={ symbol } value={ price } view={ this.changeGraph }/>
+          </div>
+        }
       </div>
     )
   }

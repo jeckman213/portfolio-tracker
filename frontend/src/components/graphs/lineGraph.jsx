@@ -29,7 +29,7 @@ class LineChart extends Component {
         // Highcharts/Highstocks needs data in an array format instead of an object
         // So, data is converted to array here
         var chartData = [];
-        axios.get(`api/alpha/daily/${this.state.symbol}`)
+        axios.get(`/api/alpha/daily/${this.state.symbol}`)
         .then(res => {
             const { data } = res;
 
@@ -40,6 +40,7 @@ class LineChart extends Component {
                 });
             } else {
                 console.error(data.Note);
+                this.setState({callsFlag: true, isLoading: false})
             }
 
             this.setState({
@@ -112,7 +113,7 @@ class LineChart extends Component {
     }
 
     render() {
-        const { chartOptions, isLoading } = this.state;
+        const { chartOptions, isLoading, callsFlag } = this.state;
 
         return(
                     <div className='chart'>
@@ -126,8 +127,17 @@ class LineChart extends Component {
                         {isLoading &&
                             <img className='isLoading' src={loading} alt="Loading..." />
                         }
+                        {callsFlag &&
+                            <h1 style={ style.callsFlag }>Too many calls at once</h1>
+                        }
                     </div>
         )
+    }
+}
+
+const style = {
+    callsFlag: {
+        textAlign: 'center'
     }
 }
 
