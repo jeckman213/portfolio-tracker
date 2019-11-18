@@ -2,32 +2,34 @@
 
 import React from 'react';
 import { slide as Menu } from 'react-burger-menu';
+import classNames from 'classnames';
 
 export default props => {
   return (
-    <Menu>
+    <Menu width={ '16%' } > 
+    
       <a className="menu-item" href="/">
         Home
       </a>
 
       <a className="menu-item" href="/about">
-        about
+        About
       </a>
 
       <a className="menu-item" href="/login">
-      login
+      Login
       </a>
 
       <a className="menu-item" href="/packages">
-      packages
+      Packages
       </a>
 
-      <a className="menu-item" href="/vue">
-        Vue
+      <a className="menu-item" href="/Share">
+        Share
       </a>
 
-      <a className="menu-item" href="/node">
-        Node
+      <a className="menu-item" href="/Help">
+        Help
       </a>
     </Menu>
   );
