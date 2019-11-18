@@ -53,21 +53,24 @@ class DropdownSearch extends Component {
       style = this.style,
       { query, results, redirect, symbol } = this.state,
       resultItems = this.state.results.map( result => {
-        const 
+        let 
           { id, symbol, name} = result,
-          text = `${symbol} - ${name}`;
+          maxLength = 40;
+        name = name.length > maxLength ? name.slice(0, 15) + '...' : name; 
+        const text = `[${symbol}] - ${name}`;
         return (
           <li style={ style.li } key={ id }><Link to={ `/stock/${symbol}` }>{ text }</Link></li>
         )
       });
 
     return (
-      <div style={ style.div }>
-        <form onSubmit={ this.onSubmit }>
-          <input type="text" name="search" placeholder="Search for a Stock" onChange={ this.onChange }></input>
+      <div>
+        <form onSubmit={ this.onSubmit } autocomplete="off">
+          <input autocomplete="false" name="hidden" type="text" style={{ display : 'none'}}></input>
+          <input style={ style.search } type="text" name="search" placeholder="Search for a Stock" onChange={ this.onChange }></input>
         </form>
         { query && 
-          <ul>
+          <ul style={ style.ul }>
             { results ? resultItems : <li>No results found</li> }
           </ul>
         }
@@ -79,10 +82,25 @@ class DropdownSearch extends Component {
   }
 
   style = {
-    div : {
+    search : {
+      padding : '12px',
+      borderRadius : '15px',
+      outline : 'none',
+      border : 'none',
+      WebkitAppearance: 'none',
+      fontSize : '20px'
+    },
+    ul : {
+      display : 'flex',
+      flexDirection : 'column',
+      justifyContent : 'flex-start',
+      alignItems : 'flex-start',
+      borderRadius : '15px',
+      padding : '2rem',
       backgroundColor : colors.darkBlue,
-      position: 'relative',
-      top: '10px'
+      zIndex : '99',
+      position: 'absolute',
+      top: '8rem'
     },
 
     li : {
