@@ -17,4 +17,8 @@ router.get('/auth', (req, res) => {
   })
 });
 
+router.get('/query', (req, res) => {
+  res.send(req.query);
+});
+
 module.exports = router;

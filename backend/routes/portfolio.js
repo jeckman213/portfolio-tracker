@@ -1,7 +1,7 @@
 const 
   express                            = require('express'),
   router                             = express.Router({ mergeParams : true }),
-  { Portfolio, Asset, Stock, sequelize }  = require('../db/models'),
+  { User, Portfolio, Asset }  = require('../db/models'),
   { expectedError, unexpectedError } = require('../services/errorhandling'),
   { userMatchesPortfolio, isAuthorized, isAccessible } = require('../middleware'),
   { getStockValue, getStockValues } = require('../services/stockservice'),
