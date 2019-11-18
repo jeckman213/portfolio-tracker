@@ -617,6 +617,10 @@ section div form {
     grid-template-columns: 1fr !important;
     width: 50% !important;
   }
+
+  .faqQuestion {
+    text-align: center;
+  }
 }
 
 .chart {

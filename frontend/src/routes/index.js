@@ -7,6 +7,7 @@ import Main from '../components/landing/main';
 import About from '../components/resources/about';
 import Packages from '../components/landing/packages';
 import SignUp from '../components/auth/signup';
+import Help from '../components/resources/help';
 import Login from '../components/auth/login';
 import Graphs from '../components/graphs/graphList';
 import PortfolioPage from '../components/crud/portfolio/portfolioPage';
@@ -19,7 +20,8 @@ const Routing = () => (
       <Route exact path='/about' component={ About } />
       <Route exact path='/graphs' component={ Graphs } />
       <Route exact path='/packages' component={ Packages } />
-      <Route exact path='/signup' component={ SignUp } />
+      <Route exact path="/help" component={ Help }/>
+      <Route exact path='/signup/:type' component={ SignUp } />
       <Route exact path='/login' component={ Login }/>
       <Route exact path='/user/:username' component={ UserPage} /> 
       <Route exact path='/user/:username/portfolio/:portfolioName' component={ PortfolioPage} /> 
