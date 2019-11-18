@@ -71,7 +71,7 @@ const Container = ({ location }) => {
   };
 
   // api key stored in .env file which is not committed
-  const apiKey = "ooB5SPAbWtKhMwVa8dzlcuombZpjbXwoYvkt2YXH8EULTX5AFVfiUYgalfpe";
+  const apiKey = "6ccQMwSsm5eZyDPPs6mcOpavXX1cGHuDE1MApigWQBy296KVX6DOfgzNLpxy";
   // colors used throughout app
   const upColor = '#1ac567';
   const downColor = '#ff333a';
