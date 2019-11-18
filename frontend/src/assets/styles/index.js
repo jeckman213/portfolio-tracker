@@ -13,7 +13,8 @@ const dollar = {
 const subtitle = {
   fontFamily : Fonts.subtitle,
   color : 'black', // White when background changes
-  fontSize : '1.4rem'
+  fontSize : '2.4rem',
+  marginTop : '3rem'
 }
 
 export { title, dollar, subtitle };

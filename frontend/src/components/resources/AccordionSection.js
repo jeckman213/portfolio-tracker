@@ -24,7 +24,7 @@ class AccordionSection extends Component {
         style={{
           background: isOpen ? '#1A202C' : '#1A202C',
           border: '2px solid #92FE9D',
-          padding: '5px 10px',
+          padding: '2rem 1rem',
           borderRadius: '25px',
           marginBottom: 10
         }}
@@ -42,7 +42,7 @@ class AccordionSection extends Component {
               background: '#1A202C',
               border: '2px solid #92FE9D',
               marginTop: 10,
-              padding: '10px 20px',
+              padding: '2rem 1rem',
               borderRadius: '25px'
             }}
           >

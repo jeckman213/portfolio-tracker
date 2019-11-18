@@ -41,7 +41,7 @@ nav ul li a {
 
 nav ul:last-of-type li a {
   text-decoration: none;
-  font-size: 1.9rem;
+  font-size: 1.2rem;
 }
 
 nav ul:first-of-type li{
@@ -58,7 +58,7 @@ nav ul:last-of-type li {
 }
 
 nav ul:first-of-type li a {
-  font-size: 2.3rem;
+  font-size: 1.7rem;
   text-decoration: none;
 }
 
@@ -74,7 +74,7 @@ header {
   height: 600px;
   background: url("./assets/images/Back2.jpg"); 
   background-size: 100%;
-  padding-top: 150px;
+  padding-top: 6rem;
   position: relative;
   color: #000000;
 }
@@ -264,7 +264,7 @@ section.intro {
 }
 
 footer {
-  padding: 400px 0;
+  padding-top: 5rem;
   text-align: center;
 }
 
@@ -276,7 +276,7 @@ footer {
 
 footer ul {
   
-  display:inline;
+  display: inline;
   text-align: center;
   grid-template-columns: repeat(3, 1fr);
   width: 40%;
@@ -285,15 +285,12 @@ footer ul {
 
 
 footer ul li {
-  text-align: center;
   list-style: none;
 }
 
 footer ul li a {
-  display: block;
   font-size: 1.4rem;
   color: #fff;
-  text-align: center;
 }
 
 section div form {

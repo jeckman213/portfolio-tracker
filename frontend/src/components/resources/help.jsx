@@ -56,9 +56,6 @@ class Help extends Component {
                         </Accordion>
                     </div>
                 </div>
-
-                
-
             </section>
 
         );
