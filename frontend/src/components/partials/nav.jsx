@@ -19,14 +19,12 @@ const Nav = ({ authenticated, username, logout }) => {
       </ul>
       <ul>
         <li><SearchDropdown /></li>
-        <li><Link to="/protected">Protected</Link></li>
-        <li><Link to="/">Home</Link></li>
         <li><Link to="/dashboard">Dashboard</Link></li>
+        <li><Link to="/help">Help</Link></li>
         <li><Link to="/about">About</Link></li>
-        <li><Link to="/graphs">Examples</Link></li>
         { authenticated 
             ? <React.Fragment>
-                <li>{ username }</li>
+                <li><Link to={ `/user/${username}` }>{ username }</Link></li>
                 <li><Link to="/" onClick={ logout }>Logout</Link></li>
               </React.Fragment>
             : <React.Fragment>

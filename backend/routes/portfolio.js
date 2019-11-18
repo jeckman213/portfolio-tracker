@@ -1,7 +1,7 @@
 const 
   express                            = require('express'),
   router                             = express.Router({ mergeParams : true }),
-  { Portfolio, Asset, Stock, sequelize }  = require('../db/models'),
+  { User, Portfolio, Asset }  = require('../db/models'),
   { expectedError, unexpectedError } = require('../services/errorhandling'),
   { userMatchesPortfolio, isAuthorized, isAccessible } = require('../middleware'),
   { getStockValue, getStockValues } = require('../services/stockservice'),
@@ -11,7 +11,7 @@ const
 router.post('/', isAuthorized, async (req, res) => {
   try {
     const 
-      { name, public } = req.body,
+      { name, isPublic : public } = req.body,
       { userId } = req.params,
       newPortfolio = { name, userId, public },
       createdPortfolio = await Portfolio.create(newPortfolio);
@@ -101,10 +101,10 @@ router.put('/:portfolioId', userMatchesPortfolio, isAuthorized, async (req, res)
 router.delete('/:portfolioId', userMatchesPortfolio, isAuthorized, async (req, res) => {
   try {
     const 
-      { id : portfolioId } = req.params,
+      { portfolioId } = req.params,
       affectedRows = await Portfolio.destroy({ where : { id : portfolioId } }),
       success = (affectedRows === 1);  // One row should be affected
-
+    console.log(success);
     res.send(success ? { success } : expectedError(`Portfolio with id ${portfolioId} DNE`));
   }
   catch(err){ res.send(unexpectedError(err)); }

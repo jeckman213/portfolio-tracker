@@ -25,15 +25,18 @@ router.get('/:userId', async (req, res) => {
       }
       
       /* Only return public is user does not own portfolios */
-      if(!req.isAuthenticated() || (req.isAuthenticated && req.user.id !== userId)){
-        portfolios = portfolios.filter( portfolio => portfolio.public === true );
+      var authenticated = req.isAuthenticated();
+      var authorized = authenticated && req.user.id === userId;
+
+      if(!req.isAuthenticated() || (req.isAuthenticated() && req.user.id != userId)){
+        portfolios = portfolios.filter( portfolio => portfolio.public);
       }
 
       res.send({ owner : username, portfolios });
     }
-    else { res.send(expectedError(`User with id ${userId} DNE`)); }
+    else { res.send(expectedError(`User with id ${userId} DNE`, res, 404)); }
   }
-  catch(err){ res.send(unexpectedError(err)); }
+  catch(err){ res.send(unexpectedError(err, res)); }
 });
 
 module.exports = router;

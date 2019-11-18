@@ -38,16 +38,17 @@ class SignUp extends Component {
   }
 
   render(){
-    const { registering, registered, loggingIn, authenticated,
-            registrationFailed, loginFailed, failExpected, failReason, } = this.props,
-          currencyOptions = [];
+    const 
+      { registering, registered, loggingIn, authenticated, username,
+        registrationFailed, loginFailed, failExpected, failReason, } = this.props,
+      currencyOptions = [];
 
     if(registered){
       this.props.login(this.state);
     }
 
     if(authenticated){
-      return ( <Redirect to='/about'/> );
+      return ( <Redirect to={`/user/${username}`}/> );
     }
     else if(loginFailed){
       return ( <Redirect to='/login'/> );
@@ -115,7 +116,7 @@ class SignUp extends Component {
 
 // Bring auth reducer state into this file. Accessed through this.props
 const mapStateToProps = (state) => {
-  const { registering, registered, loggingIn, authenticated, 
+  const { registering, registered, loggingIn, authenticated, username,
           registrationFailed, loginFailed, failExpected, failReason, } = state.authentication;
   
   return {
@@ -126,7 +127,8 @@ const mapStateToProps = (state) => {
     failReason,
     loggingIn,
     loginFailed,
-    authenticated
+    authenticated,
+    username
   }
 };
 
