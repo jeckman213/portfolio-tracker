@@ -21,6 +21,7 @@
     "heroku-postbuild": "cd frontend && npm install && npm run build"
   },
   "dependencies": {
+    "react-burger-menu": "^2.6.12",
     "react-transition-group": "^4.3.0"
   }
 }
