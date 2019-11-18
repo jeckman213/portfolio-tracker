@@ -8,6 +8,7 @@ import About from '../components/resources/about';
 import Packages from '../components/landing/packages';
 import SignUp from '../components/auth/signup';
 import Login from '../components/auth/login'
+import Help from '../components/resources/help';
 
 // Hey Alex/John I added some routes
 // hope you like it
@@ -19,7 +20,7 @@ const Routing = () => (
       <Route exact path='/packages' component={ Packages } />
       <Route exact path='/signup/:type' component={ SignUp } />
       <Route exact path="/login" component={ Login }/>
-      <Route exact path="/help" component={ About }/>
+      <Route exact path="/help" component={ Help }/>
       <ProtectedRoute exact path="/protected" component={ About }/>
       <Route path="*" component={ () => '404 Not Found' } />
     </Switch>
