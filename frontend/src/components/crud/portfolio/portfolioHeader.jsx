@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { dollar } from "../../assets/styles";
+import { dollar } from "../../../assets/styles";
 
 class PortfolioHeader extends Component {
     constructor(props) {

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import Popup from 'reactjs-popup'
-import EditAsset from '../crud/buttons/editAsset'
-import NewAsset from '../crud/buttons/newAsset'
-import { dollar } from "../../assets/styles";
-import colors from '../../assets/colors'
+import EditAsset from '../buttons/editAsset'
+import NewAsset from '../buttons/newAsset'
+import { dollar } from "../../../assets/styles";
+import colors from '../../../assets/colors'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 

@@ -9,7 +9,7 @@ import Packages from '../components/landing/packages';
 import SignUp from '../components/auth/signup';
 import Login from '../components/auth/login';
 import Graphs from '../components/graphs/graphList';
-import PortfolioPage from '../components/portfolio/portfolioPage';
+import PortfolioPage from '../components/crud/portfolio/portfolioPage';
 import UserPage from '../components/crud/userPage';
 
 const Routing = () => (

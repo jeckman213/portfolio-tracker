@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import { stringify as queryStringify } from 'query-string';
 
-import PieGraph from '../graphs/pieGraph';
+import PieGraph from '../../graphs/pieGraph';
 import PortfolioTable from "./portfolioTable";
 import PortfolioHead from "./portfolioHeader";
-import PortfolioValueGraph from "../graphs/portfolioValueGraph";
+import PortfolioValueGraph from "../../graphs/portfolioValueGraph";
 
-import { getPercentages } from '../../utils/pieChartPercentage.js';
+import { getPercentages } from '../../../utils/pieChartPercentage.js';
 
-import loading from "../../assets/loading.svg"
+import loading from "../../../assets/loading.svg"
 
 class PortfolioPage extends Component {
   constructor(props) {
