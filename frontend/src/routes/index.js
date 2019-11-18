@@ -9,7 +9,7 @@ import Packages from '../components/landing/packages';
 import SignUp from '../components/auth/signup';
 import Login from '../components/auth/login';
 import Graphs from '../components/graphs/graphList';
-import PortfolioPage from '../components/portfolio/PortfolioPage';
+import PortfolioPage from '../components/portfolio/portfolioPage';
 import UserPage from '../components/crud/userPage';
 
 const Routing = () => (
@@ -22,7 +22,7 @@ const Routing = () => (
       <Route exact path='/signup' component={ SignUp } />
       <Route exact path='/login' component={ Login }/>
       <Route exact path='/user/:username' component={ UserPage} /> 
-      <Route exact path='/user/:username/portfolio/:portfolioname' component={ PortfolioPage} /> 
+      <Route exact path='/user/:username/portfolio/:portfolioName' component={ PortfolioPage} /> 
       <ProtectedRoute exact path='/protected' component={ About }/>
       <Route path='*' component={ () => '404 Not Found' } /> 
     </Switch>
