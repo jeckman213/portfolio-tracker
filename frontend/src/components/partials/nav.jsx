@@ -19,6 +19,7 @@ const Nav = ({ authenticated, username, logout }) => {
       </ul>
       <ul>
         <li><SearchDropdown /></li>
+        <li><Link to="/dashboard">Dashboard</Link></li>
         <li><Link to="/help">Help</Link></li>
         <li><Link to="/about">About</Link></li>
         { authenticated 

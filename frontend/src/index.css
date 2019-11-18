@@ -264,29 +264,36 @@ section.intro {
 }
 
 footer {
-  padding: 120px 0 !important;
-  text-align: center !important;
+  padding: 400px 0;
+  text-align: center;
 }
 
-footer *{
-  width: 60% !important;
-  margin: 0 auto !important;
+footer {
+  width: 60%;
+  margin: 0 auto;
+  text-align: center;
 }
 
 footer ul {
-  display: grid !important;
-  grid-template-columns: repeat(3, 1fr) !important;
-  width: 20% !important;
+  
+  display:inline;
+  text-align: center;
+  grid-template-columns: repeat(3, 1fr);
+  width: 40%;
 }
 
+
+
 footer ul li {
-  list-style: none !important;
+  text-align: center;
+  list-style: none;
 }
 
 footer ul li a {
-  display: block !important;
-  font-size: 1.4rem !important;
-  color: #fff !important;
+  display: block;
+  font-size: 1.4rem;
+  color: #fff;
+  text-align: center;
 }
 
 section div form {

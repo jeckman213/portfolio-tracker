@@ -10,6 +10,7 @@ import SignUp from '../components/auth/signup';
 import Help from '../components/resources/help';
 import Login from '../components/auth/login';
 import Graphs from '../components/graphs/graphList';
+import Dash from '../components/landing/dash';
 import PortfolioPage from '../components/crud/portfolio/portfolioPage';
 import UserPage from '../components/crud/userPage';
 
@@ -20,11 +21,12 @@ const Routing = () => (
       <Route exact path='/about' component={ About } />
       <Route exact path='/graphs' component={ Graphs } />
       <Route exact path='/packages' component={ Packages } />
+      <Route exact path='/dashboard' component={ Dash }/>
       <Route exact path="/help" component={ Help }/>
       <Route exact path='/signup/:type' component={ SignUp } />
       <Route exact path='/login' component={ Login }/>
-      <Route exact path='/user/:username' component={ UserPage} /> 
-      <Route exact path='/user/:username/portfolio/:portfolioName' component={ PortfolioPage} /> 
+      <Route exact path='/user/:username' component={ UserPage } /> 
+      <Route exact path='/user/:username/portfolio/:portfolioName' component={ PortfolioPage } /> 
       <ProtectedRoute exact path='/protected' component={ About }/>
       <Route path='*' component={ () => '404 Not Found' } /> 
     </Switch>

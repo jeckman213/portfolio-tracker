@@ -1,0 +1,61 @@
+.quote-grid {
+    display: grid;
+    grid-gap: 1em;
+    padding-top: 1rem;
+    @include bp(med) {
+      grid-template-areas:
+        'a b'
+        'c c';
+      &__header {
+        grid-area: a;
+      }
+      &__details {
+        grid-area: b;
+      }
+      &__highchart {
+        grid-area: c;
+      }
+    }
+  }
+  
+  .quote-header {
+    display: grid;
+    &__name {
+      font-size: 1.6em;
+      font-weight: 700;
+    }
+    &__symbol {
+      font-size: 1.2em;
+      font-weight: 500;
+      padding-left: 1rem;
+    }
+    &__price {
+      font-size: 2.6em;
+      font-weight: 700;
+      margin-top: 1rem;
+    }
+    &__change {
+      font-size: 1.5em;
+      font-weight: 600;
+    }
+    &__exchange {
+      font-size: 1.8rem;
+    }
+  }
+  
+  .quote-details-table {
+    width: 100%;
+    font-size: 1em;
+    line-height: 2;
+    td:first-child {
+      color: $text-gray;
+    }
+    td:last-child {
+      font-weight: 600;
+      text-align: right;
+    }
+    tr {
+      border-bottom: 1px solid $med-gray;
+    }
+  }
+  
