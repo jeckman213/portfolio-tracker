@@ -45,12 +45,12 @@ router.get('/:portfolioId', userMatchesPortfolio, isAccessible, async (req, res)
     pieChartData.values = [];
     pieChartData.shares = [];
 
-    // Can probably drastically improve performance with Promise.all()
-    for(let assetFound of assetsFound){
+    await Promise.all(assetsFound.map(async assetFound => {
       let 
         { id, symbol, shares, purchasedAt } = assetFound,
-        value = round2Dec(await getStockValue(symbol) * shares),
+        value = await getStockValue(symbol) * shares,
         historical = await getStockValues(symbol, purchasedAt);
+      value = round2Dec(value);
 
       if(!stocks[symbol]){ stocks[symbol] = {}; }
       stocks[symbol].value = stocks[symbol].value ? (stocks[symbol].value + value) : value;
@@ -69,7 +69,7 @@ router.get('/:portfolioId', userMatchesPortfolio, isAccessible, async (req, res)
       portfolioValue += asset.value;
       portfolioShares += asset.shares;
       assets.push(asset);
-    }
+    }));
 
     for(let symbol in stocks){
       pieChartData.values.push({ name : symbol, y : round2Dec(stocks[symbol].value / portfolioValue) });

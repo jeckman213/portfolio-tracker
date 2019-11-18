@@ -279,10 +279,7 @@ footer ul {
   display: inline;
   text-align: center;
   grid-template-columns: repeat(3, 1fr);
-  width: 40%;
 }
-
-
 
 footer ul li {
   list-style: none;
