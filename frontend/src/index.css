@@ -407,7 +407,7 @@ section div form {
   transform: rotate(-135deg);
 }
 
-@media (max-width: 1370px ) and (min-width: 900px ) {
+@media (max-width: 1370px ) and (min-width: 1000px ) {
   
   header {
     height: 500px;
@@ -473,7 +473,7 @@ section div form {
   }
 }
 
-@media (max-width: 900px ) and (min-width: 0px ){
+@media (max-width: 1000px ) and (min-width: 0px ){
   header {
     height: 350px;
    background-size:120%;
