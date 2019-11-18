@@ -40,8 +40,8 @@ class UserPage extends Component {
   async componentDidMount(){
     let 
       username = this.props.match.params.username,
-      query = queryStringify({ q : username }),
-      searchRes = await axios.get(`/api/user/search?${query}`),
+      queryString = queryStringify({ username }),
+      searchRes = await axios.get(`/api/search/user?${queryString}`),
       { success } = searchRes.data;
     
     if(success){
@@ -62,7 +62,7 @@ class UserPage extends Component {
     if(!this.state.posting){
       this.setState({ posting : true })
       const userId = this.state.userId;
-      const res = await axios.post(`/api/user/${userId}/portfolio`, body);
+      await axios.post(`/api/user/${userId}/portfolio`, body);
       this.setState({ posting : false, postComplete : true })
     }
   }
@@ -74,7 +74,7 @@ class UserPage extends Component {
     if(!this.state.deleting){
       this.setState({ deleting : true })
       const userId = this.state.userId;
-      const res = await axios.delete(`/api/user/${userId}/portfolio/${id}`);
+      await axios.delete(`/api/user/${userId}/portfolio/${id}`);
 
       // Generates a warning
       this.setState({ portfolios : this.state.portfolios.filter( 

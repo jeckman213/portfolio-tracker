@@ -31,7 +31,7 @@ class DropdownSearch extends Component {
     });
 
     let
-      res = await axios.get(`/api/stock/search?${queryString}`),
+      res = await axios.get(`/api/search/stock?${queryString}`),
       results = res.data;
 
     // console.log(query, ' : ', results);
@@ -57,7 +57,7 @@ class DropdownSearch extends Component {
           { id, symbol, name} = result,
           text = `${symbol} - ${name}`;
         return (
-          <li style={ style.li } key={ id }><Link to={ `/app/stock/${symbol}` }>{ text }</Link></li>
+          <li style={ style.li } key={ id }><Link to={ `/stock/${symbol}` }>{ text }</Link></li>
         )
       });
 

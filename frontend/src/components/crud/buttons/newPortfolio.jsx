@@ -4,13 +4,13 @@ import Popup from 'reactjs-popup'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
-class newPortfolio extends Component {
+class NewPortfolio extends Component {
   constructor(){
     super();
     this.state = {
       name : "",
       isPublic : false,
-      posting : false
+      requesting : false
     }
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -18,12 +18,14 @@ class newPortfolio extends Component {
 
   onSubmit = close => async e => {
     e.preventDefault();
-    this.setState({ posting : true });
+    this.setState({ requesting : true });
+
     const 
       { name, isPublic } = this.state,
       body = { name, isPublic};
     await this.props.createPortfolio(body);
-    this.setState({ name : "", isPublic : false, posting : false });
+    
+    this.setState({ name : "", isPublic : false, requesting : false });
     close();
   }
   
@@ -60,7 +62,7 @@ class newPortfolio extends Component {
 
   render(){
     const style = this.style;
-    const { posting } = this.state;
+    const { requesting } = this.state;
 
     return (
       <Popup
@@ -85,7 +87,7 @@ class newPortfolio extends Component {
                   <input type="checkbox" onChange={ this.onClick } name="isPublic" value={ this.state.isPublic } />
                 </div> 
                 <div className="form-control">
-                  <input type="submit" value="Create" disabled={ posting }/>
+                  <input type="submit" value="Create" disabled={ requesting }/>
                 </div>
               </form>
             </div>
@@ -95,4 +97,4 @@ class newPortfolio extends Component {
   }
 }
 
-export default newPortfolio;
+export default NewPortfolio;
