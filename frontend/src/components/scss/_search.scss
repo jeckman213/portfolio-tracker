@@ -13,7 +13,7 @@
     @include bp(small) {
       margin: 3rem;
     }
-    background: #4caf50;
+    background: rgb(51, 92, 207);
     position: relative;
     &__inputs {
       display: flex;
