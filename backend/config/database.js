@@ -16,11 +16,7 @@ const config = {
     dialect : 'postgres'
   },
   production : {
-    username : null,
-    password : null,
-    database : null,
-    host : null,
-    dialect : 'postgres'
+    use_env_variable : "DATABASE_URL"
   }
 }
 

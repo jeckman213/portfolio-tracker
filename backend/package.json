@@ -1,32 +1,23 @@
 {
   "name": "portfolios",
-  "version": "1.0.0",
-  "description": "Group Z's implementation of Prof Gallo's 418Y (Software Engineering) Course at UAlbany, Fall 2020",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "server": "nodemon server.js",
+    "start": "node -r esm server.js",
+    "server": "nodemon -r esm server.js",
     "client": "npm start --prefix ../frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jeckman213/portfolio-tracker.git"
-  },
-  "author": "Group Z",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/jeckman213/portfolio-tracker/issues"
-  },
-  "homepage": "https://github.com/aDevCalledAlex/YelpCamp#readme",
   "dependencies": {
+    "alphavantage": "^2.0.0",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
     "client-sessions": "^0.8.0",
     "concurrently": "^5.0.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.1.0",
     "esm": "^3.2.25",
     "express": "^4.16.4",
+    "heroku": "^7.34.2",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "pg": "^7.12.1",
@@ -36,6 +27,10 @@
     "stock-data.js": "^1.2.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
+    "@babel/node": "^7.6.3",
+    "@babel/preset-env": "^7.6.3",
     "nodemon": "^1.19.2"
   }
 }

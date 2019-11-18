@@ -5,6 +5,14 @@ const data = require('stock-data.js');
 // exports variable for exporting functions from module
 var exports = module.exports = {};
 
+
+exports.getStockValue = (symbol) => {
+    return data.realtime({
+        symbols: symbol,
+        API_TOKEN: process.env.STOCK_TOKEN,
+    }).then( res => parseFloat(res.data[0].price));
+}
+
 // Gets stock realtime data based on stock symbol(s)
 // param=symbols : expecting a string, or array of strings, that are stock symbols (i.e. AAPL)
 // param=callback : a function to handle the return of the response
@@ -84,4 +92,24 @@ exports.getStockHistorical = (symbol, callback, dateFrom = '2018-01-01', dateTo 
         console.log(error);
         callback(error);
     });
+}
+
+exports.getStockValues = (symbol, dateFrom, dateTo = null) => {
+    if(dateTo === null){
+        let 
+            date = new Date(),
+            year = date.getFullYear(),
+            month = date.getMonth() + 1,
+            day = date.getDate();
+        dateTo = `${year}-${month}-${day}`;
+    }
+
+    return data.historical({
+        symbol: symbol,
+        API_TOKEN: process.env.STOCK_TOKEN,
+        options: {
+            date_from: dateFrom,
+            date_to: dateTo
+        }
+    }).then(res => res.history);
 }

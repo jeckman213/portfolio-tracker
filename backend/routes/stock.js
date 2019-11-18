@@ -1,31 +1,43 @@
-const express = require('express'),
-      router = express.Router(),
-      stockdata = require('../services/stockservice');
+const 
+  express   = require('express'),
+  router    = express.Router(),
+  Stock     = require('../db/models').Stock,
+  sequelize     = require('../db/models').sequelize,
+  { expectedError, unexpectedError } = require('../services/errorhandling'),
+  stockdata = require('../services/stockservice');
 
   // Stock search call
   // NOTE: Search only gives you 5 results because of free account on api
-  router.get('/search/:searchTerm', (req, res) => {
-    var searchTerm = req.params.searchTerm;
+  // router.get('/search/:searchTerm', (req, res) => {
+  //   var searchTerm = req.params.searchTerm;
   
-    stockdata.getStockBySearchTerm(searchTerm, (data) => {
-      var models = [];
+  //   stockdata.getStockBySearchTerm(searchTerm, (data) => {
+  //     var models = [];
   
-      console.log(data.length)
+  //     console.log(data.length)
   
-      for (var i = 0; i < data.length; i++) {
-        var stock = data[i];
-        models[i] = {
-          symbol: stock.symbol,
-          name: stock.name,
-          currency: stock.currency,
-          price: stock.price,
-          exchangeShort: stock.stock_exchange_short
-        }
-      }
+  //     for (var i = 0; i < data.length; i++) {
+  //       var stock = data[i];
+  //       models[i] = {
+  //         symbol: stock.symbol,
+  //         name: stock.name,
+  //         currency: stock.currency,
+  //         price: stock.price,
+  //         exchangeShort: stock.stock_exchange_short
+  //       }
+  //     }
   
-      res.send(models);
-    });
-  }); 
+  //     res.send(models);
+  //   });
+  // }); 
+
+  router.get('/:id', async (req, res) => {
+    const 
+      { id } = req.params,
+      stock = await Stock.findByPk(id);
+
+      res.send(stock ? stock : expectedError(`Stock with id ${id} DNE`, res, 404));
+  });
   
   // Stock intraday call
   router.get('/intraday/:symbol/:interval?/:range?', (req, res) => {
@@ -39,8 +51,9 @@ const express = require('express'),
         var model = {
           symbol: data.symbol,
           exchangeShort: data.stock_exchange_short,
-          intraday: Object.values(data.intraday)
+          intraday: data.intraday
         }
+
         res.send(model);
       });
     }

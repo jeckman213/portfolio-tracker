@@ -1,5 +1,6 @@
-const express = require('express'),
-      router = express.Router();
+const
+  express = require('express'),
+  router = express.Router();
 
 router.get('/hello', (req, res) => {
   res.send({ express: 'Sucessfully Connected to Express Server' });
@@ -14,6 +15,10 @@ router.get('/auth', (req, res) => {
     user : req.user.username,
     authenticated : req.isAuthenticated()
   })
+});
+
+router.get('/query', (req, res) => {
+  res.send(req.query);
 });
 
 module.exports = router;

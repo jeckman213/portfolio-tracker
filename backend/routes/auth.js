@@ -1,8 +1,9 @@
-const express    = require('express'),
-      router     = express.Router(),
-      bcrypt     = require('bcrypt'),
-      passport   = require('passport'),
-      User       = require('../db/models').User;
+const
+  express    = require('express'),
+  router     = express.Router(),
+  bcrypt     = require('bcrypt'),
+  passport   = require('passport'),
+  User       = require('../db/models').User;
 
 // Register Logic
 router.post('/register', async (req, res) => {
@@ -94,7 +95,8 @@ router.post('/login', (req, res, next) => {
       /* User logged in successfully, req.user now has user details */
       return res.send({
         success : true,
-        username : user.username
+        username : user.username,
+        id : user.id
       });
 
     });

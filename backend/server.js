@@ -1,16 +1,29 @@
 require('dotenv').config();
 
-const express = require('express'),
-      bodyParser = require('body-parser'),
-      sessions = require('client-sessions'),
+const 
+  /* Import node modules */
+  express    = require('express'),
+  cors       = require('cors'),
+  bodyParser = require('body-parser'),
+  sessions   = require('client-sessions'),
+  path       = require('path'),
 
-      port = process.env.PORT || 5000,
-      db = require('./db/models'),
-      passport = require('./config/authentication'),
+  /* Import local configurations */
+  port     = process.env.PORT || 5000,
+  db       = require('./db/models'),
+  passport = require('./config/authentication'),
 
-      stockRoutes = require('./routes/stock')
-      devRoutes = require('./routes/dev'),
-      authRoutes = require('./routes/auth');
+  /* Import routes */
+  routes = {};
+
+routes.portfolio = require('./routes/portfolio');
+routes.asset     = require('./routes/asset');
+routes.stock     = require('./routes/stock');
+routes.alpha     = require('./routes/alpha');
+routes.search    = require('./routes/search');
+routes.user      = require('./routes/user');
+routes.auth      = require('./routes/auth');
+routes.dev       = require('./routes/dev');
 
 const app = express();
 
@@ -19,12 +32,23 @@ db.sequelize.authenticate()
   .then( () => console.log('Database connection successful.') )
   .catch( err => console.error('Unable to connect to database:', err) );
 
+/* Configure CORS */
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+app.options('http://stark-wave-75762.herokuapp.com/', cors());
+
+/* Configure HTTP body parsing */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+/* Configure session cookies */
 app.use(sessions({
   cookieName : 'session',
-  secret : process.env.SESSION_SECRET,
+  secret : 'ladkfjdsa;lfj',
   duration : 1000 * 60 * 60 * 24,   /* miliseconds, so 1 day */
   // cookie : {
   //   path : '/app', // cookie only sent to reqests under '/app'
@@ -33,11 +57,24 @@ app.use(sessions({
   // }
 }));
 
+/* Configure passport authentication */
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/api/stock", stockRoutes);
-app.use("/api/test", devRoutes);
-app.use("/api", authRoutes);
+/* Configure routes */
+app.use('/api', routes.auth);
+app.use('/api/stock', routes.stock);
+app.use('/api/alpha', routes.alpha);
+app.use('/api/search', routes.search);
+app.use('/api/user', routes.user);
+app.use('/api/user/:userId/portfolio', routes.portfolio);
+app.use('/api/user/:userId/portfolio/:portfolioId/asset', routes.asset);
+app.use('/api/dev', routes.dev);
 
-app.listen(port, console.log(`Listening on port ${port}`));
+// Serves the static files from the React App
+if(process.env.NODE_ENV == 'production'){
+  app.use(express.static(path.join(__dirname, '../frontend/build')));
+  app.get('*', (req, res) => { res.sendFile(path.join(__dirname, '../frontend/build/index.html')); });
+}
+
+app.listen(port, console.log(`Listening on port ${port} on ${process.env.NODE_ENV || 'devlopment'} mode`));
