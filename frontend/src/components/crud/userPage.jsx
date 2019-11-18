@@ -125,7 +125,7 @@ class UserPage extends Component {
         </div>
         ) 
       : (
-        <div style={ style.container }>
+        <div style={ style.container } className="portfolio-overview">
           <NewPortfolio createPortfolio={ this.createPortfolio } username={ username } userId={ userId }/>
           { portfolioItems }
         </div>
@@ -137,20 +137,23 @@ class UserPage extends Component {
       display : 'grid',
       gridTemplateColumns : '25% 25% 25% 25%',
       gridGap : '1em',
-      margin : '3em 3em'
+      margin : '3em 3em',
+      textAlign: 'center'
     },
 
     portfolio : {
       backgroundColor : colors.green,
       borderRadius : '10px',
       padding : '2em',
-      fontSize : '2em'
+      fontSize : '2em',
+      textAlign: 'center'
     },
 
     delete : {
       color : colors.red,
       float : 'right',
-      cursor : 'pointer'
+      cursor : 'pointer',
+      textAlign: 'right'
     },
 
     newForm : {
@@ -159,7 +162,8 @@ class UserPage extends Component {
       boxSizing: 'border-box',
       width : '100%',
       height : '100%',
-      outline : 'none'
+      outline : 'none',
+      textAlign: 'center'
     }
   }
 }

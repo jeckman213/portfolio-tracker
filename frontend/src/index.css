@@ -681,3 +681,13 @@ table, th, td {
 .blue {
   color: #1A202C;
 }
+
+@media (max-width: 1200px) {
+  .portfolio-overview {
+    display: inline !important;
+  }
+
+  .portfolio-overview > div {
+    margin: 7px !important;
+  }
+}
