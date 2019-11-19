@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Header from "./header";
 
 class Main extends Component {
-  render() {
+  render(){
     return (
       <React.Fragment>
         <Header />  

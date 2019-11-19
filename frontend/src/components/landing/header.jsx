@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { title, dollar, subtitle } from "../../assets/styles"
 
 class Header extends Component {
-  render() {
+  render(){
     return (
       <header>
         <div>

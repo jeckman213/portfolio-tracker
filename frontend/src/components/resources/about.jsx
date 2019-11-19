@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import AlbanyImg from "../../assets/images/Albany.jpg";
 
 class About extends Component {
-  render() {
+  render(){
     return (
       <section className="description">
         <div>

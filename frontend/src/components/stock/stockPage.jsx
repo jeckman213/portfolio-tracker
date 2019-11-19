@@ -10,7 +10,7 @@ class StockPage extends Component {
     this.state = {
       symbol,
       // 0 => Line; 1 => High-Low
-      graphOption: 0,
+      graphOption : 0,
     }
     
     this.changeGraph = this.changeGraph.bind(this);
@@ -25,24 +25,23 @@ class StockPage extends Component {
     this.setState({ graphOption : value });
   }
   
-  render() {
-    const { symbol, graphOption, price } = this.state;
+  render(){
+    const style = this.style, 
+      { symbol, graphOption } = this.state;
+    
     return (
-      <div>
-        {graphOption === 1 
-        ?
-        <div>
-          <HighLowChart symbol={ symbol }/>
-          <Header name={ symbol } view={ this.changeGraph }/>
-          </div>
-        :
-        <div>
-          <LineGraph symbol={ symbol }/>
-          <Header name={ symbol } value={ price } view={ this.changeGraph }/>
-          </div>
-        }
-      </div>
+      <section style={ style.section }>
+        <Header name={ symbol } view={ this.changeGraph }/>
+        { (graphOption === 1) ? <HighLowChart symbol={ symbol }/> : <LineGraph symbol={ symbol }/> } 
+      </section>
     )
+  }
+
+  style = {
+    section : {
+      margin : '0 0.3rem',
+      width : '100%'
+    }
   }
 }
 

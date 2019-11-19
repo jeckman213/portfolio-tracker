@@ -9,80 +9,69 @@ import Highcharts from 'highcharts';
 // y - which is the percent of the pie chart that slice will be
 // NOTE: This may change when portfolios are tied into an api endpoint
 class PieChart extends Component {
-    constructor(props) {
-        super(props);
-        
-        this.state = {
-            chartOptions: {}
-        }
-    }
-
-    componentDidMount() {
-        this.setState({
-            chartOptions: {
-                chart: {
-                    plotShadow: false,
-                    type: 'pie'
-                },
-                title: {
-                    text: this.props.chartTitle
-                },
-                tooltip: {
-                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                },
-                plotOptions: {
-                    pie: {
-                        allowPointSelect: true,
-                        cursor: 'pointer',
-                        dataLabels: {
-                            enabled: true,
-                            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-                        }
-                    }
-                },
-                series: [{
-                    colorByPoint: true,
-                    data: this.props.slices
-                }],
-                responsive: {
-                    rules: [{
-                        condition: {
-                            maxWidth: 500
-                        },
-                        chartOptions: {
-                            chart: {
-                                height: 300
-                            },
-                            subtitle: {
-                                text: null
-                            },
-                            navigator: {
-                                enabled: false
-                            }
-                        }
-                    }]
-                }
-            },
-        });
-    }
-
-    // Empty function for implementing portfolio end point of pie chart value
-    callApi = async () => {
-
-    }
-
-    render() {
-        const { chartOptions } = this.state;
+  constructor(props) {
+    super(props);
     
-        return (
-            <div>
-                <HighchartsReact 
-                    highcharts = {Highcharts}
-                    options = {chartOptions}
-                />
-           </div>
-        )
+    this.state = {
+      chartOptions: {}
     }
+  }
+
+  componentDidMount() {
+    this.setState({
+      chartOptions : {
+        chart : {
+          plotShadow: false,
+          type: 'pie'
+        },
+        title : { text: this.props.chartTitle },
+        tooltip : { pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>' },
+        plotOptions : {
+          pie : {
+            allowPointSelect : true,
+            cursor : 'pointer',
+            dataLabels : {
+              enabled : true,
+              format : '<b>{point.name}</b>: {point.percentage:.1f} %'
+            }
+          }
+        },
+        series : [{
+          colorByPoint : true,
+          data : this.props.slices
+        }],
+        responsive: {
+          rules: [{
+            condition: { maxWidth: 500 },
+            chartOptions: {
+              chart: { height: 300
+              },
+              subtitle: { text: null },
+              navigator: { enabled: false }
+            }
+          }]
+        }
+      },
+    });
+  }
+
+  // Empty function for implementing portfolio end point of pie chart value
+  callApi = async () => {
+
+  }
+
+  render() {
+    const { chartOptions } = this.state;
+
+    return (
+      <div>
+        <HighchartsReact 
+          highcharts={ Highcharts }
+          options={ chartOptions }
+        />
+      </div>
+    )
+  }
 }
 
 export default PieChart;
