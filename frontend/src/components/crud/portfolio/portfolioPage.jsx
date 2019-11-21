@@ -36,7 +36,7 @@ class PortfolioPage extends Component {
       { username, portfolioName } = this.props.match.params,
       queryObj = { username, portfolioName },
       queryString = queryStringify(queryObj),
-      { data : ids} = await axios.get(`/api/search/portfolio?${queryString}`),
+      { data : ids } = await axios.get(`/api/search/portfolio?${queryString}`),
       { success } = ids;
       
       if(success){

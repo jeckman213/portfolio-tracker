@@ -13,6 +13,7 @@ import Graphs from '../components/graphs/graphList';
 import PortfolioPage from '../components/crud/portfolio/portfolioPage';
 import UserPage from '../components/crud/userPage';
 import StockPage from '../components/stock/stockPage';
+import ComparisonPage from "../components/comparison/comparisonPage";
 
 const Routing = () => (
   <div>
@@ -27,6 +28,7 @@ const Routing = () => (
       <Route exact path='/stock/:symbol' component={ StockPage } /> 
       <Route exact path='/user/:username' component={ UserPage } /> 
       <Route exact path='/user/:username/portfolio/:portfolioName' component={ PortfolioPage } /> 
+      <Route exact path='/comparison' component={ ComparisonPage } />
       <ProtectedRoute exact path='/protected' component={ About }/>
       <Route path='*' component={ () => '404 Not Found' } /> 
     </Switch>
