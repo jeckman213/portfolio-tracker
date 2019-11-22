@@ -16,29 +16,72 @@ class ComparisonPage extends Component {
     // graphOption: 0 => Pie
     //              1 => Line
     //              2 => High-Low
-    this.state = { graphOption: 0, isLoading: true }
+    this.state = {
+      graphOption: 0,
+      isLoading: true,
+
+      FirstPortfolio: {
+        userId : 0,
+        portfolioId : 0,
+        name : null,
+        value : 0,
+        shares : 0,
+        assets : [],
+        historical: {},
+      },
+
+      SecondPortfolio: {
+        userId : 0,
+        portfolioId : 0,
+        name : null,
+        value : 0,
+        shares : 0,
+        assets : [],
+        historical: {},
+      },
+    }
 
     this.changeGraph = this.changeGraph.bind(this);
-   }
+  }
 
-   async componentDidMount() {
-    const 
-       username  = 'dev',
-       portfolioName = 'First Portfolio',
-      queryObj = { username, portfolioName },
-      queryString = queryStringify(queryObj),
-      { data : ids } = await axios.get(`/api/search/portfolio?${queryString}`),
-      { success } = ids;
+  async componentDidMount() {
+    {
+      const 
+        username1 = 'dev', portfolioName1 = 'First Portfolio',
+        queryObj1 = { username: username1, portfolioName: portfolioName1 },
+        queryString1 = queryStringify(queryObj1),
+        { data : ids } = await axios.get(`/api/search/portfolio?${queryString1}`),
+        { success } = ids;
       
       if(success){
         const { userId, portfolioId } = ids;
-        this.setState({ userId, portfolioId });
+        this.setState({ FirstPortfolio: { userId, portfolioId } });
         
-        const 
+        const
           { data } = await axios.get(`/api/user/${userId}/portfolio/${portfolioId}`),
-          { name, value, shares, assets, historical, pieChartData } = data;
-          this.setState({ name, value, shares, assets, historical, pieChartData, isLoading : false })
+          {name, value, shares, assets, historical } = data;
+          this.setState({ FirstPortfolio: { name, value, shares, assets, historical} });
+      }
     }
+    {
+      const 
+        username2 = 'coolguy1', portfolioName2 = 'First Portfolio',
+        queryObj2 = { username: username2, portfolioName: portfolioName2 },
+        queryString2 = queryStringify(queryObj2),
+        { data : ids } = await axios.get(`/api/search/portfolio?${queryString2}`),
+        { success } = ids;
+    
+      if(success){
+        const { userId, portfolioId } = ids;
+        this.setState({ SecondPortfolio: { userId, portfolioId } });
+        
+        const
+          { data } = await axios.get(`/api/user/${userId}/portfolio/${portfolioId}`),
+          {name, value, shares, assets, historical } = data;
+          this.setState({ SecondPortfolio: { name, value, shares, assets, historical}, isLoading: false });
+      }
+    }
+    console.log(this.state.FirstPortfolio.historical)
   }
 
   changeGraph = (value) => {
@@ -46,7 +89,7 @@ class ComparisonPage extends Component {
   }
 
   render() {
-    const { graphOption, name, value, shares, assets, historical, pieChartData, isLoading } = this.state;
+    const { FirstPortfolio, SecondPortfolio, isLoading, graphOption } = this.state;
 
 
     if(!isLoading) {
@@ -55,12 +98,12 @@ class ComparisonPage extends Component {
       if (graphOption === 0) {
         graph = 
           (<div style={ Style.PieContainer }>
-            <PieGraph slices={ getPercentages(assets) } style={ Style.PieOne }/>
-            <PieGraph slices={ getPercentages(assets) } style={ Style.PieTwo } />
+            <PieGraph slices={ getPercentages(FirstPortfolio.assets) } style={ Style.PieOne }/>
+            <PieGraph slices={ getPercentages(SecondPortfolio.assets) } style={ Style.PieTwo } />
           </div>);
       } 
       else if (graphOption === 1) {
-        graph = <LineGraph data={ historical } data2={ historical } name={ name } />;
+        graph = <LineGraph data={ FirstPortfolio.historical } data2={ SecondPortfolio.historical } name={ FirstPortfolio.name } name2={ SecondPortfolio.name } />;
       }
       else {
         graph = <HighLowGraph symbol={ "AAPL" } />;
