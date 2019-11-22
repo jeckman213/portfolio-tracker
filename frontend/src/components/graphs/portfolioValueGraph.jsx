@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts/highstock';
+import { isNullOrUndefined } from 'util';
 
 import loading from '../../assets/loading.svg';
 
@@ -13,6 +14,7 @@ class PortfolioValueGraph extends Component {
       chartOptions : {},
       isLoading : true,
       inData : this.props.data,
+      inData2 : this.props.data2,
       portfolioName : this.props.name
     }
   }
@@ -22,6 +24,13 @@ class PortfolioValueGraph extends Component {
     Object.keys(this.state.inData).forEach(key => {
       chartData.push([Date.parse(key), this.state.inData[key]["value"]]);
     });
+
+    if (!isNullOrUndefined(this.state.inData2)) {
+      var chartData2 = [];
+      Object.keys(this.state.inData2).forEach(key => {
+        chartData.push([Date.parse(key), this.state.inData[key]["value"]]);
+      });
+    }
 
     chartData = chartData.reverse();
 
@@ -62,6 +71,10 @@ class PortfolioValueGraph extends Component {
       series : [{
         name : `${this.state.portfolioName}`,
         data : chartData,
+        tooltip : { valueDecimals : 2 },
+      }, {
+        name : `${this.state.portfolioName}`,
+        data : chartData2,
         tooltip : { valueDecimals : 2 }
       }],
       responsive : {

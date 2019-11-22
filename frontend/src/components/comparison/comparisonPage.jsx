@@ -3,6 +3,7 @@ import Header from './comparisonHeader';
 import PieGraph from '../graphs/pieGraph';
 import LineGraph from '../graphs/portfolioValueGraph';
 import HighLowGraph from '../graphs/highLowChart';
+import ComparisonTable from './comparisonTable';
 import { getPercentages } from '../../utils/pieChartPercentage';
 import axios from 'axios';
 import { stringify as queryStringify } from 'query-string';
@@ -22,7 +23,8 @@ class ComparisonPage extends Component {
 
    async componentDidMount() {
     const 
-      { username, portfolioName } = this.props.match.params,
+       username  = 'dev',
+       portfolioName = 'First Portfolio',
       queryObj = { username, portfolioName },
       queryString = queryStringify(queryObj),
       { data : ids } = await axios.get(`/api/search/portfolio?${queryString}`),
@@ -40,7 +42,7 @@ class ComparisonPage extends Component {
   }
 
   changeGraph = (value) => {
-    this.setState({ currentGraph : value });
+    this.setState({ graphOption : value });
   }
 
   render() {
@@ -52,13 +54,13 @@ class ComparisonPage extends Component {
 
       if (graphOption === 0) {
         graph = 
-          (<div>
-            <PieGraph slices={ getPercentages(assets) } />
-            <PieGraph slices={ getPercentages(assets) } />
+          (<div style={ Style.PieContainer }>
+            <PieGraph slices={ getPercentages(assets) } style={ Style.PieOne }/>
+            <PieGraph slices={ getPercentages(assets) } style={ Style.PieTwo } />
           </div>);
       } 
       else if (graphOption === 1) {
-        graph = <LineGraph data={ historical } name={ name } />;
+        graph = <LineGraph data={ historical } data2={ historical } name={ name } />;
       }
       else {
         graph = <HighLowGraph symbol={ "AAPL" } />;
@@ -68,6 +70,14 @@ class ComparisonPage extends Component {
       <div>
         <Header view={ this.changeGraph } />
         { graph }
+        <div style={{overflow: 'hidden'}}>
+          <div style={{float:'left', width: '50%'}}>
+            <ComparisonTable  />
+          </div>
+          <div style={{float: 'right', width: '50%'}}>
+            <ComparisonTable />
+          </div>
+        </div>
       </div>
     )
     }
@@ -78,6 +88,23 @@ class ComparisonPage extends Component {
         </div>
       )
     }
+  }
+}
+
+const Style = {
+  PieContainer: {
+    width: '100%',
+    margin: 'auto'
+  },
+
+  PieOne: {
+    width: '50%',
+    float: 'left'
+  },
+
+  PieTwo: {
+    width: '50%',
+    float: 'right'
   }
 }
 
