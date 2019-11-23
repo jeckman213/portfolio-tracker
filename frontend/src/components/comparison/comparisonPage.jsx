@@ -4,6 +4,7 @@ import PieGraph from '../graphs/pieGraph';
 import LineGraph from '../graphs/portfolioValueGraph';
 import HighLowGraph from '../graphs/highLowChart';
 import ComparisonTable from './comparisonTable';
+import PortfolioSelect from './portfolioSelector';
 import { getPercentages } from '../../utils/pieChartPercentage';
 import axios from 'axios';
 import { stringify as queryStringify } from 'query-string';
@@ -113,12 +114,13 @@ class ComparisonPage extends Component {
       <div>
         <Header view={ this.changeGraph } />
         { graph }
-        <div style={{overflow: 'hidden'}}>
-          <div style={{float:'left', width: '50%'}}>
-            <ComparisonTable  />
+        <PortfolioSelect />
+        <div>
+          <div>
+            <ComparisonTable assets={ FirstPortfolio.assets } />
           </div>
-          <div style={{float: 'right', width: '50%'}}>
-            <ComparisonTable />
+          <div>
+            <ComparisonTable assets={ SecondPortfolio.assets } />
           </div>
         </div>
       </div>
