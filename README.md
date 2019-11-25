@@ -1,4 +1,10 @@
 ![Portfolio$ Logo](frontend/public/logos/portfolios/logo.png)
+## Todos
+1. Add auto-complete to stock add to portfolio
+1. Add analytics to portfolio graphs
+1. Add future analytics
+1. Add comparision page
+1. Add search for public names/portfolios
 ## Portfolio$ Tracking Web Application
 ### To Get Started Follow These Steps:
 1. Clone Repo onto local machine

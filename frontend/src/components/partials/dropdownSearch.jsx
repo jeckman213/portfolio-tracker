@@ -20,7 +20,7 @@ class DropdownSearch extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  async onChange(e) {
+  async onChange(e){
     const 
       query = e.target.value,
       queryString = queryStringify({ q : query });
@@ -38,7 +38,7 @@ class DropdownSearch extends Component {
     this.setState({ results })
   }
 
-  onSubmit(e) {
+  onSubmit(e){
     e.preventDefault();
     const { query } = this.state;
     this.setState({
@@ -49,7 +49,7 @@ class DropdownSearch extends Component {
     });
   }
 
-  render() {
+  render(){
     const 
       style = this.style,
       { query, results, redirect, symbol } = this.state,
@@ -59,16 +59,15 @@ class DropdownSearch extends Component {
           maxLength = 25;
         name = name.length > maxLength ? name.slice(0, maxLength) + '...' : name; 
         const text = `[${symbol}] - ${name}`;
-        return (
-          <li style={ style.li } key={ id }><Link to={ `/stock/${symbol}` }>{ text }</Link></li>
-        )
+
+        return ( <li style={ style.li } key={ id }><Link to={ `/stock/${symbol}` }>{ text }</Link></li> )
       });
 
     return (
       <div>
         <form onSubmit={ this.onSubmit } autoComplete="off">
-          <input autoComplete="false" name="hidden" type="text" style={{ display : 'none'}}></input>
-          <input style={ style.search } type="text" name="search" placeholder="Search stocks..." onChange={ this.onChange }></input>
+          <input autoComplete="false" name="hidden" type="text" style={{ display : 'none'}} />
+          <input style={ style.search } type="text" name="search" placeholder="Search stocks..." onChange={ this.onChange } />
           <button type="submit" style={{ display : 'none'}}></button>
         </form>
         { query && 
@@ -92,6 +91,7 @@ class DropdownSearch extends Component {
       WebkitAppearance: 'none',
       fontSize : '20px'
     },
+
     ul : {
       display : 'flex',
       flexDirection : 'column',
