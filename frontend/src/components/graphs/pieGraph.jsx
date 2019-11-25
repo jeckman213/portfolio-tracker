@@ -22,7 +22,8 @@ class PieChart extends Component {
       chartOptions : {
         chart : {
           plotShadow: false,
-          type: 'pie'
+          type: 'pie',
+          height: '350px',
         },
         title : { text: this.props.chartTitle },
         tooltip : { pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>' },
@@ -40,17 +41,6 @@ class PieChart extends Component {
           colorByPoint : true,
           data : this.props.slices
         }],
-        responsive: {
-          rules: [{
-            condition: { maxWidth: 500 },
-            chartOptions: {
-              chart: { height: 300
-              },
-              subtitle: { text: null },
-              navigator: { enabled: false }
-            }
-          }]
-        }
       },
     });
   }

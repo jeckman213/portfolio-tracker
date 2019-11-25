@@ -652,12 +652,6 @@ section div form {
   font-family: inherit;
 }
 
-table, th, td {
-  border: 1px solid black;
-  background-color: white;
-  color: black;
-}
-
 .button-link {
   background: none!important;
   border: none;
