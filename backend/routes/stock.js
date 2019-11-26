@@ -1,53 +1,32 @@
 const 
   express   = require('express'),
   router    = express.Router(),
-  Stock     = require('../db/models').Stock,
-  sequelize     = require('../db/models').sequelize,
-  { expectedError, unexpectedError } = require('../services/errorhandling'),
-  stockdata = require('../services/stockservice');
-
-  // Stock search call
-  // NOTE: Search only gives you 5 results because of free account on api
-  // router.get('/search/:searchTerm', (req, res) => {
-  //   var searchTerm = req.params.searchTerm;
-  
-  //   stockdata.getStockBySearchTerm(searchTerm, (data) => {
-  //     var models = [];
-  
-  //     console.log(data.length)
-  
-  //     for (var i = 0; i < data.length; i++) {
-  //       var stock = data[i];
-  //       models[i] = {
-  //         symbol: stock.symbol,
-  //         name: stock.name,
-  //         currency: stock.currency,
-  //         price: stock.price,
-  //         exchangeShort: stock.stock_exchange_short
-  //       }
-  //     }
-  
-  //     res.send(models);
-  //   });
-  // }); 
+  { Stock } = require('../db/models'),
+  { sendSuccess, sendExpectedError, sendUnexpectedError } = require('../services/responses'),
+  stocks = require('../services/stocks');
 
   router.get('/:id', async (req, res) => {
-    const 
-      { id } = req.params,
-      stock = await Stock.findByPk(id);
+    try {
+      const 
+        id = req.params.id,
+        stock = await Stock.findByPk(id);
 
-      res.send(stock ? stock : expectedError(`Stock with id ${id} DNE`, res, 404));
+      if(stock){ sendSuccess(stock, res); }
+      else { sendExpectedError(`Stock with id ${id} DNE`, res, 200); }
+    }
+    catch(err){ sendUnexpectedError(err, res); }
   });
   
   // Stock intraday call
   router.get('/intraday/:symbol/:interval?/:range?', (req, res) => {
-    var symbol = req.params.symbol,
+    var 
+      symbol = req.params.symbol,
       interval = req.params.interval,
       range = req.params.range;
   
     // If the optional parameters are empty let them be there defaulted values
     if (interval == undefined || range == undefined) {
-      stockdata.getStockIntraday(symbol, (data) => {
+      stocks.getStockIntraday(symbol, (data) => {
         var model = {
           symbol: data.symbol,
           exchangeShort: data.stock_exchange_short,
@@ -58,7 +37,7 @@ const
       });
     }
     else {
-      stockdata.getStockIntraday(symbol, (data) => {
+      stocks.getStockIntraday(symbol, (data) => {
         var model = {
           symbol: data.symbol,
           exchangeShort: data.stock_exchange_short,
@@ -72,43 +51,30 @@ const
   }); 
   
   // Stock realtime call
-  router.get('/realtime/:symbol', (req, res) => {
-    var symbol = req.params.symbol;
-  
-    stockdata.getStockRealTime(symbol, (data) => {
-      var model = {
-        symbol: data.symbol,
-        name: data.name,
-        currency: data.currency,
-        price: data.price,
-        priceOpen: data.price_open,
-        dayHigh: data.day_high,
-        dayLow: data.day_low,
-        dayChange: data.day_change,
-        exchangeShort: data.stock_exchange_short
-      }
-      res.send(model);
-    });
+  router.get('/realtime/:symbol', async (req, res) => {
+    try {
+      const
+        symbol = req.params.symbol,
+        currency = req.user ? req.user.currency : 'USD', 
+        realTimeData = await stocks.getRealTime(symbol, currency);        
+      
+      sendSuccess(realTimeData, res);
+    }
+    catch(err){ sendUnexpectedError(err, res); }
   }); 
   
   // Stock history call
-  router.get('/history/:symbol/:dateFrom?/:dateTo?', (req, res) => {
-    var symbol = req.params.symbol,
-      dateFrom = req.params.dateFrom,
-      dateTo = req.params.dateTo;
-  
-    if (dateFrom == undefined || dateTo == undefined) {
-      stockdata.getStockHistorical(symbol, (data) => {
-        res.send(data);
-      });
-    }
-    else {
-      stockdata.getStockHistorical(symbol, (data) => {
-        res.send(data);
-      },
-      dateFrom, 
-      dateTo);
-    }
+  router.get('/history/:symbol', async (req, res) => {
+    try {
+      const 
+        symbol = req.params.symbol,
+        { dateFrom, dateTo } = req.query,
+        currency = req.user ? req.user.currency : 'USD',
+        historicalData = await stocks.getHistorical(symbol, currency, dateFrom, dateTo);
+        
+      sendSuccess(historicalData, res);
+    } 
+    catch(err){ sendUnexpectedError(err, res); }
   }); 
 
   module.exports = router;
