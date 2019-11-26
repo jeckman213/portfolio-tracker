@@ -1,127 +1,71 @@
 const
-  express    = require('express'),
-  router     = express.Router(),
-  bcrypt     = require('bcrypt'),
-  passport   = require('passport'),
-  User       = require('../db/models').User;
+  express  = require('express'),
+  router   = express.Router(),
+  bcrypt   = require('bcrypt'),
+  passport = require('passport'),
+  { User } = require('../db/models'),
+  { sendSuccess, sendExpectedError, sendUnexpectedError } = require('../services/responses');
 
 // Register Logic
 router.post('/register', async (req, res) => {
-  const saltRounds = 14;
-  const hash = await bcrypt.hash(req.body.password, saltRounds);
-  var response;
+  try {
+    const 
+      saltRounds = 14,
+      hash = await bcrypt.hash(req.body.password, saltRounds),
+      { username, email, firstname, lastname, currency } = req.body,
+      newUser = await User.create({ username, email, hash, firstname, lastname, currency }),
+      registrationData = { id : newUser.id, username };
 
-  /* Need route authentication so accounts cannot be created from Postman */
-  User.create({ 
-    username : req.body.username,
-    email : req.body.email,
-    hash,
-    firstname : req.body.firstname || null,
-    lastname : req.body.lastname || null,
-    currency : req.body.currency
-  })
-    /* New user successfully registered */
-    .then( newUser => {
-      const { id, username, createdAt } = newUser;
-      console.log('New User Registered:', { id, username, createdAt });
-      
-      response = { success : true };
-    })
+    console.log('New User Registered:', registrationData);
+    sendSuccess(registrationData, res);
+  }
+  catch(err){
     /* Unable to register user, most likely picked a username/email already used by someone else */
-    .catch( err => {
-      console.log('Caught error on create:', err);
-      const error = err.errors ? err.errors[0] : null; // Report first error detected by Sequelize
-      var success = false,
-          failExpected = false, 
-          failReason = err.message;
+    const error = err.errors ? err.errors[0] : null; // Report first error detected by Sequelize
 
-      if(error && error.type === 'unique violation'){
-        switch(error.path){
-          case 'username':
-            failExpected = true;
-            failReason = 'That username has already been taken.';
-            break;
-          case 'email':
-            failExpected = true
-            failReason = 'That email has already been registered.';
-            break;
-        }
-      } else { console.error('Sequelize registration error:', err.message); }
-
-      response = {
-        success,
-        failExpected,
-        failReason
+    if(error && error.type === 'unique violation'){
+      switch(error.path){
+        case 'username':
+          sendExpectedError('That username has already been taken.', res, 200);
+        case 'email':
+          sendExpectedError('That email has already been registered.', res, 200);
       }
-    })
-    .finally( () => {
-      res.send(response);
-    });
+    } 
+    else { sendUnexpectedError(err, res); }
+  }
 });
 
 // Login Logic
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', function(err, user, info) {
-    /* Unexpected, but either Sequelize or bcrypt threw an error (already logged) */
-    if(err){ 
-      return res.send({
-        success : false,
-        failExpected : false,
-        failReason : err.message
-      }); 
-    }
-    
-    /* Expected, either username DNE or passwords do not match */
-    if(!user){ 
-      return res.send({
-        success : false,
-        failExpected : true,
-        failReason : info.failReason
-      });
-    }
-    
+    /* Sequelize or bcrypt threw an error */
+    if(err){ sendUnexpectedError(err, res); }
+    /* Either username DNE or passwords do not match */
+    else if(!user){ sendExpectedError(info.failReason, 200); }
     /* A user was matched, now attempt to login... */
-    req.logIn(user, (err) => {
-      /* Unexpected Passport error on login attempt */
-      if(err){
-        console.error('Passport login error:', err);
-        return res.send({
-          success : false,
-          failExpected : false,
-          failReason : err.message
-        }); 
-      }
-
-      /* User logged in successfully, req.user now has user details */
-      return res.send({
-        success : true,
-        username : user.username,
-        id : user.id
+    else {
+      req.logIn(user, (err) => {
+        /* Passport error on login attempt */
+        if(err){ sendUnexpectedError(err, res); }
+        /* User logged in successfully, req.user now has user details */
+        else { 
+          const
+            { id, username } = req.user, 
+            loginData = { id, username };
+          
+          sendSuccess(loginData, res);
+        }
       });
-
-    });
+    }
   })(req, res, next);
-});
-
-router.get('/authenticate', (req, res) => {
-  const success = req.isAuthenticated(),
-        username = req.user ? req.user.username : null;
-
-  res.send({ success, username });
 });
 
 router.get('/logout', (req, res) => {
   try {
     req.logout();
-    res.send({ success : true });
+    sendSuccess(null, res);
   }
-  catch(err){
-    res.send({ 
-      success : false, 
-      failExpected : false,
-      failReason : err.message 
-    });
-  }
+  catch(err){ sendUnexpectedError(err, res); }
 });
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const
-  { Asset }        = require('../db/models'),
-  { expectedError, unexpectedError } = require('../services/errorhandling'),
+  { Asset } = require('../db/models'),
+  { sendExpectedError, sendUnexpectedError } = require('../services/responses'),
   middleware = {};
 
 // Checks if portfolio with id req.params.portfolioId 
@@ -15,9 +15,9 @@ middleware.portfolioMatchesAsset = async (req, res, next) => {
       res.locals.asset = assetFound;
       return next(); 
     }
-    else { res.send(expectedError(`User with id ${userId} does not own a portfolio with id ${portfolioId}`, res, 400)); }
+    else { sendExpectedError(`User with id ${userId} does not own a portfolio with id ${portfolioId}`, res, 400); }
   }
-  catch(err){ res.send(unexpectedError(err, res)); }
+  catch(err){ sendUnexpectedError(err, res); }
 }
 
 module.exports = middleware;
