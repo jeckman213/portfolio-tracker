@@ -77,4 +77,13 @@ if(process.env.NODE_ENV == 'production'){
   app.get('*', (req, res) => { res.sendFile(path.join(__dirname, '../frontend/build/index.html')); });
 }
 
+// const forex = require('./services/forex');
+// forex.getHistorical('USD', 'CAD', '2019-11-15').then( conversions => console.log(conversions) );
+// const stocks = require('./services/stocks');
+// stocks.getStockRealTime('GE', 'CAD').then( value => console.log(value) );
+// stocks.getStockHistorical('GE', 'USD', '2019-11-01').then( console.log )
+
+// const stocks = require('stock-data.js')
+// stocks.realtime({ symbols : 'SNAP', API_TOKEN : process.env.STOCK_TOKEN }).then( res => console.log(res.data[0] ) );
+
 app.listen(port, console.log(`Listening on port ${port} on ${process.env.NODE_ENV || 'devlopment'} mode`));
