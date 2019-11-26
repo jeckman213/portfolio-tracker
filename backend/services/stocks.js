@@ -4,7 +4,7 @@ const
   stocks = require('stock-data.js'),
   forex = require('./forex'),
   moment = require('moment'),
-  { round2Dec } = require('./math'),
+  { round2Dec } = require('./math').default,
   API_TOKEN = process.env.STOCK_TOKEN,
   functions = {};
 
