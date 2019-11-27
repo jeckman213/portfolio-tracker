@@ -4,7 +4,7 @@ const
   stocks = require('stock-data.js'),
   forex = require('./forex'),
   moment = require('moment'),
-  { round2Dec } = require('./math').default,
+  { round2Dec } = require('./math'),
   API_TOKEN = process.env.STOCK_TOKEN,
   functions = {};
 
@@ -15,23 +15,24 @@ functions.getRealTime = async (symbol, currency = 'USD') => {
   ]);
 
   let { 
-    name, price, 
-    price_open : priceOpen, 
-    day_high : dayHigh,  
-    day_low : dayLow, 
-    day_change : dayChange, 
+    name, 
+    price : value, 
+    price_open : open, 
+    day_high : high,  
+    day_low : low, 
+    day_change : change, 
     stock_exchange_short : exchange
   } = data;
 
-  price = round2Dec(parseFloat(price) * conversionRate);
-  priceOpen = round2Dec(parseFloat(priceOpen) * conversionRate);
-  dayHigh = round2Dec(parseFloat(dayHigh) * conversionRate);
-  dayLow = round2Dec(parseFloat(dayLow) * conversionRate);
-  dayChange = round2Dec(parseFloat(dayChange) * conversionRate);
+  value = round2Dec(parseFloat(value) * conversionRate);
+  open = round2Dec(parseFloat(open) * conversionRate);
+  high = round2Dec(parseFloat(high) * conversionRate);
+  low = round2Dec(parseFloat(low) * conversionRate);
+  change = round2Dec(parseFloat(change) * conversionRate);
   
   const realTimeStockData = { 
     symbol, name, exchange, currency, 
-    price, priceOpen, dayHigh, dayLow, dayChange 
+    value, open, high, low, change 
   };
 
   return realTimeStockData;
