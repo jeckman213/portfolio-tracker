@@ -4,7 +4,7 @@ const
   { Asset, Stock } = require('../db/models'),
   { portfolioMatchesAsset, isAuthorized, userMatchesPortfolio } = require('../middleware'),
   { getStockValue } = require('../services/stocks'),
-  { round2Dec } = require('../services/math').default,
+  { round2Dec } = require('../services/math'),
   { sendSuccess, sendExpectedError, sendUnexpectedError } = require('../services/responses');
 
 // Asset: CREATE - Create a new asset for a portfolio
