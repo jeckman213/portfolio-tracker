@@ -1,11 +1,11 @@
 const 
   express                            = require('express'),
   router                             = express.Router({ mergeParams : true }),
-  { Portfolio, Asset }  = require('../db/models'),
+  { User, Portfolio, Asset }  = require('../db/models'),
   { userMatchesPortfolio, isAuthorized, isAccessible } = require('../middleware'),
   { sendSuccess, sendExpectedError, sendUnexpectedError } = require('../services/responses'),
   { getRealTime, getHistorical } = require('../services/stocks'),
-  { round2Dec } = require('../services/math').default;
+  { round2Dec, round4Dec } = require('../services/math');
 
 // Portfolio: CREATE - Create a new portfolio
 router.post('/', isAuthorized, async (req, res) => {
@@ -35,53 +35,128 @@ router.post('/', isAuthorized, async (req, res) => {
 // Portfolio: SHOW - Shows more information about a Portfolio (Assets)
 router.get('/:portfolioId', userMatchesPortfolio, isAccessible, async (req, res) => {
   try {
-    const 
+    const
       { name, id : portfolioId } = res.locals.portfolio,
-      assetsFound = await Asset.findAll({ where : { portfolioId } }),
-      assets = [],
-      portfolioHistorical = {},
+      userId = req.params.userId,
+      [ userFound, assetsFound] = await Promise.all([
+        User.findByPk(userId),
+        Asset.findAll({ where : { portfolioId } })
+      ]),
+      currency = req.user ? req.user.currency : 'USD', 
       stocks = {},
-      pieChartData = {};
+      portfolio = {
+        id : portfolioId,
+        name,
+        owner : userFound.username,
+        currency,
+        value : 0,
+        shares : 0,
+        assets : [],
+        history : {},
+        pieChartData : {
+          value : [],
+          shares : []
+        }
+      };    
 
-    let portfolioValue = 0, portfolioShares = 0;
-    pieChartData.values = [];
-    pieChartData.shares = [];
-
+    // Make all api calls to get realtime as well as historical data for each asset in the portfolio 
     await Promise.all(assetsFound.map(async assetFound => {
-      let 
+      const 
         { id, symbol, shares, purchasedAt } = assetFound,
-        value = round2Dec( await getRealTime(symbol, currency) * shares ),
-        historical = await getHistorical(symbol, purchasedAt);
+        [ realtimeData, history ] = await Promise.all([
+          getRealTime(symbol, currency).then( data => {
+            data.value = round2Dec(data.value * shares);
+            data.open = round2Dec(data.open * shares);
+            data.high = round2Dec(data.high * shares);
+            data.low = round2Dec(data.low * shares);
+            data.change = round2Dec(data.change * shares);
+            return data;
+          }), // keys: symbol, name, exchange, currency, value, open, high, low, change 
+          getHistorical(symbol, currency, purchasedAt).then( data => {
+            const history = data.history
+            for(let date in history){
+              for(let metric in history[date]){
+                if(metric !== 'volume'){ history[date][metric] = round2Dec(history[date][metric] * shares); }
+              }
+            } return history
+          }) // keys: date in fmt 'YYYY-MM-DD' with close, open, high, low, volume
+        ]),
+        { name, exchange, value, open, high, low, change } = realtimeData,
+        realtime = { value, open, high, low, change },
+        asset = { id, shares, symbol, name, exchange, purchasedAt, realtime, history }
 
-      if(!stocks[symbol]){ stocks[symbol] = {}; }
-      stocks[symbol].value = stocks[symbol].value ? (stocks[symbol].value + value) : value;
-      stocks[symbol].shares = stocks[symbol].shares ? (stocks[symbol].shares + shares) : shares;
-
-      for(let date in historical){
-        let ph = portfolioHistorical, h = historical;
-        if(!ph[date]){ ph[date] = {}; }
-
-        ph[date].value = ph[date].value ? ((parseFloat(h[date].close) * shares) + parseFloat(ph[date].value)) : (parseFloat(h[date].open) * shares);
-        ph[date].value = round2Dec(ph[date].value)
-      }
-
-      let asset = { id, shares, purchasedAt, symbol, value, historical };
-
-      portfolioValue += asset.value;
-      portfolioShares += asset.shares;
-      assets.push(asset);
+      portfolio.assets.push(asset);
     }));
 
-    for(let symbol in stocks){
-      pieChartData.values.push({ name : symbol, y : round2Dec(stocks[symbol].value / portfolioValue) });
-      pieChartData.shares.push({ name : symbol, y : round2Dec(stocks[symbol].shares / portfolioShares) });
+    const
+      // Accumulate value/shares statistics for each stock in the Portfolio (for pie graphs)
+      accumulateStockStats = (symbol, value, shares) => {
+        if(!stocks[symbol]){ stocks[symbol] = { value : 0, shares : 0 }; }
+        stocks[symbol].value += value;
+        stocks[symbol].shares += shares;
+      },
+      // Sum asset values into total Portfolio values over time
+      combineAssetHistories = (asset) => {
+        let 
+          ph = portfolio.history, 
+          ah = asset.history,
+          shares = asset.shares;
+        for(let date in ah){
+          if(!ph[date]){ ph[date] = { close : 0, open : 0, high : 0, low : 0, volume : 0 }; }
+          for(let metric in ah[date]){
+            if(metric === 'volume'){ ph[date].volume += ah[date].volume; }
+            else { ph[date][metric] += (ah[date][metric] * shares); }
+          }
+        }
+      },
+      // Sum current asset value into Portfolio's current total values
+      combineAssetValuesAndShares = (value, shares) => {
+        portfolio.value += value;
+        portfolio.shares += shares;
+      }
+
+    for(let id in portfolio.assets){
+      const
+        asset = portfolio.assets[id],
+        { symbol, shares, realtime } = asset,
+        value = realtime.value;
+      await Promise.all([accumulateStockStats(symbol, value, shares), combineAssetHistories(asset), combineAssetValuesAndShares(value, shares)]);
     }
 
-    portfolioValue = round2Dec(portfolioValue);
+    const
+      // Round values scaled by shares
+      roundValues = () => {
+        for(let date in portfolio.history){
+          for(let metric in portfolio.history[date]){
+            portfolio.history[date][metric] = round2Dec(portfolio.history[date][metric]);
+          }
+        } portfolio.value = round2Dec(portfolio.value);
+      },
+      // Calculate pie chart data
+      calcPieChartData = () => {
+        for(let symbol in stocks){
+          portfolio.pieChartData.value.push({ 
+            name : symbol,  
+            y : round4Dec(stocks[symbol].value / portfolio.value) 
+          });
+          
+          portfolio.pieChartData.shares.push({ 
+            name : symbol,  
+            y : round4Dec(stocks[symbol].shares / portfolio.shares) 
+          });
+        }
+      },
+      // Sort assets
+      sortAssets = () => { 
+        portfolio.assets = portfolio.assets.sort((i, j) => i.realtime.value < j.realtime.value); 
+      };
 
-    const showPortfolioData = { name, value : portfolioValue, shares : portfolioShares, assets, historical : portfolioHistorical, pieChartData };
+    await Promise.all([roundValues(), calcPieChartData(), sortAssets()]);
 
-    sendSuccess(showPortfolioData, res);
+    // Sort pie chart data
+    for(let metric in portfolio.pieChartData){ portfolio.pieChartData[metric] = portfolio.pieChartData[metric].sort((i, j) => i.y < j.y); }
+
+    sendSuccess(portfolio, res);
   }
   catch(err){ sendUnexpectedError(err, res); }
 });
