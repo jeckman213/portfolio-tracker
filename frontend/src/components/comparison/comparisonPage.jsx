@@ -21,6 +21,7 @@ class ComparisonPage extends Component {
       graphOption: 0,
       isLoading: true,
 
+      FirstUserPortfolios : [],
       FirstPortfolio: {
         userId : 0,
         portfolioId : 0,
@@ -31,6 +32,7 @@ class ComparisonPage extends Component {
         historical: {},
       },
 
+      SecondUserPortfolios : [],
       SecondPortfolio: {
         userId : 0,
         portfolioId : 0,
@@ -43,9 +45,12 @@ class ComparisonPage extends Component {
     }
 
     this.changeGraph = this.changeGraph.bind(this);
+    this.changePortfolioOne = this.changePortfolioOne.bind(this);
+    this.changePortfolioTwo = this.changePortfolioTwo.bind(this);
   }
 
   async componentDidMount() {
+    // Gets the first portfolio
     {
       const 
         username1 = 'dev', portfolioName1 = 'First Portfolio',
@@ -57,6 +62,13 @@ class ComparisonPage extends Component {
       if(success){
         const { userId, portfolioId } = ids;
         this.setState({ FirstPortfolio: { userId, portfolioId } });
+
+        {
+          const { userId } = this.state.FirstPortfolio,
+            { data } = await axios.get(`/api/user/${ userId }`),
+            { portfolios } = data;
+          this.setState({ FirstUserPortfolios : portfolios });
+        }
         
         const
           { data } = await axios.get(`/api/user/${userId}/portfolio/${portfolioId}`),
@@ -64,6 +76,7 @@ class ComparisonPage extends Component {
           this.setState({ FirstPortfolio: { name, value, shares, assets, historical} });
       }
     }
+    // Gets the second portfolio
     {
       const 
         username2 = 'coolguy1', portfolioName2 = 'First Portfolio',
@@ -75,6 +88,13 @@ class ComparisonPage extends Component {
       if(success){
         const { userId, portfolioId } = ids;
         this.setState({ SecondPortfolio: { userId, portfolioId } });
+
+        {
+          const { userId } = this.state.SecondPortfolio,
+            { data } = await axios.get(`/api/user/${ userId }`),
+            { portfolios } = data;
+          this.setState({ SecondUserPortfolios : portfolios });
+        }    
         
         const
           { data } = await axios.get(`/api/user/${userId}/portfolio/${portfolioId}`),
@@ -82,15 +102,44 @@ class ComparisonPage extends Component {
           this.setState({ SecondPortfolio: { name, value, shares, assets, historical}, isLoading: false });
       }
     }
-    console.log(this.state.FirstPortfolio.historical)
   }
 
   changeGraph = (value) => {
     this.setState({ graphOption : value });
   }
 
+  changePortfolioOne = async(value) => {
+    const 
+      username1 = 'dev', portfolioName1 = value,
+      queryObj1 = { username: username1, portfolioName: portfolioName1 },
+      queryString1 = queryStringify(queryObj1),
+      { data : ids } = await axios.get(`/api/search/portfolio?${queryString1}`),
+      { success } = ids;
+    
+    if(success){
+      const { userId, portfolioId } = ids;
+      this.setState({ FirstPortfolio: { userId, portfolioId } });
+
+      {
+        const { userId } = this.state.FirstPortfolio,
+          { data } = await axios.get(`/api/user/${ userId }`),
+          { portfolios } = data;
+        this.setState({ FirstUserPortfolios : portfolios });
+      }
+      
+      const
+        { data } = await axios.get(`/api/user/${userId}/portfolio/${portfolioId}`),
+        {name, value, shares, assets, historical } = data;
+        this.setState({ FirstPortfolio: { name, value, shares, assets, historical} });
+    }
+  }
+
+  changePortfolioTwo = (value) => {
+
+  }
+
   render() {
-    const { FirstPortfolio, SecondPortfolio, isLoading, graphOption } = this.state;
+    const { FirstPortfolio, SecondPortfolio, isLoading, graphOption, FirstUserPortfolios, SecondUserPortfolios } = this.state;
 
 
     if(!isLoading) {
@@ -113,8 +162,11 @@ class ComparisonPage extends Component {
     return (
       <div>
         <Header view={ this.changeGraph } />
+        <PortfolioSelect portfolios={ FirstUserPortfolios } view={ this.changePortfolioOne } currentPortfolio={ FirstPortfolio.name }/>
+        <div style={{float: 'right'}}>
+        <PortfolioSelect portfolios={ SecondUserPortfolios } view={ this.changePortfolioTwo } currentPortfolio={ SecondPortfolio.name }/>
+        </div>
         { graph }
-        <PortfolioSelect />
         <div>
           <div>
             <ComparisonTable assets={ FirstPortfolio.assets } />

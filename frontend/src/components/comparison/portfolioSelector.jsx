@@ -1,28 +1,57 @@
 import React, { Component } from 'react';
-import { Select, FormControl, InputLabel } from '@material-ui/core'
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
 
 class PortfolioSelect extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      portfolios : this.props.portfolios,
+      currentPortfolio : this.props.currentPortfolio
+    }
+
+    this.handleChange = this.handleChange.bind();  
+    this.printOptions = this.printOptions.bind();  
+  }
+
+  printOptions = () => {
+    const { portfolios } = this.state;
+    var options = [];
+
+    for(let portfolio of portfolios) {
+      let { name } = portfolio;
+      options.push(
+        <option value={name}>{ name }</option>
+      );
+    }
+
+    return options;
+  }
+
+  handleChange = (event) => {
+    const { value } = event.target;
+
+    this.props.view(value);
+  }
+
   render() {
+    const { currentPortfolio } = this.state;
     return (
-      <FormControl variant="filled" style={ style.formControl } >
-          <InputLabel>Portfolio</InputLabel>
-          <Select native>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-          </Select>
+        <FormControl variant="filled" style={ style.formControl } >
+            <InputLabel>Portfolio</InputLabel>
+            <Select native value={ currentPortfolio } onChange={ this.handleChange }>
+              { this.printOptions() }
+            </Select>
         </FormControl>
     )
   }
 }
 
 const style = {
-  container: {
-    textAlign: 'center'
-  },
-
   formControl: {
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   }
 }
 

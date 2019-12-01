@@ -24,7 +24,7 @@ class ComparisonHeader extends Component {
   }
 
   render() {
-    const { graph, classes } = this.state;
+    const { graph } = this.state;
     return (
       <div style={ style.container }>
         <FormControl variant="filled" style={ style.formControl } >
