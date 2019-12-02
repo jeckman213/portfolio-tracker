@@ -101,6 +101,8 @@ exports.getStockValues = (symbol, dateFrom, dateTo = null) => {
             year = date.getFullYear(),
             month = date.getMonth() + 1,
             day = date.getDate();
+        if (day < 10) day = `0${day}`;
+        if (month < 10) month = `0${month}`;
         dateTo = `${year}-${month}-${day}`;
     }
 

@@ -23,7 +23,6 @@ class PieChart extends Component {
         chart : {
           plotShadow: false,
           type: 'pie',
-          height: '350px',
         },
         title : { text: this.props.chartTitle },
         tooltip : { pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>' },
@@ -43,11 +42,6 @@ class PieChart extends Component {
         }],
       },
     });
-  }
-
-  // Empty function for implementing portfolio end point of pie chart value
-  callApi = async () => {
-
   }
 
   render() {

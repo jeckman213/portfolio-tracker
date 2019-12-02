@@ -32,7 +32,6 @@ class PortfolioValueGraph extends Component {
       Object.keys(this.state.inData2).forEach(key => {
         chartData2.push([Date.parse(key), this.state.inData2[key]["value"]]);
       });
-      console.log(chartData2);
       name = `${this.state.portfolioName} vs. ${this.state.portfolioName2}`;
     } else { name = `${this.state.portfolioName} Price` }
 
@@ -87,9 +86,11 @@ class PortfolioValueGraph extends Component {
       series : [{
         name : `${this.state.portfolioName}`,
         data : chartData,
+        id : 'chart1'
       }, {
         name : `${this.state.portfolioName2}`,
         data : chartData2,
+        id : 'chart2'
       }],
 
       responsive : {

@@ -15,7 +15,6 @@ class ComparisonHeader extends Component {
 
   handleChange = (event) => {
     const { value } = event.target;
-    console.log(value);
     this.setState({ graph: value });
     
     if (value === "Pie") this.props.view(0);
