@@ -213,8 +213,8 @@ class ComparisonPage extends Component {
       if (graphOption === 0) {
         graph = 
           (<div style={ Style.PieContainer }>
-            <PieGraph slices={ getPercentages(FirstPortfolio.assets) } style={ Style.PieOne }/>
-            <PieGraph slices={ getPercentages(SecondPortfolio.assets) } style={ Style.PieTwo } />
+            <PieGraph chartTitle={ `${FirstPortfolio.name}(${FirstPortfolio.username})` } slices={ getPercentages(FirstPortfolio.assets) } style={ Style.PieOne }/>
+            <PieGraph chartTitle={ `${SecondPortfolio.name}(${SecondPortfolio.username})` } slices={ getPercentages(SecondPortfolio.assets) } style={ Style.PieTwo } />
           </div>);
       } 
       else if (graphOption === 1) {
@@ -229,7 +229,7 @@ class ComparisonPage extends Component {
         <Header view={ this.changeGraph } />
 
         <div style={Style.searchContainer} className="comparisonSearchContainer">
-          <div style={Style.search}>
+          <div style={Style.search} className="compareSearch">
           <div className="portfolioSelect">
             <PortfolioSelect portfolios={ FirstUserPortfolios } view={ this.changePortfolioOne } currentPortfolio={ FirstPortfolio.name }/>
           </div>
@@ -237,7 +237,7 @@ class ComparisonPage extends Component {
             <UserPortfolioSearch update={ this.changeUserOne } />
             </div>
           </div>
-          <div style={Style.search}>
+          <div style={Style.search} className="compareSearch">
             <div className="portfolioSelect">
               <PortfolioSelect portfolios={ SecondUserPortfolios } view={ this.changePortfolioTwo } currentPortfolio={ SecondPortfolio.name }/>
             </div>
@@ -317,7 +317,7 @@ const Style = {
   },
 
   search: {
-    margin: 'auto',
+    margin: '1rem auto',
     display: 'flex',
   },
 }

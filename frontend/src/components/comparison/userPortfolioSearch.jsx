@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
+import Button from '@material-ui/core/Button';
 
 class UserPortfolioSearch extends Component {
   constructor(props) {
@@ -28,15 +28,19 @@ class UserPortfolioSearch extends Component {
   render() {
     return (
       <form className="comparisonSearchBar" onSubmit={ this.handleUserUpdate } onChange={this.handleUpdate} style={ style.formControl } autoComplete="off">
-        <TextField className="comparisonTextField" label="User" variant="filled" style={{width: "250px"}}/>
+        <TextField className="comparisonTextField" label="User" variant="filled" style={style.input}/>
+        <Button type="submit" variant="contained" style={style.button} className="compareSearchBtn"><i className="fas fa-search"></i></Button>
       </form>
     );
   }
 }
 
 const style = {
-  formControl: {
-    backgroundColor: 'white',
+  input: {
+    backgroundColor: 'white'
+  },
+  button: {
+    padding: '21px'
   }
 }
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
+import { isNullOrUndefined } from 'util';
 
 // Pie Chart for portfolios 
 // Get passed a slices prop
@@ -18,13 +19,17 @@ class PieChart extends Component {
   }
 
   componentDidMount() {
+    var { chartTitle } = this.props;
+    
+    if (chartTitle === "null(null)") chartTitle = "";
+
     this.setState({
       chartOptions : {
         chart : {
           plotShadow: false,
           type: 'pie',
         },
-        title : { text: this.props.chartTitle },
+        title : { text: chartTitle },
         tooltip : { pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>' },
         plotOptions : {
           pie : {

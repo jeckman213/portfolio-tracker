@@ -473,7 +473,7 @@ section div form {
   }
 }
 
-@media (max-width: 1000px ) and (min-width: 0px ){
+@media (max-width: 1127px ) and (min-width: 0px ){
   header {
     height: 350px;
    background-size:120%;
@@ -625,16 +625,12 @@ section div form {
 
   .comparisonSearchContainer {
     display: block !important;
-    align-items: center;
+    text-align: center;
   }
 
   .comparisonSearchBar {
     margin: 1rem auto;
     width: auto;
-  }
-
-  .comparisonTextField {
-    width: 200px !important;
   }
   
   .userPortfolioSearch {
@@ -643,6 +639,10 @@ section div form {
 
   .portfolioSelect {
     margin: auto !important;
+  }
+
+  .compareSearch {
+    display: block !important;
   }
 }
 
