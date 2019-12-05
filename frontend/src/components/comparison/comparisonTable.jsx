@@ -52,13 +52,6 @@ class ComparisonTable extends Component {
     }
 }
 
-const Style = {
-    TableHead: {
-        backgroundColor: '#000',
-        color: '#fff'
-    }
-}
-
 const TableHeadCell = withStyles(theme => ({
     head: {
       backgroundColor: '#3e3e45',

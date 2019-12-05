@@ -32,16 +32,15 @@ class PortfolioSelect extends Component {
 
   handleChange = (event) => {
     const { value } = event.target;
-
     this.props.view(value);
   }
 
   render() {
     const { currentPortfolio } = this.state;
     return (
-        <FormControl variant="filled" style={ style.formControl } >
+        <FormControl variant="filled">
             <InputLabel>Portfolio</InputLabel>
-            <Select native value={ currentPortfolio } onChange={ this.handleChange }>
+            <Select style={ style.formControl } native value={ currentPortfolio } onChange={ this.handleChange }>
               { this.printOptions() }
             </Select>
         </FormControl>
@@ -52,6 +51,7 @@ class PortfolioSelect extends Component {
 const style = {
   formControl: {
     backgroundColor: 'white',
+    width: '150px'
   }
 }
 

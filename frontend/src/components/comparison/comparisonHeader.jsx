@@ -26,6 +26,7 @@ class ComparisonHeader extends Component {
     const { graph } = this.state;
     return (
       <div style={ style.container }>
+        <h2>Comparison Page</h2>
         <FormControl variant="filled" style={ style.formControl } >
           <InputLabel>Graph</InputLabel>
           <Select native value={ graph } onChange={ this.handleChange }>

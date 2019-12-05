@@ -622,6 +622,28 @@ section div form {
   .faqQuestion {
     text-align: center;
   }
+
+  .comparisonSearchContainer {
+    display: block !important;
+    align-items: center;
+  }
+
+  .comparisonSearchBar {
+    margin: 1rem auto;
+    width: auto;
+  }
+
+  .comparisonTextField {
+    width: 200px !important;
+  }
+  
+  .userPortfolioSearch {
+    margin: auto !important;
+  }
+
+  .portfolioSelect {
+    margin: auto !important;
+  }
 }
 
 .chart {
