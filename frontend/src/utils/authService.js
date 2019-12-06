@@ -100,12 +100,14 @@ const validateRegistrationOnServer = (newUserData) => {
 const attemptLogin = (returningUserData) => {
   return axios.post('/api/login', returningUserData)
     .then( res => {
-      const { success, username, failExpected, failReason } = res.data;
+      const { success, id, username, currency, failExpected, failReason } = res.data;
       
       if(success){ /* Successfully authenticated returning user */
         return {
           type : AUTHENTICATED,
-          username
+          id,
+          username,
+          currency
         };
       } 
       else { /* Most likely either username/password is incorrect. Possible Sequelize, bcrypt, or Passport error (all already logged) */
@@ -157,21 +159,27 @@ const attemptLogout = () => {
 const checkAuthentication = () => {
   return axios.get('/api/authenticate')
     .then( res => {
-      const { success, username } = res.data;
+      console.log(res);
+      const { 
+        success, username, id, currency, 
+        failExpected, failReason 
+      } = res.data;
 
       if(success){ /* User successfully authenticated, i.e. sessions has not expired */
         return {
           type : AUTHENTICATED,
-          username
+          id,
+          username,
+          currency
         };
       }
       else { 
         return {
           type : AUTHENTICATION_FAILED,
-          failExpected : true,
-          failReason : 'Session expired or never logged in'
+          failExpected,
+          failReason
         };
-      }
+      } 
     })
     .catch( err => { /* Unexpected axios error (network issue likely) */
       console.error('axios /api/authenticate error:', err.message);
