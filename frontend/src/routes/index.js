@@ -27,7 +27,7 @@ const Routing = () => (
       <Route exact path='/stock/:symbol' component={ StockPage } /> 
       <Route exact path='/user/:username' component={ UserPage } /> 
       <Route exact path='/user/:username/portfolio/:portfolioName' component={ PortfolioPage } /> 
-      <ProtectedRoute exact path='/protected' component={ About }/>
+      <ProtectedRoute exact path='/settings' component={ About }/>
       <Route path='*' component={ () => '404 Not Found' } /> 
     </Switch>
   </div>    

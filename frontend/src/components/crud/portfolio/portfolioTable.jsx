@@ -1,39 +1,43 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import axios from 'axios'
 import Popup from 'reactjs-popup'
+import { formatCurrency } from '../../../utils/currencies'
 import EditAsset from '../buttons/editAsset'
 import NewAsset from '../buttons/newAsset'
-import { dollar } from "../../../assets/styles";
 import colors from '../../../assets/colors'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 
 class PortfolioTable extends Component {
   constructor(props) {
-      super(props);
+    super(props);
 
-      this.state = {
-        assets : this.props.assets
-      }
+    this.state = {
+      requesting : false
+    }
 
-      this.printStocks = this.printStocks.bind(this);
-      this.editAsset = this.editAsset.bind(this);
-      this.createAsset = this.createAsset.bind(this);
+    this.printStocks = this.printStocks.bind(this);
+    this.editAsset = this.editAsset.bind(this);
+    this.createAsset = this.createAsset.bind(this);
   }
 
   printStocks = () => {
-    let tableData = [], { assets } = this.state;
-    let { requesting } = this.state;
-    let style = this.style;
-
+    const 
+      style = this.style,
+      requesting = this.state.requesting,
+      tableData = [],
+      assets = this.props.assets,
+      currency = this.props.currency || 'USD';
     for(let asset of assets) {
-      let { id, symbol, shares, purchasedAt, value } = asset;
+      let { id, symbol, shares, purchasedAt, realtime } = asset;
+      
       tableData.push(
         <tr key={ id }>
           <td>{ symbol }</td>
           <td><input type="text"  value={ shares } className="portfolio-table-input" readOnly/></td>
           <td><input type="date" value={ purchasedAt } className="portfolio-table-input" readOnly/></td>
-          <td><span style={ dollar }>$</span>{ value.toFixed(2) }</td>
+          <td>{ formatCurrency(currency, realtime.value) }</td>
           <td><EditAsset editAsset={ this.editAsset } id={ id } symbol={ symbol } shares={ shares } purchasedAt={ purchasedAt } /></td>
           <td>
             <Popup
@@ -100,7 +104,6 @@ class PortfolioTable extends Component {
   }
 
   render(){
-    console.log(this.props);
     return (
       <table className="portfolio-table">
         <tbody>
@@ -135,4 +138,10 @@ class PortfolioTable extends Component {
   }
 }
 
-export default PortfolioTable;
+const mapStateToProps = (state) => {
+  const { currency } = state.authentication;
+
+  return { currency };
+};
+
+export default connect(mapStateToProps, null)(PortfolioTable);

@@ -13,11 +13,16 @@ class PieChart extends Component {
     super(props);
     
     this.state = {
-      chartOptions: {}
+      metric : 'value',
+      chartOptions : {}
     }
   }
 
   componentDidMount() {
+    const 
+      data = this.props.data,
+      metric = this.state.metric;
+
     this.setState({
       chartOptions : {
         chart : {
@@ -38,7 +43,7 @@ class PieChart extends Component {
         },
         series : [{
           colorByPoint : true,
-          data : this.props.slices
+          data : data[metric]
         }],
         responsive: {
           rules: [{
