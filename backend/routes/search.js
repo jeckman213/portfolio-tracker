@@ -10,19 +10,21 @@ router.get('/stock', async (req, res) => {
     let query = req.query.q;
     query = query.replace(' ', ' & '); // Format tokens for tsquery
     query = (query.slice(-1) === ' ') ? query.slice(0, -3) : query; // Remove trailing space
-    const
-      results = query
-        ? await sequelize.query(`
-            SELECT id, symbol, name, exchange
-            FROM ${Stock.tableName}
-            WHERE _search @@ to_tsquery(:query)
-            ORDER BY ts_rank_cd(_search, to_tsquery(:query), 4);
-          `, {
-            model : Stock,
-            replacements : { query : `${query}:*` },
-          })
-        : [],
-      matches = results ? results.slice(0, 10) : [];
+
+    let results = query
+      ? await sequelize.query(`
+          SELECT id, symbol, name, exchange
+          FROM ${Stock.tableName}
+          WHERE _search @@ to_tsquery(:query)
+          ORDER BY ts_rank_cd(_search, to_tsquery(:query), 4);
+        `, {
+          model : Stock,
+          replacements : { query : `${query}:*` },
+        })
+      : [];
+
+      results = results ? results.slice(0, 10) : [];
+      const matches = { results };
 
     sendSuccess(matches, res);
   }

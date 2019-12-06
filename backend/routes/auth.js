@@ -50,8 +50,8 @@ router.post('/login', (req, res, next) => {
         /* User logged in successfully, req.user now has user details */
         else { 
           const
-            { id, username } = req.user, 
-            loginData = { id, username };
+            { id, username, currency } = req.user, 
+            loginData = { id, username, currency };
           
           sendSuccess(loginData, res);
         }
@@ -59,6 +59,23 @@ router.post('/login', (req, res, next) => {
     }
   })(req, res, next);
 });
+
+router.get('/authenticate', (req, res) => {
+  try {
+    if(req.isAuthenticated()){
+      const 
+        { id, username, currency } = req.user,
+        userData = { id, username, currency };
+
+      sendSuccess(userData, res);
+    }
+    else{
+      sendExpectedError('Session expired or never logged in', res, 200);
+    }
+  }
+  catch(err){ sendUnexpectedError(err, res); }
+});
+
 
 router.get('/logout', (req, res) => {
   try {

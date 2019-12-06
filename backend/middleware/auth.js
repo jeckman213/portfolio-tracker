@@ -6,7 +6,7 @@ const
 middleware.isAuthenticated = (req, res, next) => {
   req.isAuthenticated() 
     ? next()
-    : sendExpectedError('User not authenticated', res, 401);
+    : sendExpectedError('User not authenticated', res, 200);
 };
 
 // Checks if the user is authenticated by passport

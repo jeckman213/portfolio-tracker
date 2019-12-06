@@ -6,7 +6,7 @@ const passport = require('passport'),
 passport.use(new LocalStrategy( (username, password, done) => {
   User.findOne({ 
     where : { username },
-    attributes : ['id', 'username', 'email', 'hash', 'firstname', 'lastname']
+    attributes : ['id', 'username', 'email', 'hash', 'firstname', 'lastname', 'currency']
   }) 
     .then( user => {
       /* No username match */

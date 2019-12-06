@@ -71,7 +71,7 @@ const
         { dateFrom, dateTo } = req.query,
         currency = req.user ? req.user.currency : 'USD',
         historicalData = await stocks.getHistorical(symbol, currency, dateFrom, dateTo);
-        
+      
       sendSuccess(historicalData, res);
     } 
     catch(err){ sendUnexpectedError(err, res); }
