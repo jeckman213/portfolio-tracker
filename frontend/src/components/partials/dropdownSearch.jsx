@@ -32,9 +32,8 @@ class DropdownSearch extends Component {
 
     let
       res = await axios.get(`/api/search/stock?${queryString}`),
-      results = res.data;
+      results = res.data.success ? res.data.results : [];
 
-    // console.log(query, ' : ', results);
     this.setState({ results })
   }
 
@@ -53,11 +52,11 @@ class DropdownSearch extends Component {
     const 
       style = this.style,
       { query, results, redirect, symbol } = this.state,
-      resultItems = this.state.results.map( result => {
+      resultItems = results.map( result => {
         let 
           { id, symbol, name} = result,
           maxLength = 25;
-        name = name.length > maxLength ? name.slice(0, maxLength) + '...' : name; 
+        name = (name.length > maxLength) ? (name.slice(0, maxLength) + '...') : name; 
         const text = `[${symbol}] - ${name}`;
 
         return ( <li style={ style.li } key={ id }><Link to={ `/stock/${symbol}` }>{ text }</Link></li> )
