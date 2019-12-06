@@ -11,16 +11,18 @@ class PortfolioValueGraph extends Component {
 
     this.state = {
       chartOptions : {},
-      isLoading : true,
-      inData : this.props.data,
-      portfolioName : this.props.name
+      isLoading : true
     }
   }
 
   componentDidMount() {
+    const 
+      portfolioName = this.props.name,
+      historicalData = this.props.data;
+
     var chartData = [];
-    Object.keys(this.state.inData).forEach(key => {
-      chartData.push([Date.parse(key), this.state.inData[key]["value"]]);
+    Object.keys(historicalData).forEach(date => {
+      chartData.push([Date.parse(date), historicalData[date]['close']]);
     });
 
     chartData = chartData.reverse();
@@ -57,10 +59,10 @@ class PortfolioValueGraph extends Component {
             }
           ]
       },
-      title : { text : `${this.state.portfolioName} Total`, },
+      title : { text : `${portfolioName} Total`, },
       subtitle: { text : 'Price based on closing price per timeframe' },
       series : [{
-        name : `${this.state.portfolioName}`,
+        name : `${portfolioName}`,
         data : chartData,
         tooltip : { valueDecimals : 2 }
       }],

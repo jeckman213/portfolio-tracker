@@ -19,21 +19,30 @@ class HighLowChart extends Component {
 
     this.state = {
       chartOptions : {},
-      isLoading : true,
-      symbol : this.props.symbol,
+      isLoading : true
     };
   }
 
   componentDidMount() {
     this.getStockData();
   }
+  
+  componentDidUpdate(prevProps) {
+    if(this.props.symbol !== prevProps.symbol){
+      this.getStockData();
+    }
+  }
 
   getStockData = async () => {
     // Highcharts/Highstocks needs data in an array format instead of an object
     // So, data is converted to array here
-    var chartData = [];
+    this.setState({ isLoading : true });
 
-    axios.get(`/api/alpha/daily/${this.state.symbol}`)
+    const
+      symbol = this.props.symbol,
+      chartData = [];
+
+    axios.get(`/api/alpha/daily/${symbol}`)
       .then(res => {
         const { data } = res;
 
@@ -49,7 +58,7 @@ class HighLowChart extends Component {
           isLoading : false,
           chartOptions : { 
             rangeSelector : { selected : 0 },
-            title: { text : `${this.state.symbol} High-Low` },
+            title: { text : `${symbol} High-Low` },
             legend : { enabled : true },
             plotOptions: {
               series: {
@@ -87,7 +96,7 @@ class HighLowChart extends Component {
               {
                 type : 'candlestick',
                 id : 'stock',
-                name : `${this.state.symbol}`,
+                name : symbol,
                 data : chartData,
                 dataGrouping : {
                   units : [

@@ -16,7 +16,6 @@ class LineChart extends Component {
 
     this.state = {
       chartOptions : {},
-      symbol : this.props.symbol,
       isLoading : true
     };
   }
@@ -24,12 +23,23 @@ class LineChart extends Component {
   componentDidMount() {
     this.getStockData();
   }
+  
+  componentDidUpdate(prevProps) {
+    if(this.props.symbol !== prevProps.symbol){
+      this.getStockData();
+    }
+  }
 
   getStockData = async () => {
     // Highcharts/Highstocks needs data in an array format instead of an object
     // So, data is converted to array here
-    var chartData = [];
-    axios.get(`/api/alpha/daily/${this.state.symbol}`)
+    this.setState({ isLoading : true });
+
+    const
+      symbol = this.props.symbol,
+      chartData = [];
+
+    axios.get(`/api/alpha/daily/${symbol}`)
       .then(res => {
         const { data } = res;
         // If the request limit was reached 
@@ -75,11 +85,11 @@ class LineChart extends Component {
               }
             ],
           },
-          title: { text: `${this.state.symbol} Price`, },
+          title: { text: `${symbol} Price`, },
           subtitle: { text: 'Price based on closing price per timeframe' },
           series : [
             {
-              name : `${this.state.symbol}`,
+              name : symbol,
               data : chartData,
               tooltip : { valueDecimals: 2 }
             }

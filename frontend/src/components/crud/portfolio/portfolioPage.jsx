@@ -16,16 +16,20 @@ class PortfolioPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentGraph: 0,
       isLoading: true,
+      currentGraph: 0,
       userId : 0,
       portfolioId : 0,
       name : null,
+      owner : null,
       value : 0,
       shares : 0,
       assets : [],
-      historical : {},
-      pieCharData : {}
+      history : {},
+      pieChartData : {
+        value : [],
+        shares : []
+      }
     }
 
     this.changeGraph = this.changeGraph.bind(this);
@@ -37,7 +41,7 @@ class PortfolioPage extends Component {
       queryObj = { username, portfolioName },
       queryString = queryStringify(queryObj),
       { data : ids} = await axios.get(`/api/search/portfolio?${queryString}`),
-      { success } = ids;
+      success = ids.success;
       
       if(success){
         const { userId, portfolioId } = ids;
@@ -45,8 +49,9 @@ class PortfolioPage extends Component {
         
         const 
           { data } = await axios.get(`/api/user/${userId}/portfolio/${portfolioId}`),
-          { name, value, shares, assets, historical, pieChartData } = data;
-          this.setState({ name, value, shares, assets, historical, pieChartData, isLoading : false })
+          { name, owner, value, shares, assets, history, pieChartData } = data;
+        this.setState({ name, owner, value, shares, assets, history, pieChartData, isLoading : false });
+        console.log(data);
     }
   }
 
@@ -55,15 +60,15 @@ class PortfolioPage extends Component {
   }
 
   render(){
-    const { name, value, assets, isLoading, currentGraph, historical, userId, portfolioId } = this.state;
+    const { name, value, assets, currentGraph, history, pieChartData, userId, portfolioId, isLoading } = this.state;
 
     if (!isLoading) {
       var graph = <h1>There was a problem</h1>;
       if (currentGraph === 0) {
-        graph = <PieGraph slices={getPercentages(assets)} chartTitle={`${name} Assets`} />
+        graph = <PieGraph data={ pieChartData } portfolioName={ name } />
       }
       else {
-        graph = <PortfolioValueGraph data={historical} name={name} />
+        graph = <PortfolioValueGraph data={history} name={name} />
       }
 
       return(
