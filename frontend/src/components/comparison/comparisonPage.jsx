@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import Header from './comparisonHeader';
 import PieGraph from '../graphs/pieGraph';
 import LineGraph from '../graphs/portfolioValueGraph';
-import HighLowGraph from '../graphs/highLowChart';
+import HighLowGraph from '../graphs/portfolioHighLow';
 import ComparisonTable from './comparisonTable';
 import PortfolioSelect from './portfolioSelector';
 import UserPortfolioSearch from './userPortfolioSearch';
@@ -39,7 +39,7 @@ class ComparisonPage extends Component {
         value : 0,
         shares : 0,
         assets : [],
-        historical: {},
+        history: {},
         pieChartData : {}
       },
 
@@ -53,7 +53,7 @@ class ComparisonPage extends Component {
         value : 0,
         shares : 0,
         assets : [],
-        historical : {},
+        history : {},
         pieChartData : {}
       },
     }
@@ -84,8 +84,8 @@ class ComparisonPage extends Component {
       
       const
         { data } = await axios.get(`/api/user/${userId}/portfolio/${portfolioId}`),
-        {name, value, shares, assets, historical, pieChartData } = data;
-        this.setState({ FirstPortfolio: { userId, username, portfolioId, name, value, shares, assets, historical, pieChartData}, isLoading: false });
+        {name, value, shares, assets, history, pieChartData } = data;
+        this.setState({ FirstPortfolio: { userId, username, portfolioId, name, value, shares, assets, history, pieChartData}, isLoading: false });
     }
     console.log(this.state);
   }
@@ -105,8 +105,8 @@ class ComparisonPage extends Component {
       
       const
         { data } = await axios.get(`/api/user/${userId}/portfolio/${portfolioId}`),
-        {name, value, shares, assets, historical, pieChartData } = data;
-        this.setState({ SecondPortfolio: { userId, username, portfolioId, name, value, shares, assets, historical, pieChartData}, isLoading: false });
+        {name, value, shares, assets, history, pieChartData } = data;
+        this.setState({ SecondPortfolio: { userId, username, portfolioId, name, value, shares, assets, history, pieChartData}, isLoading: false });
     }
   }
 
@@ -126,7 +126,7 @@ class ComparisonPage extends Component {
           portfolioName = portfolios[0].name;
 
           data = await axios.get(`api/user/${id}/portfolio/${portfolioId}`);
-          const { value, shares, assets, historical, pieChartData } = data.data;
+          const { value, shares, assets, history, pieChartData } = data.data;
 
           this.setState({ 
             FirstUserPortfolios : portfolios,
@@ -138,7 +138,7 @@ class ComparisonPage extends Component {
               value,
               shares,
               assets,
-              historical,
+              history,
               pieChartData
             },
             isLoading : false,
@@ -167,7 +167,7 @@ class ComparisonPage extends Component {
           portfolioName = portfolios[0].name;
 
           data = await axios.get(`api/user/${id}/portfolio/${portfolioId}`);
-          const { value, shares, assets, historical, pieChartData } = data.data;
+          const { value, shares, assets, history, pieChartData } = data.data;
 
           this.setState({ 
             SecondUserPortfolios : portfolios,
@@ -179,7 +179,7 @@ class ComparisonPage extends Component {
               value,
               shares,
               assets,
-              historical,
+              history,
               pieChartData
             },
             isLoading : false,
@@ -193,7 +193,7 @@ class ComparisonPage extends Component {
   }
 
   render() {
-    const { FirstPortfolio, SecondPortfolio, isLoading, graphOption, FirstUserPortfolios, SecondUserPortfolios, isEmpty, noUserFound, pieChartData } = this.state;
+    const { FirstPortfolio, SecondPortfolio, isLoading, graphOption, FirstUserPortfolios, SecondUserPortfolios, isEmpty, noUserFound } = this.state;
 
     if(isEmpty) {
       return (
@@ -222,10 +222,10 @@ class ComparisonPage extends Component {
           </div>);
       } 
       else if (graphOption === 1) {
-        graph = <LineGraph data={ FirstPortfolio.historical } data2={ SecondPortfolio.historical } name={ FirstPortfolio.name } name2={ SecondPortfolio.name } />;
+        graph = <LineGraph data={ FirstPortfolio.history } data2={ SecondPortfolio.history } name={ FirstPortfolio.name } name2={ SecondPortfolio.name } />;
       }
       else {
-        graph = <HighLowGraph symbol={ "AAPL" } />;
+        graph = <HighLowGraph data={ FirstPortfolio.history } data2={ SecondPortfolio.history } name={ FirstPortfolio.name } name2={ SecondPortfolio.name } />;
       }
 
     return (
