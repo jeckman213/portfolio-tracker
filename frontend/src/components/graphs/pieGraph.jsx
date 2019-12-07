@@ -14,7 +14,8 @@ class PieChart extends Component {
     super(props);
     
     this.state = {
-      chartOptions: {}
+      metric : 'value',
+      chartOptions : {}
     }
   }
 
@@ -22,6 +23,10 @@ class PieChart extends Component {
     var { chartTitle } = this.props;
     
     if (chartTitle === "null(null)") chartTitle = "";
+    
+    const 
+      data = this.props.data,
+      metric = this.state.metric;
 
     this.setState({
       chartOptions : {
@@ -43,7 +48,7 @@ class PieChart extends Component {
         },
         series : [{
           colorByPoint : true,
-          data : this.props.slices
+          data : data[metric]
         }],
       },
     });

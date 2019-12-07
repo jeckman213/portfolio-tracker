@@ -16,24 +16,29 @@ class PortfolioValueGraph extends Component {
       inData : this.props.data,
       inData2 : this.props.data2,
       portfolioName : this.props.name,
-      portfolioName2 : this.props.name2
+      portfolioName2 : this.props.name2,
+      isLoading : true
     }
   }
 
   componentDidMount() {
+    const 
+      { portfolioName, portfolioName2, inData, inData2 } = this.state;
+
     var chartData = [];
     var chartData2 = [];
-    var name;
-    Object.keys(this.state.inData).forEach(key => {
-      chartData.push([Date.parse(key), this.state.inData[key]["value"]]);
+    var name = `${portfolioName} Value`;
+
+    Object.keys(inData).forEach(date => {
+      chartData.push([Date.parse(date), historicalData[date]['close']]);
     });
 
-    if (!isNullOrUndefined(this.state.inData2)) {
-      Object.keys(this.state.inData2).forEach(key => {
-        chartData2.push([Date.parse(key), this.state.inData2[key]["value"]]);
+    if (!isNullOrUndefined(inData2)) {
+      Object.keys(inData2).forEach(key => {
+        chartData2.push([Date.parse(key), this.state.inData2[key]["close"]]);
       });
-      name = `${this.state.portfolioName} vs. ${this.state.portfolioName2}`;
-    } else { name = `${this.state.portfolioName} Price` }
+      name = `${portfolioName} vs. ${portfolioName2}`;
+    }
 
     chartData = chartData.reverse();
     chartData2 = chartData2.reverse();
@@ -84,11 +89,11 @@ class PortfolioValueGraph extends Component {
       },
 
       series : [{
-        name : `${this.state.portfolioName}`,
+        name : `${portfolioName}`,
         data : chartData,
         id : 'chart1'
       }, {
-        name : `${this.state.portfolioName2}`,
+        name : `${portfolioName2}`,
         data : chartData2,
         id : 'chart2'
       }],

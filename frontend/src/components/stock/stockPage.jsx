@@ -6,9 +6,8 @@ import Header from './stockPageHeader';
 class StockPage extends Component {
   constructor(props){
     super(props);
-    const { symbol } = this.props.match.params;
+  
     this.state = {
-      symbol,
       // 0 => Line; 1 => High-Low
       graphOption : 0,
     }
@@ -16,18 +15,15 @@ class StockPage extends Component {
     this.changeGraph = this.changeGraph.bind(this);
   }
 
-  componentDidMount(){
-    const { symbol } = this.props.match.params;
-    this.setState({ symbol })
-  }
-
   changeGraph = (value) => {
     this.setState({ graphOption : value });
   }
   
   render(){
-    const style = this.style, 
-      { symbol, graphOption } = this.state;
+    const 
+      symbol = this.props.match.params.symbol,
+      style = this.style, 
+      { graphOption } = this.state;
     
     return (
       <section style={ style.section }>

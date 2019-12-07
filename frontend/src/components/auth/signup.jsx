@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import { Redirect } from 'react-router';
 import { signUp, login } from '../../actions/auth/authActions';
-import currencies from '../../utils/currencies'
+import { currencies } from '../../utils/currencies'
 
 class SignUp extends Component {
   // So booking or signup im 

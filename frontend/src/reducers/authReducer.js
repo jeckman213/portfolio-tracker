@@ -6,7 +6,7 @@ import {
 } from '../actions/auth/types';
 
 export default function(previousState = { authenticated : false }, action){
-  const { id, username, failExpected, failReason } = action;
+  const { id, username, currency, failExpected, failReason } = action;
 
   switch(action.type){
     case AUTHENTICATING:
@@ -18,8 +18,9 @@ export default function(previousState = { authenticated : false }, action){
     case AUTHENTICATED:
       return {
         authenticated : true,
+        id,
         username,
-        id
+        currency
       }
     
     case AUTHENTICATION_FAILED:

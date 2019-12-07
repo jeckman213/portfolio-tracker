@@ -1,6 +1,6 @@
 const
-  { Portfolio }        = require('../db/models'),
-  { expectedError, unexpectedError } = require('../services/errorhandling'),
+  { Portfolio } = require('../db/models'),
+  { sendExpectedError, sendUnexpectedError } = require('../services/responses'),
   middleware = {};
 
 // Checks if user with id req.params.userId 
@@ -16,9 +16,9 @@ middleware.userMatchesPortfolio = async (req, res, next) => {
       res.locals.portfolio = portfolioFound;
       next(); 
     }
-    else { res.send(expectedError(`User with id ${userId} does not own a portfolio with id ${portfolioId}`, res, 404)); }
+    else { sendExpectedError(`User with id ${userId} does not own a portfolio with id ${portfolioId}`, res, 404); }
   }
-  catch(err){ res.send(unexpectedError(err, res)) }
+  catch(err){ sendUnexpectedError(err, res) }
 }
 
 // Checks if the portfolio is public or the user owns it
@@ -31,9 +31,9 @@ middleware.isAccessible = async (req, res, next) => {
     
     public || currentUserId === ownerId
       ? next()
-      : res.send(expectedError('Unauthorized access', res, 403));
+      : sendExpectedError('Unauthorized access', res, 403);
   }
-  catch(err){ res.send(unexpectedError(err, res)) }
+  catch(err){ sendUnexpectedError(err, res) }
 }
 
 module.exports = middleware;

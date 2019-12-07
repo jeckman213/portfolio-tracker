@@ -1,64 +1,73 @@
 const 
-  express   = require('express'),
-  router    = express.Router(),
+  express = require('express'),
+  router = express.Router(),
   { User, Portfolio, Stock, sequelize } = require('../db/models'),
-  { expectedError, unexpectedError } = require('../services/errorhandling');
+  { sendSuccess, sendExpectedError, sendUnexpectedError } = require('../services/responses');
 
 /* Expects query param 'q' */
 router.get('/stock', async (req, res) => {
   try {
-    let { q : query } = req.query;
+    let query = req.query.q;
     query = query.replace(' ', ' & '); // Format tokens for tsquery
     query = (query.slice(-1) === ' ') ? query.slice(0, -3) : query; // Remove trailing space
-    const
-      results = query
-        ? await sequelize.query(`
-            SELECT id, symbol, name, exchange
-            FROM ${Stock.tableName}
-            WHERE _search @@ to_tsquery(:query)
-            ORDER BY ts_rank_cd(_search, to_tsquery(:query), 4);
-          `, {
-            model: Stock,
-            replacements: { query : `${query}:*` },
-          })
-        : [],
-      matches = results ? results.slice(0, 10) : [];
 
-    res.send(matches);
+    let results = query
+      ? await sequelize.query(`
+          SELECT id, symbol, name, exchange
+          FROM ${Stock.tableName}
+          WHERE _search @@ to_tsquery(:query)
+          ORDER BY ts_rank_cd(_search, to_tsquery(:query), 4);
+        `, {
+          model : Stock,
+          replacements : { query : `${query}:*` },
+        })
+      : [];
+
+      results = results ? results.slice(0, 10) : [];
+      const matches = { results };
+
+    sendSuccess(matches, res);
   }
-  catch(err){ res.send(unexpectedError(err, res)); }
+  catch(err){ sendUnexpectedError(err, res); }
 });
 
 router.get('/user', async (req, res) => {
   try {
     const
-      { username } = req.query,
-      user = await User.findOne({ where : { username } }),
-      success = (user !== null);
-  
-    res.send(success ? { success, id : user.id } : expectedError(`User with username '${username}' DNE`, res, 200));
+      username = req.query.username,
+      user = await User.findOne({ where : { username } });
+    
+    if(user){ 
+      const match = { id : user.id };
+
+      sendSuccess(match, res); 
+    } 
+    else { sendExpectedError(`User with username '${username}' DNE`, res, 200); }
   }
-  catch(err){ res.send(unexpectedError(err, res)); }
+  catch(err){ sendUnexpectedError(err, res); }
 });
 
 router.get('/portfolio', async (req, res) => {
   try {
-    console.log(req.query);
     const
       { username, portfolioName } = req.query,
       userFound = await User.findOne({ where : { username } });
-    console.log(portfolioName)
+
     if(userFound){
       const
-        { id : userId } = userFound;
+        userId = userFound.id,
         portfolioFound = await Portfolio.findOne({ where : { name : portfolioName, userId } });
+
       if(portfolioFound){
-        const { id : portfolioId } = portfolioFound;
-        res.send({ success : true, userId, portfolioId });
-      } else { res.send(expectedError(`${username} does not a own portfolio named '${portfolioName}'`, res, 200)); }
-    } else { res.send(expectedError(`User with username '${username}' DNE'`, res, 200)); } 
+        const 
+          portfolioId = portfolioFound.id,
+          match = { userId, portfolioId };
+
+        sendSuccess(match, res);
+      } else { sendExpectedError(`${username} does not a own portfolio named '${portfolioName}'`, res, 200); }
+    } else { sendExpectedError(`User with username '${username}' DNE'`, res, 200); } 
   }
-  catch(err){ res.send(unexpectedError(err, res)); }
+  catch(err){ sendUnexpectedError(err, res); }
 });
 
 module.exports = router;
