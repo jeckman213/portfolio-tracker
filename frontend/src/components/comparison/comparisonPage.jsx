@@ -40,6 +40,7 @@ class ComparisonPage extends Component {
         shares : 0,
         assets : [],
         historical: {},
+        pieChartData : {}
       },
 
       SecondUserPortfolios : [],
@@ -52,7 +53,8 @@ class ComparisonPage extends Component {
         value : 0,
         shares : 0,
         assets : [],
-        historical: {},
+        historical : {},
+        pieChartData : {}
       },
     }
 
@@ -82,8 +84,8 @@ class ComparisonPage extends Component {
       
       const
         { data } = await axios.get(`/api/user/${userId}/portfolio/${portfolioId}`),
-        {name, value, shares, assets, historical } = data;
-        this.setState({ FirstPortfolio: { userId, username, portfolioId, name, value, shares, assets, historical}, isLoading: false });
+        {name, value, shares, assets, historical, pieChartData } = data;
+        this.setState({ FirstPortfolio: { userId, username, portfolioId, name, value, shares, assets, historical, pieChartData}, isLoading: false });
     }
     console.log(this.state);
   }
@@ -103,8 +105,8 @@ class ComparisonPage extends Component {
       
       const
         { data } = await axios.get(`/api/user/${userId}/portfolio/${portfolioId}`),
-        {name, value, shares, assets, historical } = data;
-        this.setState({ SecondPortfolio: { userId, username, portfolioId, name, value, shares, assets, historical}, isLoading: false });
+        {name, value, shares, assets, historical, pieChartData } = data;
+        this.setState({ SecondPortfolio: { userId, username, portfolioId, name, value, shares, assets, historical, pieChartData}, isLoading: false });
     }
   }
 
@@ -124,7 +126,7 @@ class ComparisonPage extends Component {
           portfolioName = portfolios[0].name;
 
           data = await axios.get(`api/user/${id}/portfolio/${portfolioId}`);
-          const { value, shares, assets, historical } = data.data;
+          const { value, shares, assets, historical, pieChartData } = data.data;
 
           this.setState({ 
             FirstUserPortfolios : portfolios,
@@ -137,6 +139,7 @@ class ComparisonPage extends Component {
               shares,
               assets,
               historical,
+              pieChartData
             },
             isLoading : false,
             isEmpty : false
@@ -164,7 +167,7 @@ class ComparisonPage extends Component {
           portfolioName = portfolios[0].name;
 
           data = await axios.get(`api/user/${id}/portfolio/${portfolioId}`);
-          const { value, shares, assets, historical } = data.data;
+          const { value, shares, assets, historical, pieChartData } = data.data;
 
           this.setState({ 
             SecondUserPortfolios : portfolios,
@@ -177,6 +180,7 @@ class ComparisonPage extends Component {
               shares,
               assets,
               historical,
+              pieChartData
             },
             isLoading : false,
             isEmpty : false
@@ -189,7 +193,7 @@ class ComparisonPage extends Component {
   }
 
   render() {
-    const { FirstPortfolio, SecondPortfolio, isLoading, graphOption, FirstUserPortfolios, SecondUserPortfolios, isEmpty, noUserFound } = this.state;
+    const { FirstPortfolio, SecondPortfolio, isLoading, graphOption, FirstUserPortfolios, SecondUserPortfolios, isEmpty, noUserFound, pieChartData } = this.state;
 
     if(isEmpty) {
       return (
@@ -213,8 +217,8 @@ class ComparisonPage extends Component {
       if (graphOption === 0) {
         graph = 
           (<div style={ Style.PieContainer }>
-            <PieGraph chartTitle={ `${FirstPortfolio.name}(${FirstPortfolio.username})` } slices={ getPercentages(FirstPortfolio.assets) } style={ Style.PieOne }/>
-            <PieGraph chartTitle={ `${SecondPortfolio.name}(${SecondPortfolio.username})` } slices={ getPercentages(SecondPortfolio.assets) } style={ Style.PieTwo } />
+            <PieGraph portfolioName={ `${FirstPortfolio.name}(${FirstPortfolio.username})` } data={ FirstPortfolio.pieChartData } style={ Style.PieOne }/>
+            <PieGraph portfolioName={ `${SecondPortfolio.name}(${SecondPortfolio.username})` } data={ SecondPortfolio.pieChartData } style={ Style.PieTwo } />
           </div>);
       } 
       else if (graphOption === 1) {

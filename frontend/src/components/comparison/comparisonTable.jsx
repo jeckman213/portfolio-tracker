@@ -17,13 +17,15 @@ class ComparisonTable extends Component {
         var table = [];
 
         for (let asset of assets) {
-            let { symbol, shares, purchasedAt, value } = asset;
+            let { symbol, shares, purchasedAt, realtime } = asset;
+            let { value } = realtime;
+            console.log(asset);
             table.push(
                 <TableRow>
                     <TableCell>{symbol}</TableCell>
                     <TableCell>{shares}</TableCell>
                     <TableCell>{purchasedAt}</TableCell>
-                    <TableCell><span style={dollar}>$</span>{value}</TableCell>
+                    <TableCell><span style={dollar}>$</span>{value.toFixed(2)}</TableCell>
                 </TableRow>
             );
         }

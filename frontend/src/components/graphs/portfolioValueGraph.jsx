@@ -30,12 +30,12 @@ class PortfolioValueGraph extends Component {
     var name = `${portfolioName} Value`;
 
     Object.keys(inData).forEach(date => {
-      chartData.push([Date.parse(date), historicalData[date]['close']]);
+      chartData.push([Date.parse(date), inData[date]['close']]);
     });
 
     if (!isNullOrUndefined(inData2)) {
       Object.keys(inData2).forEach(key => {
-        chartData2.push([Date.parse(key), this.state.inData2[key]["close"]]);
+        chartData2.push([Date.parse(key), inData2[key]["close"]]);
       });
       name = `${portfolioName} vs. ${portfolioName2}`;
     }
