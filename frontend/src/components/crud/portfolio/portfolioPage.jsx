@@ -68,7 +68,7 @@ class PortfolioPage extends Component {
         graph = <PieGraph data={ pieChartData } portfolioName={ name } />
       }
       else {
-        graph = <PortfolioValueGraph data={history} name={name} />
+        graph = <PortfolioValueGraph data={ history } name={name} />
       }
 
       return(

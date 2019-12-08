@@ -116,8 +116,10 @@ class SignUp extends Component {
 
 // Bring auth reducer state into this file. Accessed through this.props
 const mapStateToProps = (state) => {
-  const { registering, registered, loggingIn, authenticated, username,
-          registrationFailed, loginFailed, failExpected, failReason, } = state.authentication;
+  const { 
+    registering, registered, loggingIn, authenticated, username,
+    registrationFailed, loginFailed, failExpected, failReason
+  } = state.authentication;
   
   return {
     registering,
