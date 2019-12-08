@@ -99,13 +99,12 @@ router.get('/:portfolioId', userMatchesPortfolio, isAccessible, async (req, res)
       combineAssetHistories = (asset) => {
         let 
           ph = portfolio.history, 
-          ah = asset.history,
-          shares = asset.shares;
+          ah = asset.history;
         for(let date in ah){
           if(!ph[date]){ ph[date] = { close : 0, open : 0, high : 0, low : 0, volume : 0 }; }
           for(let metric in ah[date]){
             if(metric === 'volume'){ ph[date].volume += ah[date].volume; }
-            else { ph[date][metric] += (ah[date][metric] * shares); }
+            else { ph[date][metric] += ah[date][metric]; }
           }
         }
       },
