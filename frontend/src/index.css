@@ -22,9 +22,9 @@ label {
 nav {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  padding: 20px 0;
+  padding: 20px 0; /* Height of nav bar */
   align-items: center;
-  width: 100%;
+  width: 100%; /* how much space the items take up on nav bar */
   margin:0 auto;
   border-bottom: 1px solid #111;
 }
@@ -35,25 +35,31 @@ nav ul {
   margin:0;
 }
 
+nav ul li a:hover {
+  color: #83c6a7;
+}
+
 nav ul li a {
-  color: #fff;
+  color: #fff; 
 }
 
 nav ul:last-of-type li a {
   text-decoration: none;
   font-size: 1.2rem;
+  
 }
-
+/* Position of first elment aka Portfolio$ */
 nav ul:first-of-type li{
   padding-left: 20px;
+  
 }
 
 nav ul:last-of-type {
-  text-align: right;
+  text-align: center;
 }
-
+/* Padding for right links */
 nav ul:last-of-type li {
-  display: inline-block;
+  display: inline-block; /* Good for nav because things stack when resized */
   margin-right: 20px;
 }
 
@@ -77,6 +83,7 @@ header {
   padding-top: 6rem;
   position: relative;
   color: #000000;
+  
 }
 
 header div:first-of-type{
@@ -91,8 +98,8 @@ header div h1 {
   line-height: 5.2rem;
   text-transform: capitalize;
 }
-
-header div p, header div a {
+/* Into text on home Screen */
+header div p, header div a { 
   width: 40%;
 }
 

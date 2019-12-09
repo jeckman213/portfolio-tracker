@@ -5,7 +5,7 @@ const
   forex = require('./forex'),
   moment = require('moment'),
   { round2Dec } = require('./math'),
-  API_TOKEN = process.env.STOCK_TOKEN,
+  API_TOKEN = process.env.STOCK_TOKEN='ooB5SPAbWtKhMwVa8dzlcuombZpjbXwoYvkt2YXH8EULTX5AFVfiUYgalfpe',
   functions = {};
 
 functions.getRealTime = async (symbol, currency = 'USD') => {

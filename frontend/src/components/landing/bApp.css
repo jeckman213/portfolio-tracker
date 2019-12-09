@@ -1,0 +1,60 @@
+.card {
+  margin-top: 40px;
+  text-align:center;
+  margin:auto; 
+   
+}
+
+
+.news-item {
+  text-align: center;
+  display: internal;
+  text-align:center;
+  margin:auto; 
+  
+   
+}
+.input-stock{
+  text-align: center;
+  display: internal;
+  text-align:center;
+  margin:auto; 
+  
+}
+
+.input-button{
+  text-align: center;
+ text-align:center;
+ 
+}
+
+.navbar {
+  display: flex;
+  flex-direction: column;
+  text-align:center;
+  margin:auto; 
+   
+}
+
+
+.bApp{
+display: inline-flexbox;
+  align-content: center;
+  
+}
+
+.story-image {
+  width: 20%;
+  display: inside;
+   
+}
+.news-cont {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  text-align:center;
+  margin:auto; 
+   
+  
+  
+}

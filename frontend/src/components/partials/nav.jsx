@@ -22,6 +22,7 @@ const Nav = ({ authenticated, username, logout }) => {
         {/* <li><Link to="/dashboard">Dashboard</Link></li> */}
         <li><Link to="/help">Help</Link></li>
         <li><Link to="/about">About</Link></li>
+        <li><Link to="/news">News</Link></li>
         { authenticated 
             ? <React.Fragment>
                 <li><Link to={ `/user/${username}` }>{ username }</Link></li>
