@@ -20,6 +20,7 @@ class PortfolioTable extends Component {
     this.printStocks = this.printStocks.bind(this);
     this.editAsset = this.editAsset.bind(this);
     this.createAsset = this.createAsset.bind(this);
+    this.ownsPortfolio = this.props.ownsPortfolio.bind(this);
   }
 
   printStocks = () => {
@@ -38,28 +39,32 @@ class PortfolioTable extends Component {
           <td><input type="text"  value={ shares } className="portfolio-table-input" readOnly/></td>
           <td><input type="date" value={ purchasedAt } className="portfolio-table-input" readOnly/></td>
           <td>{ formatCurrency(currency, realtime.value) }</td>
-          <td><EditAsset editAsset={ this.editAsset } id={ id } symbol={ symbol } shares={ shares } purchasedAt={ purchasedAt } /></td>
-          <td>
-            <Popup
-            trigger={
-              <div>
-                <FontAwesomeIcon style={ style.delete } icon={ faTrashAlt }></FontAwesomeIcon>
-              </div>
-            }
-            modal>
-              { close => (
-                <div style={ style.newForm } >
-                <h2>Are you sure you want to remove { shares } shares of {symbol} from this portfolio?</h2>
-                  <br/>
-                  <form onSubmit={ this.delete(id, close) }>
-                    <div className="form-control">
-                      <input type="submit" value="Confirm" disabled={ requesting }/>
+          { this.ownsPortfolio() &&
+            <React.Fragment>
+              <td><EditAsset editAsset={ this.editAsset } id={ id } symbol={ symbol } shares={ shares } purchasedAt={ purchasedAt } /></td>
+              <td>
+                <Popup
+                trigger={
+                  <div>
+                    <FontAwesomeIcon style={ style.delete } icon={ faTrashAlt }></FontAwesomeIcon>
+                  </div>
+                }
+                modal>
+                  { close => (
+                    <div style={ style.newForm } >
+                    <h2>Are you sure you want to remove { shares } shares of {symbol} from this portfolio?</h2>
+                      <br/>
+                      <form onSubmit={ this.delete(id, close) }>
+                        <div className="form-control">
+                          <input type="submit" value="Confirm" disabled={ requesting }/>
+                        </div>
+                      </form>
                     </div>
-                  </form>
-                </div>
-              )}
-          </Popup>
-          </td>
+                  )}
+                </Popup>
+              </td>
+            </React.Fragment>
+          }
         </tr>
       )
     }
@@ -72,8 +77,8 @@ class PortfolioTable extends Component {
     const { data } = await axios.post(`/api/user/${userId}/portfolio/${portfolioId}/asset`, body);
     const { id, symbol, shares, purchasedAt, value } = data;
     const newAsset = { id, symbol, shares, purchasedAt, value };
-
-    this.setState({ assets : [...this.state.assets, newAsset] })
+    window.location.reload(false); 
+    // this.setState({ assets : [...this.state.assets, newAsset] })
   }
 
   async editAsset(id, body){
@@ -81,8 +86,8 @@ class PortfolioTable extends Component {
     const { data } = await axios.put(`/api/user/${userId}/portfolio/${portfolioId}/asset/${id}`, body);
     const { symbol, shares, purchasedAt, value } = data;
     const updatedAsset = { id, symbol, shares, purchasedAt, value };
-
-    this.setState({ assets : this.state.assets.map( asset => asset.id === id ? updatedAsset : asset) })
+    window.location.reload(false); 
+    // this.setState({ assets : this.state.assets.map( asset => asset.id === id ? updatedAsset : asset) })
   }
 
   delete = (id, close) => async e => {
@@ -94,16 +99,17 @@ class PortfolioTable extends Component {
 
       const { userId, portfolioId } = this.props;
       await axios.delete(`/api/user/${userId}/portfolio/${portfolioId}/asset/${id}`);
-
+      window.location.reload(false); 
       // Generates a warning
-      this.setState({ assets : this.state.assets.filter( 
-        asset => asset.id !== id
-      ), requesting : false });
+      // this.setState({ assets : this.state.assets.filter( 
+      //   asset => asset.id !== id
+      // ), requesting : false });
       close();
     }
   }
 
   render(){
+    const username = this.props.username;
     return (
       <table className="portfolio-table">
         <tbody>
@@ -112,8 +118,12 @@ class PortfolioTable extends Component {
             <th>Shares</th>
             <th>Purchase Date</th>
             <th>Total Value</th>
-            <th>Edit</th>
-            <th><NewAsset createAsset={ this.createAsset }/></th>
+            { this.ownsPortfolio() &&
+              <React.Fragment>
+                <th>Edit</th>
+                <th><NewAsset createAsset={ this.createAsset }/></th>
+              </React.Fragment>
+            }
           </tr>
           { this.printStocks() }
         </tbody>
@@ -139,9 +149,9 @@ class PortfolioTable extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { currency } = state.authentication;
+  const { currency, id } = state.authentication;
 
-  return { currency };
+  return { currency, id };
 };
 
 export default connect(mapStateToProps, null)(PortfolioTable);
