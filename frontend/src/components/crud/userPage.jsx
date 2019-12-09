@@ -147,7 +147,9 @@ class UserPage extends Component {
         ) 
       : (
         <div style={ style.container } className="portfolio-overview">
-          <NewPortfolio createPortfolio={ this.createPortfolio } username={ username } userId={ userId }/>
+          { this.props.username === username && 
+            <NewPortfolio createPortfolio={ this.createPortfolio } username={ username } userId={ userId }/>
+          }
           { portfolioItems }
         </div>
       )
