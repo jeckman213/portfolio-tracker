@@ -4,6 +4,7 @@ import { PropTypes } from 'prop-types';
 import { Redirect } from 'react-router';
 import { signUp, login } from '../../actions/auth/authActions';
 import { currencies } from '../../utils/currencies'
+import colors from '../../assets/colors'
 
 class SignUp extends Component {
   // So booking or signup im 
@@ -110,6 +111,9 @@ class SignUp extends Component {
                   src={ process.env.PUBLIC_URL + '/animations/loading-gear.svg' } 
                   alt="loading" >
                 </img>
+              }
+              { registrationFailed &&
+                <i style={ { color : colors.red }} class="far fa-times-circle"></i>
               }
             </div>  
           </form>
