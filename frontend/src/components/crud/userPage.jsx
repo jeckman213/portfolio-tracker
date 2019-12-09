@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
 import axios from 'axios'
 import { stringify as queryStringify } from 'query-string'
 import colors from '../../assets/colors';
@@ -6,6 +7,7 @@ import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import NewPortfolio from './buttons/newPortfolio';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { faLock } from '@fortawesome/free-solid-svg-icons'
 import Popup from 'reactjs-popup'
 
 class UserPage extends Component {
@@ -25,15 +27,26 @@ class UserPage extends Component {
     this.createPortfolio = this.createPortfolio.bind(this);
   }
 
-  async componentDidUpdate(){
-    if(this.state.postComplete){
+  async componentDidUpdate(prevProps){
+    if(prevProps.match.params.username !== this.props.match.params.username || this.state.postComplete){
       this.setState({ postComplete : false })
-      let
-        id = this.state.userId,
-        showUserRes = await axios.get(`/api/user/${id}`),
-        { portfolios } = showUserRes.data;
+        let 
+        username = this.props.match.params.username,
+        queryString = queryStringify({ username }),
+        searchRes = await axios.get(`/api/search/user?${queryString}`),
+        { success } = searchRes.data;
       
-      this.setState({ portfolios });
+      if(success){
+        let
+          { id } = searchRes.data,
+          showUserRes = await axios.get(`/api/user/${id}`),
+          { portfolios } = showUserRes.data;
+        
+        this.setState({ portfolios, userNotFound : false, userId : id })
+      }
+      else {
+        this.setState({ userNotFound : true })
+      }
     }
   }
   
@@ -58,11 +71,13 @@ class UserPage extends Component {
   }
 
   async createPortfolio(body) {
-    console.log(this.state);
+    console.log(body);
     if(!this.state.posting){
       this.setState({ posting : true })
-      const userId = this.state.userId;
-      await axios.post(`/api/user/${userId}/portfolio`, body);
+      const 
+        userId = this.state.userId,
+        data = await axios.post(`/api/user/${userId}/portfolio`, body).then(res => res.data);
+      console.log(data);
       this.setState({ posting : false, postComplete : true })
     }
   }
@@ -91,30 +106,36 @@ class UserPage extends Component {
       { userNotFound, portfolios, userId, deleting } = this.state,
       portfolioItems = portfolios.map( portfolio => (
         <div key={ portfolio.id } style={ style.portfolio }>
-          <Popup
-            trigger={
-              <div>
+          <div style={ style.options }>
+            { this.props.username === username && 
+              <Popup
+              trigger={
                 <FontAwesomeIcon style={ style.delete } icon={ faTrashAlt }></FontAwesomeIcon>
-              </div>
-            }
-            modal>
-              { close => (
-                <div style={ style.newForm } >
-                  <h2>Are you sure you want to delete { portfolio.name }?</h2>
-                  <br/>
-                  <form onSubmit={ this.delete(portfolio.id, close) }>
-                    <div className="form-control">
-                      <input type="submit" value="Confirm" disabled={ deleting }/>
+              }
+              modal>
+                  { close => (
+                    <div style={ style.newForm } >
+                      <h2 style={ style.text }>Are you sure you want to delete <br/><span style={ style.name }>{ portfolio.name }</span>?</h2>
+                      <form onSubmit={ this.delete(portfolio.id, close) }>
+                        <div className="form-control" style={ style.submit}>
+                          <input type="submit" value="Confirm" disabled={ deleting }/>
+                        </div>
+                      </form>
                     </div>
-                  </form>
-                </div>
-              )}
-          </Popup>
-          <Link to={ `/user/${username}/portfolio/${portfolio.name}` }>
-            <div>
-              { portfolio.name }
-            </div>
-          </Link>
+                  )}
+              </Popup>
+            }
+            { !portfolio.isPublic &&
+              <FontAwesomeIcon icon={ faLock }></FontAwesomeIcon>
+            }
+          </div>
+          <div style={ style.link }>
+            <Link to={ `/user/${username}/portfolio/${portfolio.name}` }>
+              <div>
+                { portfolio.name }
+              </div>
+            </Link>
+          </div>
         </div>
       ));
 
@@ -133,6 +154,17 @@ class UserPage extends Component {
   }
 
   style = {
+    options : {
+      display : 'flex',
+      justifyContent : 'space-between',
+      alignItems : 'center',
+      flexDirection : 'row-reverse'
+    },
+
+    link : {
+      padding : '3rem 0'
+    },
+
     container : {
       display : 'grid',
       gridTemplateColumns : '25% 25% 25% 25%',
@@ -144,16 +176,30 @@ class UserPage extends Component {
     portfolio : {
       backgroundColor : colors.green,
       borderRadius : '10px',
-      padding : '2em',
+      padding : '0.5em',
       fontSize : '2em',
       textAlign: 'center'
     },
 
     delete : {
       color : colors.red,
-      float : 'right',
       cursor : 'pointer',
       textAlign: 'right'
+    },
+
+    name : {
+      color : colors.green
+    },
+
+    text : {
+      fontSize : '2.5rem',
+      lineHeight : '4rem'
+    },
+
+    submit : {
+      display : 'flex',
+      flexDirection : 'column',
+      alignItems : 'center',
     },
 
     newForm : {
@@ -168,4 +214,10 @@ class UserPage extends Component {
   }
 }
 
-export default UserPage;
+const mapStateToProps = (state) => {
+  const { username } = state.authentication;
+
+  return { username };
+};
+
+export default connect(mapStateToProps, null)(UserPage);

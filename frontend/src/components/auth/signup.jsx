@@ -41,7 +41,8 @@ class SignUp extends Component {
     const 
       { registering, registered, loggingIn, authenticated, username,
         registrationFailed, loginFailed, failExpected, failReason, } = this.props,
-      currencyOptions = [];
+      currencyOptions = [],
+      style = this.style;
 
     if(registered){
       this.props.login(this.state);
@@ -80,8 +81,8 @@ class SignUp extends Component {
               <input type="password" name="password" onChange={ this.onChange } placeholder="Password" required />
             </div>
             <div className="form-control">
-              <label>Re-enter Password*</label>
-              <input type="password" name="passwordVerified" onChange={ this.onChange } placeholder="Re-enter Password" required />
+              <label>Confirm New Password*</label>
+              <input type="password" name="passwordVerified" onChange={ this.onChange } placeholder="Confirm New Password" required />
             </div>
             <div className="form-control">
               <label>Email*</label>
@@ -97,20 +98,34 @@ class SignUp extends Component {
             </div>
             <div className="form-control">              
               <label>Currency*</label> 
-              <select name="currency" onChange={ this.onChange } >
+              <select style={ style.select} name="currency" onChange={ this.onChange } >
                 { currencyOptions }
               </select>   
             </div>
-            <div className="form-control">
+            <div className="form-control" style={ {display : 'block'} }>
               <input type="submit" value="Sign Up" disabled={ registering } />
               { (registering || loggingIn) &&
-                <img src={ process.env.PUBLIC_URL + '/animations/loading-gear.svg' } alt="loading" ></img>
+                <img 
+                  style={ {float : 'right'} }
+                  src={ process.env.PUBLIC_URL + '/animations/loading-gear.svg' } 
+                  alt="loading" >
+                </img>
               }
             </div>  
           </form>
         </div>
       </section>
     );
+  }
+
+  style = {
+    select : {
+      fontFamily : 'inherit',
+      fontSize : '1rem',
+      padding : '.7rem',
+      borderRadius : '10px',
+      outline : 'none'
+    }
   }
 }
 

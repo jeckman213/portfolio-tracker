@@ -21,7 +21,7 @@ label {
 
 nav {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 20% 80%;
   padding: 20px 0;
   align-items: center;
   width: 100%;
@@ -73,7 +73,9 @@ header form {
 header {
   height: 600px;
   background: url("./assets/images/Back2.jpg"); 
-  background-size: 100%;
+  background-position: center;
+  background-size: cover;
+  /* background-size: 100%; */
   padding-top: 6rem;
   position: relative;
   color: #000000;
@@ -180,7 +182,7 @@ section.intro {
   background-position: center;
   display: block;
   height: 660px;
-  background-size: 110%;
+  /* background-size: 110%; */
   
 }
 
@@ -190,7 +192,7 @@ section.intro {
   background-position: bottom;
   display: block;
   height: 660px;
-  background-size: 110%;
+  /* background-size: 110%; */
 }
 
 .description {
@@ -411,7 +413,7 @@ section div form {
   
   header {
     height: 500px;
-    background-size:120%;
+    /* background-size:120%; */
     padding-top: 50px;
   }
 
@@ -473,12 +475,12 @@ section div form {
   }
 }
 
-@media (max-width: 1000px ) and (min-width: 0px ){
+@media (max-width: 1300px ) and (min-width: 0px ){
   header {
     height: 350px;
-   background-size:120%;
+   /* background-size:120%; */
    padding-top: 50px;
-   background-size: 300%;
+   /* background-size: 300%; */
    background-position: center;
   }
 
@@ -531,7 +533,7 @@ section div form {
     margin: 0;
   }
 
-  nav ul:last-of-type li a {
+  nav ul:last-of-type li a, form {
     display: block;
     padding: 10px;
   }
@@ -684,4 +686,9 @@ table, th, td {
   .portfolio-overview > div {
     margin: 7px !important;
   }
+}
+
+.MuiAutocomplete-input  {
+  color : white;
+  border-color : white;
 }

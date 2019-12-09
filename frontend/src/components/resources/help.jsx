@@ -1,5 +1,5 @@
 import React from 'react';
-import Accordion from './Accordion';
+import Accordion from './accordion';
 
 function Help(){
   return (
@@ -29,7 +29,7 @@ function Help(){
             <div label='What can I do with a Portfolio?'>
               <p>
                 You can look at stock prices, save them and compare them
-                as if you were buying them as if you were buying them in real life
+                as if you were buying them in real life
               </p>
             </div>
             <div label='What analytical tools are available?'>

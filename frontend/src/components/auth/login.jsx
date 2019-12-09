@@ -56,10 +56,14 @@ class Login extends Component {
               <label>Password</label>
               <input type="password" onChange={ this.onChange } name="password" placeholder="Password" required />
             </div> 
-            <div className="form-control">
+            <div className="form-control" style={ {display : 'block'} }>
               <input type="submit" value="Login" disabled={ loggingIn } />
               { loggingIn &&
-                <img src={ process.env.PUBLIC_URL + '/animations/loading-gear.svg' } alt="loading" ></img>
+                <img 
+                  style={ {float : 'right'} }
+                  src={ process.env.PUBLIC_URL + '/animations/loading-gear.svg' } 
+                  alt="loading" >
+                </img>
               }
             </div>  
           </form>

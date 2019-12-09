@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import AccordionSection from './AccordionSection';
+import AccordionSection from './accordionSection';
 
 class Accordion extends Component {
   static propTypes = {

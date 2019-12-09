@@ -22,7 +22,7 @@ class NewPortfolio extends Component {
 
     const 
       { name, isPublic } = this.state,
-      body = { name, isPublic};
+      body = { name, isPublic };
     await this.props.createPortfolio(body);
     
     this.setState({ name : "", isPublic : false, requesting : false });
@@ -43,7 +43,10 @@ class NewPortfolio extends Component {
       borderRadius : '10px',
       padding : '2em',
       fontSize : '2em',
-      cursor : 'pointer'
+      cursor : 'pointer',
+      display : 'flex',
+      justifyContent : 'center',
+      alignItems : 'center'
     },
     popup : {
       border : 'none',
@@ -57,6 +60,12 @@ class NewPortfolio extends Component {
       width : '100%',
       height : '100%',
       outline : 'none'
+    },
+    inline : {
+      display : 'inline',
+    },
+    label : {
+      marginRight : '.5rem'
     }
   }
 
@@ -82,12 +91,19 @@ class NewPortfolio extends Component {
                 <div className="form-control">
                   <input type="text" onChange={ this.onChange } name="name" placeholder="Name" required value={ this.state.name }/>
                 </div>
-                <div className="form-control">
-                  <label style={ { display : 'inline' } }>Public</label>
+                <div className="form-control" style={ style.inline }>
+                  <label style={ style.label }>Public</label>
                   <input type="checkbox" onChange={ this.onClick } name="isPublic" value={ this.state.isPublic } />
                 </div> 
                 <div className="form-control">
                   <input type="submit" value="Create" disabled={ requesting }/>
+                  { requesting &&
+                    <img 
+                      style={ {float : 'right'} }
+                      src={ process.env.PUBLIC_URL + '/animations/loading-gear.svg' } 
+                      alt="loading" >
+                    </img>
+                  }
                 </div>
               </form>
             </div>

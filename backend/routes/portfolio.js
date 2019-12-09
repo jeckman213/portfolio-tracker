@@ -10,13 +10,14 @@ const
 // Portfolio: CREATE - Create a new portfolio
 router.post('/', isAuthorized, async (req, res) => {
   try {
+    console.log(req.body);
     const 
       { name, isPublic : public } = req.body,
       { userId } = req.params,
       newPortfolio = { name, userId, public },
       createdPortfolio = await Portfolio.create(newPortfolio),
       { id } = createdPortfolio,
-      createdPortfolioData = { id };
+      createdPortfolioData = { id };    
 
     sendSuccess(createdPortfolioData, res);
   }
@@ -36,7 +37,7 @@ router.post('/', isAuthorized, async (req, res) => {
 router.get('/:portfolioId', userMatchesPortfolio, isAccessible, async (req, res) => {
   try {
     const
-      { name, id : portfolioId } = res.locals.portfolio,
+      { name, id : portfolioId, public : isPublic } = res.locals.portfolio,
       userId = req.params.userId,
       [ userFound, assetsFound] = await Promise.all([
         User.findByPk(userId),
@@ -48,6 +49,7 @@ router.get('/:portfolioId', userMatchesPortfolio, isAccessible, async (req, res)
         id : portfolioId,
         name,
         owner : userFound.username,
+        isPublic,
         currency,
         value : 0,
         shares : 0,
@@ -166,7 +168,7 @@ router.put('/:portfolioId', userMatchesPortfolio, isAuthorized, async (req, res)
     const 
       { portfolioId } = req.params,
       { name, public } = req.body,
-      updatedPortfolio = { name, public },
+      updatedPortfolio = { name, public, updatedAt : Date.now() },
       affectedRows = await Portfolio.update(updatedPortfolio, { where : { id : portfolioId } }),
       updatedPortfolioData = { id : portfolioId, name, public };
 

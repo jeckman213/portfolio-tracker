@@ -1,9 +1,9 @@
 const 
   express = require('express'),
   router = express.Router({ mergeParams : true }),
-  { Asset, Stock } = require('../db/models'),
+  { Portfolio, Asset, Stock } = require('../db/models'),
   { portfolioMatchesAsset, isAuthorized, userMatchesPortfolio } = require('../middleware'),
-  { getStockValue } = require('../services/stocks'),
+  { getRealTime } = require('../services/stocks'),
   { round2Dec } = require('../services/math'),
   { sendSuccess, sendExpectedError, sendUnexpectedError } = require('../services/responses');
 
@@ -17,7 +17,7 @@ router.post('/', userMatchesPortfolio, isAuthorized, async (req, res) => {
 
     if(stock){
       const
-        value = round2Dec( await getStockValue(symbol) * shares ),
+        value = round2Dec( await getRealTime(symbol) * shares ),
         newAsset = { portfolioId, shares, symbol, purchasedAt };
         createdAsset = await Asset.create(newAsset);
         createdAssetData = { id : createdAsset.id, shares, symbol, purchasedAt, value };
@@ -39,12 +39,14 @@ router.put('/:assetId', portfolioMatchesAsset, isAuthorized, async (req, res) =>
 
     if(stockFound){
       const
-        value = round2Dec(await getStockValue(symbol) * shares), 
+        value = round2Dec(await getRealTime(symbol) * shares), 
         updatedAsset = { portfolioId, shares, symbol, purchasedAt },
-        updatedAssetData = { id : assetId, shares, symbol, purchasedAt, value };
-        rowsAffected = await Asset.update(updatedAsset, { where : { id : assetId } });
+        updatedAssetData = { id : assetId, shares, symbol, purchasedAt, value },
+        updateAsset = async () => Asset.update(updatedAsset, { where : { id : assetId } }),
+        updatePortfolio = async () => Portfolio.update({ updatedAt : Date.now() }, { where : { id : portfolioId } }),
+        [assetRowsAffected, portfolioRowsAffected] = await Promise.all([updateAsset(), updatePortfolio()]);
       
-      if(rowsAffected[0] === 1){ sendSuccess(updatedAssetData, res); }
+      if(assetRowsAffected[0] === 1 && portfolioRowsAffected[0] === 1){ sendSuccess(updatedAssetData, res); }
       else { sendExpectedError(`Asset with id ${assetId} DNE`, res, 200) }
     }
     else { sendExpectedError(`Stock '${symbol}' DNE`, res, 200); }
