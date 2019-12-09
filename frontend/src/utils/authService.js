@@ -15,14 +15,14 @@ const validateRegistrationOnClient = (newUserData) => {
     usernamePattern = /^[A-Za-z0-9_-]{3,40}$/,
     passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()]).{8,24}$/;
         
-  if(!matches(username, usernamePattern)){ /* Invalid username */
+  if(username && !matches(username, usernamePattern)){ /* Invalid username */
     return {
       type : REGISTRATION_FAILED,
       failExpected : true,
       failReason : 'Username can only consist of letters, numbers, underscores, and hyphens, and is between 8-24 characters'
     };
   }
-  else if(!matches(password, passwordPattern)){ /* Invalid password */
+  else if(password && !matches(password, passwordPattern)){ /* Invalid password */
     return {
       type : REGISTRATION_FAILED,
       failExpected : true,
@@ -36,7 +36,7 @@ const validateRegistrationOnClient = (newUserData) => {
       failReason : 'Passwords do not match'
     };
   }
-  else if(!isEmail(email)){ /* Invalid email */
+  else if(email && !isEmail(email)){ /* Invalid email */
     return {
       type : REGISTRATION_FAILED,
       failExpected : true,

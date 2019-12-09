@@ -99,6 +99,13 @@ class EditAsset extends Component {
                 </div> 
                 <div className="form-control">
                   <input type="submit" value="Edit" disabled={ requesting }/>
+                  { requesting &&
+                    <img 
+                      style={ {float : 'right'} }
+                      src={ process.env.PUBLIC_URL + '/animations/loading-gear.svg' } 
+                      alt="loading" >
+                    </img>
+                  }
                 </div>
               </form>
             </div>

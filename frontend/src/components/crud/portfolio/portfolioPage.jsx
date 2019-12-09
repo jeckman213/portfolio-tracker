@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { stringify as queryStringify } from 'query-string';
@@ -22,6 +23,7 @@ class PortfolioPage extends Component {
       portfolioId : 0,
       name : null,
       owner : null,
+      isPublic : false,
       value : 0,
       shares : 0,
       assets : [],
@@ -33,6 +35,7 @@ class PortfolioPage extends Component {
     }
 
     this.changeGraph = this.changeGraph.bind(this);
+    this.ownsPortfolio = this.ownsPortfolio.bind(this);
   }
 
   async componentDidMount() {
@@ -49,9 +52,8 @@ class PortfolioPage extends Component {
         
         const 
           { data } = await axios.get(`/api/user/${userId}/portfolio/${portfolioId}`),
-          { name, owner, value, shares, assets, history, pieChartData } = data;
-        this.setState({ name, owner, value, shares, assets, history, pieChartData, isLoading : false });
-        console.log(data);
+          { name, owner, isPublic, value, shares, assets, history, pieChartData } = data;
+        this.setState({ name, owner, isPublic, value, shares, assets, history, pieChartData, isLoading : false });
     }
   }
 
@@ -59,27 +61,38 @@ class PortfolioPage extends Component {
     this.setState({ currentGraph : value });
   }
 
-  render(){
-    const { name, value, assets, currentGraph, history, pieChartData, userId, portfolioId, isLoading } = this.state;
+  ownsPortfolio(){
+    return this.props.id === this.state.userId;
+  }
 
+  render(){
+    const { name, isPublic, value, assets, currentGraph, history, pieChartData, userId, portfolioId, isLoading } = this.state;
     if (!isLoading) {
       var graph = <h1>There was a problem</h1>;
-      if (currentGraph === 0) {
+      if(currentGraph === 0){
         graph = <PieGraph data={ pieChartData } portfolioName={ name } />
       }
       else {
-        graph = <PortfolioValueGraph data={history} name={name} />
+        graph = <PortfolioValueGraph data={ history } name={name} />
       }
 
       return(
         <div className="portfolio-page">
-          <PortfolioHead 
-            name={ name } 
+          <PortfolioHead
+            userId={ userId } 
+            portfolioId={ portfolioId }
+            name={ name }
+            isPublic={ isPublic }
             value={ value } 
             view={ this.changeGraph.bind(this) }
+            ownsPortfolio={ this.ownsPortfolio }
           />
           { graph }
-          <PortfolioTable userId={ userId } portfolioId={ portfolioId } assets={ assets } />
+          <PortfolioTable 
+            userId={ userId } 
+            portfolioId={ portfolioId } 
+            assets={ assets }
+            ownsPortfolio={ this.ownsPortfolio } />
         </div>
       );
     }
@@ -98,4 +111,10 @@ PortfolioPage.propTypes = {
   portfolioID: PropTypes.number
 }
 
-export default PortfolioPage;
+const mapStateToProps = (state) => {
+  const { id } = state.authentication;
+
+  return { id }
+};
+
+export default connect(mapStateToProps, null)(PortfolioPage);
