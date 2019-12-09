@@ -546,6 +546,8 @@ section div form {
 
   nav ul:last-of-type.show {
     height: auto;
+    flex-direction : column;
+    
   }
 
   main section {
