@@ -19,6 +19,10 @@ class PieChart extends Component {
   }
 
   componentDidMount() {
+    var { portfolioName } = this.props;
+    
+    if (portfolioName === "null(null)") portfolioName = "";
+    
     const 
       data = this.props.data,
       metric = this.state.metric;
@@ -27,9 +31,9 @@ class PieChart extends Component {
       chartOptions : {
         chart : {
           plotShadow: false,
-          type: 'pie'
+          type: 'pie',
         },
-        title : { text: this.props.chartTitle },
+        title : { text: portfolioName },
         tooltip : { pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>' },
         plotOptions : {
           pie : {
@@ -45,24 +49,8 @@ class PieChart extends Component {
           colorByPoint : true,
           data : data[metric]
         }],
-        responsive: {
-          rules: [{
-            condition: { maxWidth: 500 },
-            chartOptions: {
-              chart: { height: 300
-              },
-              subtitle: { text: null },
-              navigator: { enabled: false }
-            }
-          }]
-        }
       },
     });
-  }
-
-  // Empty function for implementing portfolio end point of pie chart value
-  callApi = async () => {
-
   }
 
   render() {

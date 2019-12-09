@@ -39,6 +39,7 @@ const Nav = ({ authenticated, username, logout }) => {
         <li><UserSearch /></li>
         <li><Link to="/help">Help</Link></li>
         <li><Link to="/about">About</Link></li>
+        <li><Link to="/comparison">Compare</Link></li>
         { authenticated 
             ? <React.Fragment>
                 <li><Link to={ `/user/${username}` }><i class="fas fa-user-alt"></i> { username }</Link></li>

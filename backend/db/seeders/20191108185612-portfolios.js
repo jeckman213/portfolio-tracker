@@ -14,7 +14,7 @@ const seeds = {
       {
         name : 'Second Portfolio',
         user_id : 1,
-        public : false,
+        public : true,
         created_at : new Date(),
         updated_at : new Date()
       },

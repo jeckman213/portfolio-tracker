@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts/highstock';
+import { isNullOrUndefined } from 'util';
 
 import loading from '../../assets/loading.svg';
 
@@ -11,21 +12,36 @@ class PortfolioValueGraph extends Component {
 
     this.state = {
       chartOptions : {},
+      isLoading : true,
+      inData : this.props.data,
+      inData2 : this.props.data2,
+      portfolioName : this.props.name,
+      portfolioName2 : this.props.name2,
       isLoading : true
     }
   }
 
   componentDidMount() {
     const 
-      portfolioName = this.props.name,
-      historicalData = this.props.data;
+      { portfolioName, portfolioName2, inData, inData2 } = this.state;
 
     var chartData = [];
-    Object.keys(historicalData).forEach(date => {
-      chartData.push([Date.parse(date), historicalData[date]['close']]);
+    var chartData2 = [];
+    var name = `${portfolioName} Value`;
+
+    Object.keys(inData).forEach(date => {
+      chartData.push([Date.parse(date), inData[date]['close']]);
     });
 
+    if (!isNullOrUndefined(inData2)) {
+      Object.keys(inData2).forEach(key => {
+        chartData2.push([Date.parse(key), inData2[key]["close"]]);
+      });
+      name = `${portfolioName} vs. ${portfolioName2}`;
+    }
+
     chartData = chartData.reverse();
+    chartData2 = chartData2.reverse();
 
     this.setState({
       isLoading : false,
@@ -59,13 +75,29 @@ class PortfolioValueGraph extends Component {
             }
           ]
       },
-      title : { text : `${portfolioName} Total`, },
+      title : { text : name, },
       subtitle: { text : 'Price based on closing price per timeframe' },
+      plotOption : {
+        series : {
+          compare : 'price',
+          showInNavigator : true
+        }
+      },
+      tooltip : {
+        valueDecimals : 2,
+        split : true
+      },
+
       series : [{
         name : `${portfolioName}`,
         data : chartData,
-        tooltip : { valueDecimals : 2 }
+        id : 'chart1'
+      }, {
+        name : `${portfolioName2}`,
+        data : chartData2,
+        id : 'chart2'
       }],
+
       responsive : {
         rules : [{
           condition : { maxWidth: 500 },
