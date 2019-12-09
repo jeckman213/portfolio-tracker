@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 // Component imports
 import Header from './comparisonHeader';
@@ -15,6 +16,7 @@ import axios from 'axios';
 import { stringify as queryStringify } from 'query-string';
 import loading from '../../assets/loading.svg'
 import { dollar } from "../../assets/styles";
+import { formatCurrency } from '../../utils/currencies'
 
 class ComparisonPage extends Component {
   constructor(props) {
@@ -194,7 +196,7 @@ class ComparisonPage extends Component {
 
   render() {
     const { FirstPortfolio, SecondPortfolio, isLoading, graphOption, FirstUserPortfolios, SecondUserPortfolios, isEmpty, noUserFound } = this.state;
-
+    const currency = this.props.currency || 'USD';
     if(isEmpty) {
       return (
         <div style={Style.isEmptyContainer}>
@@ -263,11 +265,11 @@ class ComparisonPage extends Component {
 
         <div>
           <div style={ Style.TableOne }>
-          <h3>{ FirstPortfolio.name }({ FirstPortfolio.username }): <span style={ dollar }>$</span>{ FirstPortfolio.value }</h3>
+          <h3>{ FirstPortfolio.name } ({ FirstPortfolio.username }): { formatCurrency(currency, FirstPortfolio.value) }</h3>
             <ComparisonTable assets={ FirstPortfolio.assets } />
           </div>
           <div style={ Style.TableTwo }>
-          <h3>{ SecondPortfolio.name }({ SecondPortfolio.username }): <span style={ dollar }>$</span>{ SecondPortfolio.value }</h3>
+          <h3>{ SecondPortfolio.name } ({ SecondPortfolio.username }): { formatCurrency(currency, SecondPortfolio.value) }</h3>
             <ComparisonTable assets={ SecondPortfolio.assets } />
           </div>
         </div>
@@ -326,4 +328,11 @@ const Style = {
   },
 }
 
-export default ComparisonPage;
+
+const mapStateToProps = (state) => {
+  const { currency } = state.authentication;
+
+  return { currency };
+};
+
+export default connect(mapStateToProps, null)(ComparisonPage);

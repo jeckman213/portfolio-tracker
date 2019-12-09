@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { dollar } from "../../assets/styles";
+import { connect } from 'react-redux';
+import { formatCurrency } from '../../utils/currencies'
 
 class ComparisonTable extends Component {
     constructor(props) {
@@ -14,6 +15,7 @@ class ComparisonTable extends Component {
 
     printStocks = () => {
         const { assets } = this.state;
+        const currency = this.props.currency || 'USD';
         var table = [];
 
         for (let asset of assets) {
@@ -25,7 +27,7 @@ class ComparisonTable extends Component {
                     <TableCell>{symbol}</TableCell>
                     <TableCell>{shares}</TableCell>
                     <TableCell>{purchasedAt}</TableCell>
-                    <TableCell><span style={dollar}>$</span>{value.toFixed(2)}</TableCell>
+                    <TableCell>{ formatCurrency(currency, value) }</TableCell>
                 </TableRow>
             );
         }
@@ -64,4 +66,11 @@ const TableHeadCell = withStyles(theme => ({
     },
   }))(TableCell);
 
-export default ComparisonTable;
+
+const mapStateToProps = (state) => {
+    const { currency } = state.authentication;
+
+    return { currency };
+};
+
+export default connect(mapStateToProps, null)(ComparisonTable);

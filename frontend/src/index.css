@@ -684,7 +684,7 @@ section div form {
   border: none;
   padding: 0!important;
   /*input has OS specific font-family*/
-  color: #000;;
+  color: #000;
   cursor: pointer;
   font-size: inherit;
 }
